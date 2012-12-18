@@ -61,7 +61,7 @@
     <message>
       <location filename="InitGui.py" line="31"/>
       <source>Ship</source>
-      <translation>Корабль</translation>
+      <translation>Ship</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="32"/>
@@ -71,7 +71,7 @@
     <message>
       <location filename="InitGui.py" line="49"/>
       <source>Ship design</source>
-      <translation>Проектирование корабля</translation>
+      <translation>Ship design</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="50"/>
@@ -81,7 +81,7 @@
     <message>
       <location filename="InitGui.py" line="71"/>
       <source>Simulation</source>
-      <translation>Симуляция</translation>
+      <translation>Simulação</translation>
     </message>
     <message>
       <location filename="Instance.py" line="60"/>
@@ -127,7 +127,7 @@
     <message>
       <location filename="ShipGui.py" line="48"/>
       <source>Create a new ship</source>
-      <translation>Создать новый корабль</translation>
+      <translation>Create a new ship</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="49"/>
@@ -179,7 +179,7 @@
     <message>
       <location filename="ShipGui.py" line="78"/>
       <source>Hydrostatics</source>
-      <translation>Гидростатика</translation>
+      <translation>Hydrostatics</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="79"/>
@@ -192,7 +192,7 @@
     <message>
       <location filename="ShipGui.py" line="38"/>
       <source>Load an example ship geometry</source>
-      <translation>Загрузить пример геометрии корабля</translation>
+      <translation>Load an example ship geometry</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="39"/>
@@ -265,12 +265,12 @@
     <message>
       <location filename="TaskPanel.py" line="178"/>
       <source>Trim</source>
-      <translation>Обрезка</translation>
+      <translation>Aparar</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="213"/>
       <source>Displacement</source>
-      <translation>Смещение</translation>
+      <translation>Displacement</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="227"/>
@@ -293,17 +293,17 @@
     <message>
       <location filename="PlotAux.py" line="113"/>
       <source>Can't create folder</source>
-      <translation>Не удается создать папку</translation>
+      <translation>Can't create folder</translation>
     </message>
     <message>
       <location filename="PlotAux.py" line="130"/>
       <source>Can't write to file</source>
-      <translation>Не удается записать в файл</translation>
+      <translation>Can't write to file</translation>
     </message>
     <message>
       <location filename="PlotAux.py" line="150"/>
       <source>Data saved</source>
-      <translation>Данные сохранены</translation>
+      <translation>Data saved</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="139"/>
@@ -423,7 +423,7 @@
     <message>
       <location filename="TaskPanel.py" line="76"/>
       <source>Done</source>
-      <translation>Готово</translation>
+      <translation>Done</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="137"/>
@@ -443,7 +443,7 @@
     <message>
       <location filename="TaskPanel.py" line="177"/>
       <source>Can't find OpenCL devices</source>
-      <translation>Не удалось найти устройства OpenCL</translation>
+      <translation>Can't find OpenCL devices</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="206"/>
@@ -536,12 +536,12 @@
     <message>
       <location filename="TaskPanel.py" line="184"/>
       <source>Create a new ship</source>
-      <translation>Создать новый корабль</translation>
+      <translation>Create a new ship</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="186"/>
       <source>Length</source>
-      <translation>Длина</translation>
+      <translation>Comprimento</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="188"/>
@@ -564,7 +564,7 @@
     <message>
       <location filename="TaskPanel.py" line="227"/>
       <source>Trim</source>
-      <translation>Обрезка</translation>
+      <translation>Aparar</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="229"/>
@@ -579,7 +579,7 @@
     <message>
       <location filename="TaskPanel.py" line="233"/>
       <source>Number of points</source>
-      <translation>Количество точек</translation>
+      <translation>Pontos</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="252"/>
@@ -625,12 +625,12 @@
     <message>
       <location filename="TaskPanel.py" line="158"/>
       <source>Auto create</source>
-      <translation>Создать автоматически</translation>
+      <translation>Auto create</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="160"/>
       <source>Scale</source>
-      <translation>Масштаб</translation>
+      <translation>Escala</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="162"/>
@@ -655,7 +655,7 @@
     <message>
       <location filename="TaskPanel.py" line="174"/>
       <source>Water lines</source>
-      <translation>Ватерлиния</translation>
+      <translation>Water lines</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="345"/>
@@ -670,7 +670,7 @@
     <message>
       <location filename="TaskPanel.py" line="351"/>
       <source>Water lines position [m]</source>
-      <translation>Положение ватерлинии (м)</translation>
+      <translation>Water lines position [m]</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="362"/>
@@ -683,7 +683,7 @@
     <message>
       <location filename="TaskPanel.py" line="119"/>
       <source>Create a new ship simulation</source>
-      <translation>Создать новую симуляцию корабля</translation>
+      <translation>Create a new ship simulation</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="121"/>
@@ -693,7 +693,7 @@
     <message>
       <location filename="TaskPanel.py" line="123"/>
       <source>Length</source>
-      <translation>Длина</translation>
+      <translation>Comprimento</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="125"/>
@@ -703,27 +703,27 @@
     <message>
       <location filename="TaskPanel.py" line="127"/>
       <source>Number of points</source>
-      <translation>Количество точек</translation>
+      <translation>Pontos</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="129"/>
       <source>Waves</source>
-      <translation>Волны</translation>
+      <translation>Waves</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="132"/>
       <source>Amplitude</source>
-      <translation>Амплитуда</translation>
+      <translation>Amplitude</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="134"/>
       <source>Period</source>
-      <translation>Период</translation>
+      <translation>Period</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="136"/>
       <source>Phase</source>
-      <translation>Фаза</translation>
+      <translation>Phase</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="138"/>
@@ -746,12 +746,12 @@
     <message>
       <location filename="TaskPanel.py" line="189"/>
       <source>Output</source>
-      <translation>Вывод</translation>
+      <translation>Saída</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="191"/>
       <source>OpenCL device</source>
-      <translation>Устройство OpenCL</translation>
+      <translation>OpenCL device</translation>
     </message>
   </context>
   <context>
@@ -810,27 +810,27 @@
     <message>
       <location filename="TaskPanel.py" line="228"/>
       <source>Trim</source>
-      <translation>Обрезка</translation>
+      <translation>Aparar</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="230"/>
       <source>Start</source>
-      <translation>Начало</translation>
+      <translation>Start</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="232"/>
       <source>End</source>
-      <translation>Конец</translation>
+      <translation>End</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="234"/>
       <source>Number of points</source>
-      <translation>Количество точек</translation>
+      <translation>Pontos</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="257"/>
       <source>Displacement</source>
-      <translation>Смещение</translation>
+      <translation>Displacement</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="240"/>
@@ -853,12 +853,12 @@
     <message>
       <location filename="TaskPanel.py" line="194"/>
       <source>Name</source>
-      <translation>Название</translation>
+      <translation>Nome</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="196"/>
       <source>Mass</source>
-      <translation>Масса</translation>
+      <translation>Mass</translation>
     </message>
   </context>
 </TS>
