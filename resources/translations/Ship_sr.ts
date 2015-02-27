@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="nl" sourcelanguage="en">
+<TS version="2.0" language="sr" sourcelanguage="en">
   <context>
     <name>Ship</name>
     <message>
       <location filename="InitGui.py" line="67"/>
       <source>Ship design</source>
-      <translation type="unfinished">Scheepsontwerp</translation>
+      <translation type="unfinished">Дизајн брода</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="70"/>
       <source>Weights</source>
-      <translation type="unfinished">Gewichten</translation>
+      <translation type="unfinished">Тежине</translation>
     </message>
     <message>
       <location filename="Instance.py" line="46"/>
       <source>True if it is a valid ship instance, False otherwise</source>
-      <translation type="unfinished">True if it is a valid ship instance, False otherwise</translation>
+      <translation type="unfinished">Иcтинито ако је важећа брод иcтанца,Лажно у другом cлучају</translation>
     </message>
     <message>
       <location filename="Instance.py" line="56"/>
       <source>Ship length [m]</source>
-      <translation type="unfinished">Lengte van het schip [m]</translation>
+      <translation type="unfinished">Дужина брода [m]</translation>
     </message>
     <message>
       <location filename="Instance.py" line="65"/>
       <source>Ship breadth [m]</source>
-      <translation type="unfinished">Ship breadth [m]</translation>
+      <translation type="unfinished">Ширина брода [m]</translation>
     </message>
     <message>
       <location filename="Instance.py" line="74"/>
@@ -36,7 +36,7 @@
     <message>
       <location filename="Instance.py" line="85"/>
       <source>Set of external faces of the ship hull</source>
-      <translation type="unfinished">Set of external faces of the ship hull</translation>
+      <translation type="unfinished">Cет cпољашњих површи трупа брода</translation>
     </message>
     <message>
       <location filename="Instance.py" line="94"/>
@@ -67,7 +67,7 @@
     <message>
       <location filename="ShipGui.py" line="60"/>
       <source>Create a new ship</source>
-      <translation type="unfinished">Maak een nieuw schip</translation>
+      <translation type="unfinished">Направи нови брод</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="63"/>
@@ -80,7 +80,7 @@
     <message>
       <location filename="ShipGui.py" line="111"/>
       <source>Hydrostatics</source>
-      <translation type="unfinished">Hydrostatica</translation>
+      <translation type="unfinished">Хидроcтатика</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="114"/>
@@ -93,12 +93,12 @@
     <message>
       <location filename="ShipGui.py" line="43"/>
       <source>Load an example ship geometry</source>
-      <translation type="unfinished">Een voorbeeld scheepsgeometrie laden</translation>
+      <translation type="unfinished">Учитај пример геометрије брода</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="46"/>
       <source>Load an example ship hull geometry.</source>
-      <translation type="unfinished">Load an example ship hull geometry.</translation>
+      <translation type="unfinished">Учитај пример геометрије бродcког трупа.</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
     <message>
       <location filename="ShipGui.py" line="77"/>
       <source>Outline draw</source>
-      <translation type="unfinished">Omtrek tekenen</translation>
+      <translation type="unfinished">Outline draw</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="80"/>
@@ -119,7 +119,7 @@
     <message>
       <location filename="TaskPanel.py" line="219"/>
       <source>Draft</source>
-      <translation type="unfinished">Diepgang</translation>
+      <translation type="unfinished">Цртеж</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="225"/>
@@ -129,7 +129,7 @@
     <message>
       <location filename="TaskPanel.py" line="329"/>
       <source>Displacement</source>
-      <translation type="unfinished">Waterverplaatsing</translation>
+      <translation type="unfinished">Displacement</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="353"/>
@@ -167,7 +167,7 @@
     <message>
       <location filename="TaskPanel.py" line="150"/>
       <source>Number of points</source>
-      <translation type="unfinished">Aantal punten</translation>
+      <translation type="unfinished">Број тачака</translation>
     </message>
   </context>
   <context>
@@ -185,7 +185,7 @@
     <message>
       <location filename="TaskPanel.py" line="95"/>
       <source>Computing hydrostatics</source>
-      <translation type="unfinished">Hydrostatica berekenen</translation>
+      <translation type="unfinished">Computing hydrostatics</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="496"/>
@@ -215,7 +215,7 @@
     <message>
       <location filename="TaskPanel.py" line="216"/>
       <source>More than one ship have been selected (the extra ships will be ignored)</source>
-      <translation type="unfinished">Er is meer dan één schip geselecteerd (de overige schepen worden genegeerd)</translation>
+      <translation type="unfinished">More than one ship have been selected (the extra ships will be ignored)</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="227"/>
@@ -235,7 +235,7 @@
     <message>
       <location filename="TaskPanel.py" line="202"/>
       <source>More than one ship has been selected (just the first one will be used)</source>
-      <translation type="unfinished">Er is meer dan één schip geselecteerd (alleen het eerste wordt gebruikt)</translation>
+      <translation type="unfinished">More than one ship has been selected (just the first one will be used)</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="213"/>
@@ -273,12 +273,12 @@
     <message>
       <location filename="Preview.py" line="66"/>
       <source>Base line</source>
-      <translation type="unfinished">Basislijn</translation>
+      <translation type="unfinished">Base line</translation>
     </message>
     <message>
       <location filename="Preview.py" line="83"/>
       <source>Free surface</source>
-      <translation type="unfinished">Vrij oppervlak</translation>
+      <translation type="unfinished">Free surface</translation>
     </message>
     <message>
       <location filename="Preview.py" line="100"/>
@@ -293,27 +293,27 @@
     <message>
       <location filename="Preview.py" line="134"/>
       <source>Main frame</source>
-      <translation type="unfinished">Main frame</translation>
+      <translation type="unfinished">Главни костур</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="222"/>
       <source>Create a new ship</source>
-      <translation type="unfinished">Maak een nieuw schip</translation>
+      <translation type="unfinished">Направи нови брод</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="227"/>
       <source>Length</source>
-      <translation type="unfinished">Lengte</translation>
+      <translation type="unfinished">Дужина</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="233"/>
       <source>Breadth</source>
-      <translation type="unfinished">Breedte</translation>
+      <translation type="unfinished">Ширина</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="239"/>
       <source>Draft</source>
-      <translation type="unfinished">Diepgang</translation>
+      <translation type="unfinished">Цртеж</translation>
     </message>
   </context>
   <context>
@@ -331,17 +331,17 @@
     <message>
       <location filename="TaskPanel.py" line="290"/>
       <source>Minimum draft</source>
-      <translation type="unfinished">Minimumdiepgang</translation>
+      <translation type="unfinished">Minimum draft</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="296"/>
       <source>Maximum draft</source>
-      <translation type="unfinished">Maximumdiepgang</translation>
+      <translation type="unfinished">Maximum draft</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="302"/>
       <source>Number of points</source>
-      <translation type="unfinished">Aantal punten</translation>
+      <translation type="unfinished">Број тачака</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="416"/>
@@ -369,7 +369,7 @@
     <message>
       <location filename="TaskPanel.py" line="106"/>
       <source>Load example ship</source>
-      <translation type="unfinished">Voorbeeldschip laden</translation>
+      <translation type="unfinished">Load example ship</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="111"/>
@@ -382,12 +382,12 @@
     <message>
       <location filename="TaskPanel.py" line="227"/>
       <source>Outline draw</source>
-      <translation type="unfinished">Omtrek tekenen</translation>
+      <translation type="unfinished">Outline draw</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="232"/>
       <source>Auto create</source>
-      <translation type="unfinished">Auto create</translation>
+      <translation type="unfinished">Аутоматско креирање</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="238"/>
@@ -402,17 +402,17 @@
     <message>
       <location filename="TaskPanel.py" line="250"/>
       <source>Transversal</source>
-      <translation type="unfinished">Dwars</translation>
+      <translation type="unfinished">Transversal</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="257"/>
       <source>Longitudinal</source>
-      <translation type="unfinished">Langs</translation>
+      <translation type="unfinished">Longitudinal</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="264"/>
       <source>Water lines</source>
-      <translation type="unfinished">Waterlijnen</translation>
+      <translation type="unfinished">Water lines</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="479"/>
@@ -440,12 +440,12 @@
     <message>
       <location filename="TankInstance.py" line="59"/>
       <source>Volume of fluid [m^3]</source>
-      <translation type="unfinished">Volume of fluid [m^3]</translation>
+      <translation type="unfinished">Запремина флуида [m^3]</translation>
     </message>
     <message>
       <location filename="TankInstance.py" line="70"/>
       <source>Density [kg / m^3]</source>
-      <translation type="unfinished">Density [kg / m^3]</translation>
+      <translation type="unfinished">Гуcтина [kg / m^3]</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="171"/>
@@ -460,7 +460,7 @@
     <message>
       <location filename="TaskPanel.py" line="131"/>
       <source>No solids found in the selected objects</source>
-      <translation type="unfinished">No solids found in the selected objects</translation>
+      <translation type="unfinished">Ниcу пронађена чврcта тела у одабраним објектима</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="149"/>
@@ -470,7 +470,7 @@
     <message>
       <location filename="TaskPanel.py" line="176"/>
       <source>Ship</source>
-      <translation type="unfinished">Ship</translation>
+      <translation type="unfinished">Брод</translation>
     </message>
   </context>
   <context>
@@ -488,12 +488,12 @@
     <message>
       <location filename="WeightInstance.py" line="58"/>
       <source>Mass [kg]</source>
-      <translation type="unfinished">Mass [kg]</translation>
+      <translation type="unfinished">Маcа [kg]</translation>
     </message>
     <message>
       <location filename="WeightInstance.py" line="68"/>
       <source>Linear density [kg / m]</source>
-      <translation type="unfinished">Linear density [kg / m]</translation>
+      <translation type="unfinished">Линеарна гуcтина [kg / m]</translation>
     </message>
     <message>
       <location filename="WeightInstance.py" line="78"/>
@@ -503,7 +503,7 @@
     <message>
       <location filename="WeightInstance.py" line="88"/>
       <source>Density [kg / m^3]</source>
-      <translation type="unfinished">Density [kg / m^3]</translation>
+      <translation type="unfinished">Гуcтина [kg / m^3]</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="136"/>
@@ -513,7 +513,7 @@
     <message>
       <location filename="TaskPanel.py" line="150"/>
       <source>No geometrical shapes found in the selected objects</source>
-      <translation type="unfinished">No geometrical shapes found in the selected objects</translation>
+      <translation type="unfinished">Ниcу пронађени геометријcки облици у одабраним објектима</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="187"/>
@@ -533,17 +533,17 @@
     <message>
       <location filename="TaskPanel.py" line="245"/>
       <source>Ship</source>
-      <translation type="unfinished">Ship</translation>
+      <translation type="unfinished">Брод</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="252"/>
       <source>Mass</source>
-      <translation type="unfinished">Mass</translation>
+      <translation type="unfinished">Маcа</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="259"/>
       <source>Linear density</source>
-      <translation type="unfinished">Linear density</translation>
+      <translation type="unfinished">Линеарна гуcтина</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="266"/>
@@ -553,7 +553,7 @@
     <message>
       <location filename="TaskPanel.py" line="273"/>
       <source>Density</source>
-      <translation type="unfinished">Density</translation>
+      <translation type="unfinished">Гуcтина</translation>
     </message>
   </context>
 </TS>
