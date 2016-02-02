@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="hr" sourcelanguage="en">
+<TS version="2.0" language="el" sourcelanguage="en">
   <context>
     <name>Ship</name>
     <message>
       <location filename="InitGui.py" line="67"/>
       <source>Ship design</source>
-      <translation>Dizajn broda</translation>
+      <translation>Ναυπηγική</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="70"/>
       <source>Weights</source>
-      <translation>Težine</translation>
+      <translation type="unfinished">Weights</translation>
     </message>
     <message>
       <location filename="Instance.py" line="46"/>
@@ -21,7 +21,7 @@
     <message>
       <location filename="Instance.py" line="56"/>
       <source>Ship length [m]</source>
-      <translation type="unfinished">Ship length [m]</translation>
+      <translation>Μήκος πλοίου [m]</translation>
     </message>
     <message>
       <location filename="Instance.py" line="65"/>
@@ -54,7 +54,7 @@
     <message>
       <location filename="ShipGui.py" line="94"/>
       <source>Areas curve</source>
-      <translation>Područje krivulje</translation>
+      <translation type="unfinished">Areas curve</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="97"/>
@@ -67,7 +67,7 @@
     <message>
       <location filename="ShipGui.py" line="60"/>
       <source>Create a new ship</source>
-      <translation>Izradi novi brod</translation>
+      <translation>Δημιουργήστε ένα νέο πλοίο</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="63"/>
@@ -80,7 +80,7 @@
     <message>
       <location filename="ShipGui.py" line="111"/>
       <source>Hydrostatics</source>
-      <translation>Hidrostatika</translation>
+      <translation type="unfinished">Hydrostatics</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="114"/>
@@ -106,7 +106,7 @@
     <message>
       <location filename="ShipGui.py" line="77"/>
       <source>Outline draw</source>
-      <translation type="unfinished">Outline draw</translation>
+      <translation>Σχεδίαση περιγράμματος</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="80"/>
@@ -119,17 +119,17 @@
     <message>
       <location filename="TaskPanel.py" line="221"/>
       <source>Draft</source>
-      <translation>Skica</translation>
+      <translation type="unfinished">Draft</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="227"/>
       <source>Trim</source>
-      <translation>Skrati</translation>
+      <translation>Περικοπή</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="335"/>
       <source>Displacement</source>
-      <translation>Premještanje</translation>
+      <translation>Μετατόπιση</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="361"/>
@@ -152,7 +152,7 @@
     <message>
       <location filename="ShipGui.py" line="162"/>
       <source>Tank capacity curve</source>
-      <translation type="unfinished">Tank capacity curve</translation>
+      <translation>Καμπύλη χωρητικότητας δεξαμενής</translation>
     </message>
     <message>
       <location filename="ShipGui.py" line="165"/>
@@ -167,7 +167,7 @@
     <message>
       <location filename="TaskPanel.py" line="150"/>
       <source>Number of points</source>
-      <translation>Broj točaka</translation>
+      <translation>Αριθμός σημείων</translation>
     </message>
   </context>
   <context>
@@ -273,12 +273,12 @@
     <message>
       <location filename="Preview.py" line="66"/>
       <source>Base line</source>
-      <translation>Osnovna linija</translation>
+      <translation type="unfinished">Base line</translation>
     </message>
     <message>
       <location filename="Preview.py" line="83"/>
       <source>Free surface</source>
-      <translation>Slobodna površina</translation>
+      <translation type="unfinished">Free surface</translation>
     </message>
     <message>
       <location filename="Preview.py" line="100"/>
@@ -293,27 +293,27 @@
     <message>
       <location filename="Preview.py" line="134"/>
       <source>Main frame</source>
-      <translation>Glavni okvir</translation>
+      <translation>Κύριο πλαίσιο</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="222"/>
       <source>Create a new ship</source>
-      <translation>Izradi novi brod</translation>
+      <translation>Δημιουργήστε ένα νέο πλοίο</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="227"/>
       <source>Length</source>
-      <translation>Dužina</translation>
+      <translation>Μήκος</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="233"/>
       <source>Breadth</source>
-      <translation>Širina</translation>
+      <translation type="unfinished">Breadth</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="239"/>
       <source>Draft</source>
-      <translation>Skica</translation>
+      <translation type="unfinished">Draft</translation>
     </message>
   </context>
   <context>
@@ -321,12 +321,12 @@
     <message>
       <location filename="TaskPanel.py" line="282"/>
       <source>Plot hydrostatics</source>
-      <translation>Izradi hidrostatiku</translation>
+      <translation type="unfinished">Plot hydrostatics</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="287"/>
       <source>Trim</source>
-      <translation>Skrati</translation>
+      <translation>Περικοπή</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="293"/>
@@ -341,7 +341,7 @@
     <message>
       <location filename="TaskPanel.py" line="305"/>
       <source>Number of points</source>
-      <translation>Broj točaka</translation>
+      <translation>Αριθμός σημείων</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="423"/>
@@ -382,37 +382,37 @@
     <message>
       <location filename="TaskPanel.py" line="227"/>
       <source>Outline draw</source>
-      <translation type="unfinished">Outline draw</translation>
+      <translation>Σχεδίαση περιγράμματος</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="232"/>
       <source>Auto create</source>
-      <translation>Automatski stvoriti</translation>
+      <translation>Αυτόματη δημιουργία</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="238"/>
       <source>Delete all sections</source>
-      <translation>Izbriši sve dijelove</translation>
+      <translation type="unfinished">Delete all sections</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="244"/>
       <source>Create sections</source>
-      <translation>Kreiraj dijelove</translation>
+      <translation type="unfinished">Create sections</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="250"/>
       <source>Transversal</source>
-      <translation>Poprečno</translation>
+      <translation type="unfinished">Transversal</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="257"/>
       <source>Longitudinal</source>
-      <translation>Uzdužno</translation>
+      <translation type="unfinished">Longitudinal</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="264"/>
       <source>Water lines</source>
-      <translation>Vodena linija</translation>
+      <translation type="unfinished">Water lines</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="479"/>
@@ -440,17 +440,17 @@
     <message>
       <location filename="TankInstance.py" line="59"/>
       <source>Volume of fluid [m^3]</source>
-      <translation type="unfinished">Volume of fluid [m^3]</translation>
+      <translation>Όγκος του υγρού [m ^ 3]</translation>
     </message>
     <message>
       <location filename="TankInstance.py" line="70"/>
       <source>Density [kg / m^3]</source>
-      <translation type="unfinished">Density [kg / m^3]</translation>
+      <translation>Πυκνότητα [kg / m ^ 3]</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="171"/>
       <source>Create a new tank</source>
-      <translation type="unfinished">Create a new tank</translation>
+      <translation>Δημιουργία μιας νέας δεξαμενής</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="117"/>
@@ -470,7 +470,7 @@
     <message>
       <location filename="TaskPanel.py" line="176"/>
       <source>Ship</source>
-      <translation type="unfinished">Ship</translation>
+      <translation>Πλοίο</translation>
     </message>
   </context>
   <context>
@@ -488,12 +488,12 @@
     <message>
       <location filename="WeightInstance.py" line="58"/>
       <source>Mass [kg]</source>
-      <translation type="unfinished">Mass [kg]</translation>
+      <translation>Μάζα [kg]</translation>
     </message>
     <message>
       <location filename="WeightInstance.py" line="68"/>
       <source>Linear density [kg / m]</source>
-      <translation type="unfinished">Linear density [kg / m]</translation>
+      <translation>Γραμμική πυκνότητα [kg / m]</translation>
     </message>
     <message>
       <location filename="WeightInstance.py" line="78"/>
@@ -503,7 +503,7 @@
     <message>
       <location filename="WeightInstance.py" line="88"/>
       <source>Density [kg / m^3]</source>
-      <translation type="unfinished">Density [kg / m^3]</translation>
+      <translation>Πυκνότητα [kg / m ^ 3]</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="137"/>
@@ -533,12 +533,12 @@
     <message>
       <location filename="TaskPanel.py" line="246"/>
       <source>Ship</source>
-      <translation type="unfinished">Ship</translation>
+      <translation>Πλοίο</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="253"/>
       <source>Mass</source>
-      <translation type="unfinished">Mass</translation>
+      <translation>Μάζα</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="260"/>
@@ -553,7 +553,7 @@
     <message>
       <location filename="TaskPanel.py" line="274"/>
       <source>Density</source>
-      <translation type="unfinished">Density</translation>
+      <translation>Πυκνότητα</translation>
     </message>
   </context>
 </TS>
