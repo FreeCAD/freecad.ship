@@ -1,9 +1,9 @@
-* Authors
+Authors
 ---------
 
 Jose Luis Cercós Pita <jlcercos@gmail.com>
 
-* Introduction
+Introduction
 --------------
 
 FreeCAD-Ship is a free module for FreeCAD oriented to aid ship design providing most common tools (Outline drawing, hydrostatics, ...).
