@@ -1,0 +1,2 @@
+recursive-include freecad/ship *.ui
+recursive-include freecad/ship/resources/examples *

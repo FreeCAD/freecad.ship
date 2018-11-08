@@ -11,7 +11,7 @@ with open(version_path) as fp:
 # assume either pyside2-rcc or pyside-rcc are available.
 # if both are available pyside2-rcc is used.
 rc_input = os.path.abspath(os.path.join("freecad", "ship", "resources", "Ship.qrc"))
-rc_output = os.path.join("freecad", "plot", "Ship_rc.py")
+rc_output = os.path.join("freecad", "ship", "Ship_rc.py")
 try:
     proc = sub.Popen(["pyside2-rcc", "-o", rc_output, rc_input], stdout=sub.PIPE, stderr=sub.PIPE)
     out, err = proc.communicate()

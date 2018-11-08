@@ -26,17 +26,12 @@ import FreeCAD, FreeCADGui, os
 def modulePath():
     """returns the current Ship design module path
     @return Module path"""
-    path1 = FreeCAD.ConfigGet("AppHomePath") + "Mod/Ship"
-    path2 = FreeCAD.ConfigGet("UserAppData") + "Mod/Ship"
-    if os.path.exists(path2):
-        return path2
-    else:
-        return path1
+    return os.path.join(os.path.dirname(__file__), "..")
 
 def iconsPath():
     """returns the current Ship design module icons path
     @return Icons path"""
-    path = modulePath() + "/Resources/icons"
+    path = modulePath() + "/resources/icons"
     return path
 
 def getPathFromFile(fileName):
@@ -44,12 +39,13 @@ def getPathFromFile(fileName):
     @param fileName Name of the file
     @return Directory path.
     """
-    if not fileName:
-        return ''
-    i = 1
-    try:
-        while 1:
-            i = fileName.index("/", i+1)
-    except ValueError:
-        pass
-    return fileName[0:i+1]
+    # if not fileName:
+    #     return ''
+    # i = 1
+    # try:
+    #     while 1:
+    #         i = fileName.index("/", i+1)
+    # except ValueError:
+    #     pass
+    # return fileName[0:i+1]
+    return os.path.dirname(fileName)

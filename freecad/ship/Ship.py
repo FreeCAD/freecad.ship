@@ -29,11 +29,11 @@ __url__ = "http://www.freecadweb.org"
 __doc__="The Ships module provide a set of tools to make some specific Naval" \
         " Architecture computations"
 
-from shipCreateShip.Tools import createShip
-from shipHydrostatics.Tools import areas, displacement, wettedArea, moment
-from shipHydrostatics.Tools import floatingArea, BMT, mainFrameCoeff
-from shipCreateWeight.Tools import createWeight
-from shipCreateTank.Tools import createTank
-from shipCapacityCurve.Tools import tankCapacityCurve
-from shipCreateLoadCondition.Tools import createLoadCondition
-from shipGZ.Tools import gz
+from .shipCreateShip.Tools import createShip
+from .shipHydrostatics.Tools import areas, displacement, wettedArea, moment
+from .shipHydrostatics.Tools import floatingArea, BMT, mainFrameCoeff
+from .shipCreateWeight.Tools import createWeight
+from .shipCreateTank.Tools import createTank
+from .shipCapacityCurve.Tools import tankCapacityCurve
+from .shipCreateLoadCondition.Tools import createLoadCondition
+from .shipGZ.Tools import gz

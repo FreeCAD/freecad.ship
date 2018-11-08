@@ -21,28 +21,30 @@
 #*                                                                         *
 #***************************************************************************
 
+import FreeCADGui as Gui
+import FreeCAD as App
 
-class ShipWorkbench(Workbench):
+class ShipWorkbench(Gui.Workbench):
     """Ships design workbench."""
     def __init__(self):
-        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Ship/resources/icons/ShipWorkbench.svg"
+        self.__class__.Icon = "ShipWorkbench.svg"
         self.__class__.MenuText = "Ship"
         self.__class__.ToolTip = "Ship module provides some of the commonly used tool to design ship forms"
 
-    from shipUtils import Paths
-    import ShipGui
+    from .shipUtils import Paths
+    from . import ShipGui
 
     def Initialize(self):
         from PySide import QtCore, QtGui
 
         try:
-            import Plot
+            import freecad.plot
         except ImportError:
             msg = QtGui.QApplication.translate(
                 "ship_console",
-                "Plot module is disabled, tools cannot graph output curves",
+                "freecad.plot is disabled, tools cannot graph output curves",
                 None)
-            FreeCAD.Console.PrintMessage(msg + '\n')
+            App.Console.PrintMessage(msg + '\n')
         # ToolBar
         shiplist = ["Ship_LoadExample",
                     "Ship_CreateShip",

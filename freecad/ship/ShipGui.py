@@ -27,7 +27,7 @@ import FreeCAD
 import FreeCADGui
 import os
 
-import Ship_rc
+from . import Ship_rc
 
 
 FreeCADGui.addLanguagePath(":/Ship/translations")
@@ -36,7 +36,7 @@ FreeCADGui.addIconPath(":/Ship/icons")
 
 class LoadExample:
     def Activated(self):
-        import shipLoadExample
+        from . import shipLoadExample
         shipLoadExample.load()
 
     def GetResources(self):
@@ -53,7 +53,7 @@ class LoadExample:
 
 class CreateShip:
     def Activated(self):
-        import shipCreateShip
+        from . import shipCreateShip
         shipCreateShip.load()
 
     def GetResources(self):
@@ -70,7 +70,7 @@ class CreateShip:
 
 class OutlineDraw:
     def Activated(self):
-        import shipOutlineDraw
+        from . import shipOutlineDraw
         shipOutlineDraw.load()
 
     def GetResources(self):
@@ -87,7 +87,7 @@ class OutlineDraw:
 
 class AreasCurve:
     def Activated(self):
-        import shipAreasCurve
+        from . import shipAreasCurve
         shipAreasCurve.load()
 
     def GetResources(self):
@@ -104,7 +104,7 @@ class AreasCurve:
 
 class Hydrostatics:
     def Activated(self):
-        import shipHydrostatics
+        from . import shipHydrostatics
         shipHydrostatics.load()
 
     def GetResources(self):
@@ -121,7 +121,7 @@ class Hydrostatics:
 
 class CreateWeight:
     def Activated(self):
-        import shipCreateWeight
+        from . import shipCreateWeight
         shipCreateWeight.load()
 
     def GetResources(self):
@@ -138,7 +138,7 @@ class CreateWeight:
 
 class CreateTank:
     def Activated(self):
-        import shipCreateTank
+        from . import shipCreateTank
         shipCreateTank.load()
 
     def GetResources(self):
@@ -155,7 +155,7 @@ class CreateTank:
 
 class TankCapacity:
     def Activated(self):
-        import shipCapacityCurve
+        from . import shipCapacityCurve
         shipCapacityCurve.load()
 
     def GetResources(self):
@@ -172,7 +172,7 @@ class TankCapacity:
 
 class LoadCondition:
     def Activated(self):
-        import shipCreateLoadCondition
+        from . import shipCreateLoadCondition
         shipCreateLoadCondition.load()
 
     def GetResources(self):
@@ -189,7 +189,7 @@ class LoadCondition:
 
 class GZ:
     def Activated(self):
-        import shipGZ
+        from . import shipGZ
         shipGZ.load()
 
     def GetResources(self):

@@ -24,7 +24,7 @@
 import FreeCAD as App
 import FreeCADGui as Gui
 from PySide import QtGui, QtCore
-from shipUtils import Paths
+from ..shipUtils import Paths
 
 
 class TaskPanel:
