@@ -31,8 +31,7 @@ def modulePath():
 def iconsPath():
     """returns the current Ship design module icons path
     @return Icons path"""
-    path = modulePath() + "/resources/icons"
-    return path
+    return os.path.join(modulePath(), "resources", "icons")
 
 def getPathFromFile(fileName):
     """ Gets the directory path from a file name
