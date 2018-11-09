@@ -21,6 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
+import os
 import FreeCAD as App
 import FreeCADGui as Gui
 from FreeCAD import Units
@@ -33,7 +34,7 @@ import shipUtils.Units as USys
 class TaskPanel:
     def __init__(self):
         """Constructor"""
-        self.ui = Paths.modulePath() + "/shipCreateTank/TaskPanel.ui"
+        self.ui = os.path.join(Paths.modulePath(), "shipCreateTank", "TaskPanel.ui")
 
     def accept(self):
         """Create the ship instance"""

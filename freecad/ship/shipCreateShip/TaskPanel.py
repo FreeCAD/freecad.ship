@@ -21,6 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
+import os
 import FreeCAD as App
 import FreeCADGui as Gui
 from FreeCAD import Units
@@ -35,7 +36,7 @@ import shipUtils.Locale as Locale
 class TaskPanel:
     def __init__(self):
         """Constructor"""
-        self.ui = Paths.modulePath() + "/shipCreateShip/TaskPanel.ui"
+        self.ui = os.path.join(Paths.modulePath(), "shipCreateShip", "TaskPanel.ui")
         self.preview = Preview.Preview()
 
     def accept(self):

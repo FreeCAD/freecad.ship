@@ -21,6 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
+import os
 import FreeCAD as App
 import FreeCADGui as Gui
 from PySide import QtGui, QtCore
@@ -30,7 +31,7 @@ from ..shipUtils import Paths
 class TaskPanel:
     def __init__(self):
         """Constructor."""
-        self.ui = Paths.modulePath() + "/shipLoadExample/TaskPanel.ui"
+        self.ui = os.path.join(Paths.modulePath(), "shipLoadExample", "TaskPanel.ui")
 
     def accept(self):
         """Load the selected hull example."""

@@ -21,6 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
+import os
 import math
 import FreeCAD as App
 import FreeCADGui as Gui
@@ -35,7 +36,7 @@ import shipUtils.Units as USys
 
 class TaskPanel:
     def __init__(self):
-        self.ui = Paths.modulePath() + "/shipCapacityCurve/TaskPanel.ui"
+        self.ui = os.path.join(Paths.modulePath(), "shipCapacityCurve", "TaskPanel.ui")
         self.tank = None
 
     def accept(self):

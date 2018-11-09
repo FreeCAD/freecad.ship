@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-
+import os
 import math
 import FreeCAD as App
 import FreeCADGui as Gui
@@ -39,7 +39,7 @@ from . import Tools
 
 class TaskPanel:
     def __init__(self):
-        self.ui = Paths.modulePath() + "/shipHydrostatics/TaskPanel.ui"
+        self.ui = os.path.join(Paths.modulePath(), "shipHydrostatics", "TaskPanel.ui")
         self.ship = None
         self.running = False
 

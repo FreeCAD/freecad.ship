@@ -21,6 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
+import os
 import math
 import FreeCAD as App
 import FreeCADGui as Gui
@@ -37,7 +38,7 @@ from shipHydrostatics import Tools as Hydrostatics
 
 class TaskPanel:
     def __init__(self):
-        self.ui = Paths.modulePath() + "/shipAreasCurve/TaskPanel.ui"
+        self.ui = os.path.join(Paths.modulePath(), "shipAreasCurve", "TaskPanel.ui")
         self.preview = Preview.Preview()
         self.ship = None
 
