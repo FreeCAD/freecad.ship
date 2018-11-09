@@ -31,9 +31,9 @@ from FreeCAD import Units
 from PySide import QtGui, QtCore
 from . import PlotAux
 from . import Instance
-from shipUtils import Paths
-import shipUtils.Units as USys
-import shipUtils.Locale as Locale
+from .shipUtils import Paths
+from . import shipUtils.Units as USys
+from . import shipUtils.Locale as Locale
 from . import Tools
 
 

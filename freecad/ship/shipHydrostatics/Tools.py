@@ -30,8 +30,8 @@ import FreeCAD as App
 import FreeCADGui as Gui
 from PySide import QtGui, QtCore
 import Instance
-from shipUtils import Math
-import shipUtils.Units as USys
+from .shipUtils import Math
+from . import shipUtils.Units as USys
 
 
 DENS = Units.parseQuantity("1025 kg/m^3")  # Salt water

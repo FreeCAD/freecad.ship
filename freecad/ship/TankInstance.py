@@ -29,11 +29,19 @@ import FreeCADGui as Gui
 from FreeCAD import Base, Vector, Matrix, Placement, Rotation
 import Part
 import Units
-from shipUtils import Paths, Math
-import shipUtils.Units as USys
+from .shipUtils import Paths, Math
+from . import shipUtils.Units as USys
 
 
 COMMON_BOOLEAN_ITERATIONS = 10
+
+### this function should be removed once py2 is not supported anymore
+def _unicode(text):
+    import sys
+    if sys.version_info.major < 3:
+        return unicode(text)
+    else:
+        return text
 
 
 class Tank:
@@ -47,7 +55,7 @@ class Tank:
         ship -- Ship where the tank is allocated.
         """
         # Add an unique property to identify the Weight instances
-        tooltip = unicode(QtGui.QApplication.translate(
+        tooltip = _unicode(QtGui.QApplication.translate(
             "ship_tank",
             "True if it is a valid tank instance, False otherwise",
             None))

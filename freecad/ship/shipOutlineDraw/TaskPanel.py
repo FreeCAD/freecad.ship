@@ -29,9 +29,9 @@ from FreeCAD import Units
 import Part
 from PySide import QtGui, QtCore
 from . import Preview
-import Instance
-from shipUtils import Paths
-import shipUtils.Locale as Locale
+from .. import Instance
+from ..shipUtils import Paths
+from ..shipUtils import Locale as Locale
 
 
 class TaskPanel:

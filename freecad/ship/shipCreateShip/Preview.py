@@ -27,7 +27,7 @@ from FreeCAD import Base
 import Part
 from FreeCAD import Units
 from PySide import QtGui, QtCore
-from shipUtils import Paths
+from ..shipUtils import Paths
 
 
 class Preview(object):

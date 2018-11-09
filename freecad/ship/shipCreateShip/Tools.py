@@ -23,7 +23,7 @@
 
 
 import FreeCAD as App
-import Instance
+from .. import Instance
 
 
 def createShip(solids, L, B, T):

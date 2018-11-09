@@ -28,10 +28,10 @@ from FreeCAD import Units
 from PySide import QtGui, QtCore
 from . import Preview
 from . import Tools
-import Instance  # from ship
-from shipUtils import Paths
-import shipUtils.Units as USys
-import shipUtils.Locale as Locale
+from .. import Instance  # from .ship
+from ..shipUtils import Paths
+from ..shipUtils import Units as USys
+from ..shipUtils import Locale as Locale
 
 class TaskPanel:
     def __init__(self):

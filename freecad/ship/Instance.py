@@ -28,8 +28,15 @@ import FreeCAD
 import FreeCADGui
 from FreeCAD import Base, Vector
 import Part
-from shipUtils import Paths, Math
+from .shipUtils import Paths, Math
 
+### this function should be removed once py2 is not supported anymore
+def _unicode(text):
+    import sys
+    if sys.version_info.major < 3:
+        return unicode(text)
+    else:
+        return text
 
 class Ship:
     def __init__(self, obj, solids):
@@ -41,16 +48,17 @@ class Ship:
         solids -- Set of solids which will compound the ship hull.
         """
         # Add an unique property to identify the Ship instances
-        tooltip = unicode(QtGui.QApplication.translate(
+        tooltip = _unicode(QtGui.QApplication.translate(
             "Ship",
             "True if it is a valid ship instance, False otherwise",
             None))
+
         obj.addProperty("App::PropertyBool",
                         "IsShip",
                         "Ship",
                         tooltip).IsShip = True
         # Add the main dimensions
-        tooltip = unicode(QtGui.QApplication.translate(
+        tooltip = _unicode(QtGui.QApplication.translate(
             "Ship",
             "Ship length [m]",
             None))
@@ -58,7 +66,7 @@ class Ship:
                         "Length",
                         "Ship",
                         tooltip).Length = 0.0
-        tooltip = unicode(QtGui.QApplication.translate(
+        tooltip = _unicode(QtGui.QApplication.translate(
             "Ship",
             "Ship breadth [m]",
             None))
@@ -66,7 +74,7 @@ class Ship:
                         "Breadth",
                         "Ship",
                         tooltip).Breadth = 0.0
-        tooltip = unicode(QtGui.QApplication.translate(
+        tooltip = _unicode(QtGui.QApplication.translate(
             "Ship",
             "Ship draft [m]",
             None))
@@ -76,7 +84,7 @@ class Ship:
                         tooltip).Draft = 0.0
         # Add the subshapes
         obj.Shape = Part.makeCompound(solids)
-        tooltip = unicode(QtGui.QApplication.translate(
+        tooltip = _unicode(QtGui.QApplication.translate(
             "Ship",
             "Set of external faces of the ship hull",
             None))
@@ -84,7 +92,7 @@ class Ship:
                         "ExternalFaces",
                         "Ship",
                         tooltip)
-        tooltip = unicode(QtGui.QApplication.translate(
+        tooltip = _unicode(QtGui.QApplication.translate(
             "Ship",
             "Set of weight instances",
             None))
@@ -92,7 +100,7 @@ class Ship:
                         "Weights",
                         "Ship",
                         tooltip).Weights = []
-        tooltip = unicode(QtGui.QApplication.translate(
+        tooltip = _unicode(QtGui.QApplication.translate(
             "Ship",
             "Set of tank instances",
             None))
@@ -100,7 +108,7 @@ class Ship:
                         "Tanks",
                         "Ship",
                         tooltip).Tanks = []
-        tooltip = unicode(QtGui.QApplication.translate(
+        tooltip = _unicode(QtGui.QApplication.translate(
             "Ship",
             "Set of load conditions",
             None))
