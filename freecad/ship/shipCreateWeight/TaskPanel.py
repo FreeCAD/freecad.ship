@@ -27,10 +27,10 @@ import FreeCADGui as Gui
 from FreeCAD import Units
 from PySide import QtGui, QtCore
 from . import Tools
-import WeightInstance as Instance
+from .. import WeightInstance as Instance
 from .shipUtils import Paths
-from . import shipUtils.Units as USys
-from . import shipUtils.Locale as Locale
+from ..shipUtils import Units as USys
+from ..shipUtils import Locale
 
 class TaskPanel:
     def __init__(self):

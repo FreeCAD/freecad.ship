@@ -28,8 +28,8 @@ from FreeCAD import Units
 from PySide import QtGui, QtCore
 from . import Tools
 import TankInstance as Instance
-from .shipUtils import Paths
-from . import shipUtils.Units as USys
+from ..shipUtils import Paths
+from ..shipUtils import Units as USys
 
 class TaskPanel:
     def __init__(self):

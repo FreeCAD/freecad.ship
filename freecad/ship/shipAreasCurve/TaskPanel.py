@@ -25,15 +25,15 @@ import os
 import math
 import FreeCAD as App
 import FreeCADGui as Gui
-import Units
+from FreeCAD import Units
 from PySide import QtGui, QtCore
 from . import Preview
 from . import PlotAux
-import Instance
-from .shipUtils import Paths
-from . import shipUtils.Units as USys
-from . import shipUtils.Locale as Locale
-from .shipHydrostatics import Tools as Hydrostatics
+from ..import Instance
+from ..shipUtils import Paths
+from ..shipUtils import Units as USys
+from ..shipUtils import Locale
+from ..shipHydrostatics import Tools as Hydrostatics
 
 
 class TaskPanel:

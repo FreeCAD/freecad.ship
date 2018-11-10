@@ -29,9 +29,9 @@ from FreeCAD import Units
 import FreeCAD as App
 import FreeCADGui as Gui
 from PySide import QtGui, QtCore
-import Instance
-from .shipUtils import Math
-from . import shipUtils.Units as USys
+from .. import Instance
+from ..shipUtils import Math
+from ..shipUtils import Units as USys
 
 
 DENS = Units.parseQuantity("1025 kg/m^3")  # Salt water
@@ -87,8 +87,10 @@ def getUnderwaterSide(shape, force=True):
     Cropped shape. It is not modifying the input shape
     """
     # Convert the shape into an active object
+    print(1)
     Part.show(shape)
     orig = App.ActiveDocument.Objects[-1]
+    print(2)
 
     bbox = shape.BoundBox
     xmin = bbox.XMin
@@ -102,6 +104,7 @@ def getUnderwaterSide(shape, force=True):
     L = xmax - xmin
     B = ymax - ymin
     H = zmax - zmin
+    print(L, B, H)
 
     box = App.ActiveDocument.addObject("Part::Box","Box")
     length_format = USys.getLengthFormat()
@@ -110,13 +113,17 @@ def getUnderwaterSide(shape, force=True):
     box.Length = length_format.format(3.0 * L)
     box.Width = length_format.format(3.0 * B)
     box.Height = length_format.format(- zmin + H)
-
+    Part.show(box.Shape)
+    print(3)
     App.ActiveDocument.recompute()
     common = App.activeDocument().addObject("Part::MultiCommon",
                                             "UnderwaterSideHelper")
-    common.Shapes = [orig, box]
+    common.Shapes = [orig, orig]
+    print(4)
     App.ActiveDocument.recompute()
+    print(5)
     if force and len(common.Shape.Solids) == 0:
+        print(6)
         # The common operation is failing, let's try moving a bit the free
         # surface
         msg = QtGui.QApplication.translate(
@@ -133,7 +140,7 @@ def getUnderwaterSide(shape, force=True):
             box.Height = length_format.format(
                 - zmin + H + random.uniform(-random_bounds, random_bounds))
             App.ActiveDocument.recompute()
-
+    print(10)
     out = common.Shape
     App.ActiveDocument.removeObject(common.Name)
     App.ActiveDocument.removeObject(orig.Name)

@@ -51,10 +51,10 @@ class TaskPanel:
         edges = self.getEdges([self.ship.Shape])
         border = edges[0]
         for i in range(len(edges)):
-            border = border.oldFuse(edges[i])
-            border = border.oldFuse(edges[i].mirror(Vector(0.0, 0.0, 0.0),
+            border = border.fuse(edges[i])
+            border = border.fuse(edges[i].mirror(Vector(0.0, 0.0, 0.0),
                                                     Vector(0.0, 1.0, 0.0)))
-        obj = border.oldFuse(self.obj.Shape)
+        obj = border.fuse(self.obj.Shape)
 
         # Send the generated object to the scene
         Part.show(obj)

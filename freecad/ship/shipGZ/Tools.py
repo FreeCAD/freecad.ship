@@ -27,10 +27,10 @@ import FreeCADGui as Gui
 from FreeCAD import Vector, Matrix, Placement
 import Part
 from FreeCAD import Units
-import Instance as ShipInstance
-import WeightInstance
-import TankInstance
-from .shipHydrostatics import Tools as Hydrostatics
+from .. import Instance as ShipInstance
+from .. import WeightInstance
+from .. import TankInstance
+from ..shipHydrostatics import Tools as Hydrostatics
 
 
 G = Units.parseQuantity("9.81 m/s^2")
