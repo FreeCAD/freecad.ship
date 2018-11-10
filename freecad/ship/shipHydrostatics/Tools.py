@@ -87,10 +87,8 @@ def getUnderwaterSide(shape, force=True):
     Cropped shape. It is not modifying the input shape
     """
     # Convert the shape into an active object
-    print(1)
     Part.show(shape)
     orig = App.ActiveDocument.Objects[-1]
-    print(2)
 
     bbox = shape.BoundBox
     xmin = bbox.XMin
@@ -104,26 +102,20 @@ def getUnderwaterSide(shape, force=True):
     L = xmax - xmin
     B = ymax - ymin
     H = zmax - zmin
-    print(L, B, H)
 
     box = App.ActiveDocument.addObject("Part::Box","Box")
     length_format = USys.getLengthFormat()
     box.Placement = Placement(Vector(xmin - L, ymin - B, zmin - H),
                               Rotation(App.Vector(0,0,1),0))
-    box.Length = length_format.format(3.0 * L)
-    box.Width = length_format.format(3.0 * B)
-    box.Height = length_format.format(- zmin + H)
-    Part.show(box.Shape)
-    print(3)
+    box.Length = 3.0 * L
+    box.Width = 3.0 * B
+    box.Height = - zmin + H
     App.ActiveDocument.recompute()
     common = App.activeDocument().addObject("Part::MultiCommon",
                                             "UnderwaterSideHelper")
-    common.Shapes = [orig, orig]
-    print(4)
+    common.Shapes = [box, orig]
     App.ActiveDocument.recompute()
-    print(5)
     if force and len(common.Shape.Solids) == 0:
-        print(6)
         # The common operation is failing, let's try moving a bit the free
         # surface
         msg = QtGui.QApplication.translate(
@@ -140,7 +132,6 @@ def getUnderwaterSide(shape, force=True):
             box.Height = length_format.format(
                 - zmin + H + random.uniform(-random_bounds, random_bounds))
             App.ActiveDocument.recompute()
-    print(10)
     out = common.Shape
     App.ActiveDocument.removeObject(common.Name)
     App.ActiveDocument.removeObject(orig.Name)

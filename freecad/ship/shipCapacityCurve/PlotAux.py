@@ -50,7 +50,7 @@ class Plot(object):
         @return True if error happens.
         """
         try:
-            import Plot
+            from freecad.plot import Plot
             plt = Plot.figure('Capacity curve')
         except ImportError:
             msg = QtGui.QApplication.translate(
