@@ -138,7 +138,7 @@ class Plot(object):
         @return True if error happens.
         """
         try:
-            import Plot
+            from freecad.plot import Plot
             plt = Plot.figure('Stability')
         except ImportError:
             return True
@@ -220,7 +220,7 @@ class Plot(object):
         """
         # Create plot
         try:
-            import Plot
+            from freecad.plot import Plot
             plt = Plot.figure('Coefficients')
         except ImportError:
             return True
