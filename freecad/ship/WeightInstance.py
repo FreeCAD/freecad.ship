@@ -26,9 +26,8 @@ from math import *
 from PySide import QtGui, QtCore
 import FreeCAD
 import FreeCADGui
-from FreeCAD import Base, Vector
+from FreeCAD import Base, Vector, Units
 import Part
-import Units
 from .shipUtils import Paths, Math
 
 ### this function should be removed once py2 is not supported anymore

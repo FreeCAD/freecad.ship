@@ -24,7 +24,7 @@
 
 import FreeCAD as App
 from FreeCAD import Units
-import TankInstance as Instance
+from .. import TankInstance as Instance
 
 
 def createTank(solids, ship):

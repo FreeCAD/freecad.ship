@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import time
+import time, sys
 from math import *
 from PySide import QtGui, QtCore
 import FreeCAD
@@ -29,6 +29,11 @@ import FreeCADGui
 from FreeCAD import Base, Vector
 import Part
 from .shipUtils import Paths, Math
+
+### python3 has no cmp, so we have to define this function:
+if sys.version_info.major >= 3:
+    def cmp(a, b):
+        return int((a>b)-(a<b))
 
 ### this function should be removed once py2 is not supported anymore
 def _unicode(text):

@@ -28,9 +28,8 @@ from FreeCAD import Units
 from PySide import QtGui, QtCore
 from . import Tools
 from .. import WeightInstance as Instance
-from .shipUtils import Paths
 from ..shipUtils import Units as USys
-from ..shipUtils import Locale
+from ..shipUtils import Locale, Paths
 
 class TaskPanel:
     def __init__(self):

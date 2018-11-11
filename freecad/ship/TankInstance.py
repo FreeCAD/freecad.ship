@@ -26,11 +26,10 @@ from math import *
 from PySide import QtGui, QtCore
 import FreeCAD as App
 import FreeCADGui as Gui
-from FreeCAD import Base, Vector, Matrix, Placement, Rotation
+from FreeCAD import Base, Vector, Matrix, Placement, Rotation, Units
 import Part
-import Units
 from .shipUtils import Paths, Math
-from . import shipUtils.Units as USys
+from .shipUtils import Units as USys
 
 
 COMMON_BOOLEAN_ITERATIONS = 10
