@@ -107,9 +107,11 @@ def getUnderwaterSide(shape, force=True):
     length_format = USys.getLengthFormat()
     box.Placement = Placement(Vector(xmin - L, ymin - B, zmin - H),
                               Rotation(App.Vector(0,0,1),0))
-    box.Length = 3.0 * L
-    box.Width = 3.0 * B
-    box.Height = - zmin + H
+
+    box.Length = length_format.format(3.0 * L)
+    box.Width = length_format.format(3.0 * B)
+    box.Height = length_format.format(- zmin + H)
+
     App.ActiveDocument.recompute()
     common = App.activeDocument().addObject("Part::MultiCommon",
                                             "UnderwaterSideHelper")
