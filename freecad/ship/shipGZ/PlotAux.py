@@ -51,7 +51,7 @@ class Plot(object):
         gz -- List of GZ values (in meters).
         """
         try:
-            import Plot
+            from freecad.plot import Plot
             plt = Plot.figure('GZ')
         except ImportError:
             msg = QtGui.QApplication.translate(
