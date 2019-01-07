@@ -27,6 +27,7 @@ import FreeCADGui as Gui
 from FreeCAD import Vector, Matrix, Placement
 import Part
 from FreeCAD import Units
+from PySide import QtGui
 from .. import Instance as ShipInstance
 from .. import WeightInstance
 from .. import TankInstance
