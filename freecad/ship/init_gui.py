@@ -23,11 +23,13 @@
 
 import FreeCADGui as Gui
 import FreeCAD as App
+import os
 
 class ShipWorkbench(Gui.Workbench):
     """Ships design workbench."""
     def __init__(self):
-        self.__class__.Icon = "ShipWorkbench.svg"
+        _dir = os.path.dirname(__file__)
+        self.__class__.Icon = os.path.join(_dir, "resources", "icons", "ShipWorkbench.svg")
         self.__class__.MenuText = "Ship"
         self.__class__.ToolTip = "Ship module provides some of the commonly used tool to design ship forms"
 
