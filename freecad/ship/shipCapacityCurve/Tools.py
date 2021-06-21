@@ -23,7 +23,7 @@
 
 
 import FreeCAD as App
-import Units
+from FreeCAD import Units
 import WeightInstance as Instance
 from ..shipUtils import Units as USys
 from PySide import QtGui

@@ -30,13 +30,6 @@ from FreeCAD import Base, Vector, Units
 import Part
 from .shipUtils import Paths, Math
 
-### this function should be removed once py2 is not supported anymore
-def _unicode(text):
-    import sys
-    if sys.version_info.major < 3:
-        return unicode(text)
-    else:
-        return text
 
 class Weight:
     def __init__(self, obj, shapes, ship):
@@ -49,46 +42,46 @@ class Weight:
         ship -- Ship where the weight is allocated.
         """
         # Add an unique property to identify the Weight instances
-        tooltip = _unicode(QtGui.QApplication.translate(
+        tooltip = QtGui.QApplication.translate(
             "ship_weight",
             "True if it is a valid weight instance, False otherwise",
-            None))
+            None)
         obj.addProperty("App::PropertyBool",
                         "IsWeight",
                         "Weight",
                         tooltip).IsWeight = True
         # Add the mass property for puntual weights
-        tooltip = _unicode(QtGui.QApplication.translate(
+        tooltip = QtGui.QApplication.translate(
             "ship_weight",
             "Mass [kg]",
-            None))
+            None)
         obj.addProperty("App::PropertyFloat",
                         "Mass",
                         "Weight",
                         tooltip).Mass = 0.0
         # Add the density property for linear elements
-        tooltip = _unicode(QtGui.QApplication.translate(
+        tooltip = QtGui.QApplication.translate(
             "ship_weight",
             "Linear density [kg / m]",
-            None))
+            None)
         obj.addProperty("App::PropertyFloat",
                         "LineDens",
                         "Weight",
                         tooltip).LineDens = 0.0
         # Add the area density property for surface elements
-        tooltip = _unicode(QtGui.QApplication.translate(
+        tooltip = QtGui.QApplication.translate(
             "ship_weight",
             "Area density [kg / m^2]",
-            None))
+            None)
         obj.addProperty("App::PropertyFloat",
                         "AreaDens",
                         "Weight",
                         tooltip).AreaDens = 0.0
         # Add the density property for volumetric elements
-        tooltip = _unicode(QtGui.QApplication.translate(
+        tooltip = QtGui.QApplication.translate(
             "ship_weight",
             "Density [kg / m^3]",
-            None))
+            None)
         obj.addProperty("App::PropertyFloat",
                         "Dens",
                         "Weight",

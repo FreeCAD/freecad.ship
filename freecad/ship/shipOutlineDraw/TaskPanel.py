@@ -21,7 +21,6 @@
 #*                                                                         *
 #***************************************************************************
 
-import os
 import FreeCAD as App
 from FreeCAD import Base, Vector
 import FreeCADGui as Gui
@@ -30,13 +29,15 @@ import Part
 from PySide import QtGui, QtCore
 from . import Preview
 from .. import Instance
-from ..shipUtils import Paths
-from ..shipUtils import Locale as Locale
+from .. import Ship_rc
+from ..shipUtils import Locale
 
 
 class TaskPanel:
     def __init__(self):
-        self.ui = os.path.join(Paths.modulePath(), "shipOutlineDraw", "TaskPanel.ui")
+        self.name = "ship outlines plotter"
+        self.ui = ":/ui/TaskPanel_shipOutlineDraw.ui"
+        self.form = Gui.PySideUic.loadUi(self.ui)
         self.ship = None
         self.skip = False
         self.LSections = []
@@ -114,20 +115,17 @@ class TaskPanel:
         pass
 
     def setupUi(self):
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.sections = self.widget(QtGui.QTableWidget, "Sections")
+        self.form.sections = self.widget(QtGui.QTableWidget, "Sections")
         try:
-            form.sections.setInputMethodHints(
+            self.form.sections.setInputMethodHints(
                 QtCore.Qt.ImhFormattedNumbersOnly)
             hasImhFormattedNumbersOnly = True
         except:
             hasImhFormattedNumbersOnly = False
-        form.sectionType = self.widget(QtGui.QComboBox, "SectionType")
-        form.deleteButton = self.widget(QtGui.QPushButton, "DeleteButton")
-        form.nSections = self.widget(QtGui.QSpinBox, "NSections")
-        form.createButton = self.widget(QtGui.QPushButton, "CreateButton")
-        self.form = form
+        self.form.sectionType = self.widget(QtGui.QComboBox, "SectionType")
+        self.form.deleteButton = self.widget(QtGui.QPushButton, "DeleteButton")
+        self.form.nSections = self.widget(QtGui.QSpinBox, "NSections")
+        self.form.createButton = self.widget(QtGui.QPushButton, "CreateButton")
         # Initial values
         if self.initValues():
             return True
@@ -142,19 +140,19 @@ class TaskPanel:
         #                               self.ship.Shape)
         # Connect Signals and Slots
         QtCore.QObject.connect(
-            form.sectionType,
+            self.form.sectionType,
             QtCore.SIGNAL("activated(QString)"),
             self.onSectionType)
         QtCore.QObject.connect(
-            form.sections,
+            self.form.sections,
             QtCore.SIGNAL("cellChanged(int,int)"),
             self.onTableItem)
         QtCore.QObject.connect(
-            form.deleteButton,
+            self.form.deleteButton,
             QtCore.SIGNAL("pressed()"),
             self.onDeleteButton)
         QtCore.QObject.connect(
-            form.createButton,
+            self.form.createButton,
             QtCore.SIGNAL("pressed()"),
             self.onCreateButton)
             
@@ -272,11 +270,7 @@ class TaskPanel:
     def onSectionType(self):
         """ Function called when the section type is changed.
         """
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.sectionType = self.widget(QtGui.QComboBox, "SectionType")
-
-        ID = form.sectionType.currentIndex()
+        ID = self.form.sectionType.currentIndex()
         self.setSectionType(ID)
 
     def setSectionType(self, ID):
@@ -295,17 +289,13 @@ class TaskPanel:
             SectionList = self.TSections[:]
         nRow = len(SectionList)
 
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.sections = self.widget(QtGui.QTableWidget, "Sections")
-
-        form.sections.clearContents()
-        form.sections.setRowCount(nRow + 1)
+        self.form.sections.clearContents()
+        self.form.sections.setRowCount(nRow + 1)
         self.skip = True
         for i in range(0, nRow):
             string = '{} m'.format(SectionList[i])
             item = QtGui.QTableWidgetItem(string)
-            form.sections.setItem(i, 0, item)
+            self.form.sections.setItem(i, 0, item)
         self.skip = False
         self.obj = self.preview.update(self.ship.Length.getValueAs('m').Value,
                                        self.ship.Breadth.getValueAs('m').Value,
@@ -324,19 +314,14 @@ class TaskPanel:
         if self.skip:
             return
 
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.sections = self.widget(QtGui.QTableWidget, "Sections")
-        form.sectionType = self.widget(QtGui.QComboBox, "SectionType")
-
         # Add an empty item at the end of the list
-        nRow = form.sections.rowCount()
-        item = form.sections.item(nRow - 1, 0)
+        nRow = self.form.sections.rowCount()
+        item = self.form.sections.item(nRow - 1, 0)
         if item:
             if(item.text() != ''):
-                form.sections.setRowCount(nRow + 1)
+                self.form.sections.setRowCount(nRow + 1)
 
-        ID = form.sectionType.currentIndex()
+        ID = self.form.sectionType.currentIndex()
         if ID == 0:
             SectionList = self.LSections
         elif ID == 1:
@@ -344,11 +329,11 @@ class TaskPanel:
         elif ID == 2:
             SectionList = self.TSections
 
-        item = form.sections.item(row, column)
+        item = self.form.sections.item(row, column)
         # Look for deleted row (empty string)
         if not item.text():
             del SectionList[row]
-            form.sections.removeRow(row)
+            self.form.sections.removeRow(row)
             self.obj = self.preview.update(self.ship.Length.getValueAs('m').Value,
                                            self.ship.Breadth.getValueAs('m').Value,
                                            self.ship.Draft.getValueAs('m').Value,
@@ -370,7 +355,7 @@ class TaskPanel:
         # Regenerate the list
         del SectionList[:]
         for i in range(0, nRow):
-            item = form.sections.item(i, 0)
+            item = self.form.sections.item(i, 0)
             try:
                 qty = Units.Quantity(item.text())
                 number = qty.getValueAs('m').Value
@@ -390,14 +375,9 @@ class TaskPanel:
         """ Function called when the delete button is pressed.
         All the sections of the active type must be erased therefore.
         """
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.sections = self.widget(QtGui.QTableWidget, "Sections")
-        form.sectionType = self.widget(QtGui.QComboBox, "SectionType")
-
-        form.sections.clearContents()
-        form.sections.setRowCount(1)
-        ID = form.sectionType.currentIndex()
+        self.form.sections.clearContents()
+        self.form.sections.setRowCount(1)
+        ID = self.form.sectionType.currentIndex()
         if ID == 0:
             del self.LSections[:]
         elif ID == 1:
@@ -410,16 +390,11 @@ class TaskPanel:
         """ Function called when automatic creating button is pressed.
         Several sections must be added to the active sections list
         """
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.sectionType = self.widget(QtGui.QComboBox, "SectionType")
-        form.nSections = self.widget(QtGui.QSpinBox, "NSections")
-
         # Recolect data
-        nSections = form.nSections.value()
+        nSections = self.form.nSections.value()
         SectionList = []
         L = 0.0
-        ID = form.sectionType.currentIndex()
+        ID = self.form.sectionType.currentIndex()
         if ID == 0:
             L = self.ship.Length.getValueAs('m').Value
             d = L / (nSections - 1)
@@ -449,10 +424,6 @@ class TaskPanel:
     def loadSections(self):
         """ Loads from the ship object all the previously selected sections.
         """
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.sectionType = self.widget(QtGui.QComboBox, "SectionType")
-
         # Load sections
         props = self.ship.PropertiesList
         flag = True
@@ -465,7 +436,7 @@ class TaskPanel:
             self.BSections = self.ship.BSections[:]
             self.TSections = self.ship.TSections[:]
         # Set UI
-        self.setSectionType(form.sectionType.currentIndex())
+        self.setSectionType(self.form.sectionType.currentIndex())
 
     def saveSections(self):
         """ Save the selected sections into ship object.

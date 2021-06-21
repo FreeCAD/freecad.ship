@@ -34,14 +34,6 @@ from .shipUtils import Units as USys
 
 COMMON_BOOLEAN_ITERATIONS = 10
 
-### this function should be removed once py2 is not supported anymore
-def _unicode(text):
-    import sys
-    if sys.version_info.major < 3:
-        return unicode(text)
-    else:
-        return text
-
 
 class Tank:
     def __init__(self, obj, shapes, ship):
@@ -54,10 +46,10 @@ class Tank:
         ship -- Ship where the tank is allocated.
         """
         # Add an unique property to identify the Weight instances
-        tooltip = _unicode(QtGui.QApplication.translate(
+        tooltip = QtGui.QApplication.translate(
             "ship_tank",
             "True if it is a valid tank instance, False otherwise",
-            None))
+            None)
         obj.addProperty("App::PropertyBool",
                         "IsTank",
                         "Tank",
@@ -180,6 +172,7 @@ class Tank:
             return Vector()
         if vol >= fp.Shape.Volume:
             vol = 0.0
+            cog = Vector()
             for solid in fp.Shape.Solids:
                 vol += solid.Volume
                 sCoG = solid.CenterOfMass

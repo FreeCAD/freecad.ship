@@ -21,28 +21,25 @@
 #*                                                                         *
 #***************************************************************************
 
-import os
 import FreeCAD as App
 import FreeCADGui as Gui
 from FreeCAD import Units
 from PySide import QtGui, QtCore
 from . import Tools
 from .. import TankInstance as Instance
-from ..shipUtils import Paths
+from .. import Ship_rc
 from ..shipUtils import Units as USys
 
 class TaskPanel:
     def __init__(self):
         """Constructor"""
-        self.ui = os.path.join(Paths.modulePath(), "shipCreateTank", "TaskPanel.ui")
+        self.name = "ship tank creation"
+        self.ui = ":/ui/TaskPanel_shipCreateTank.ui"
+        self.form = Gui.PySideUic.loadUi(self.ui)
 
     def accept(self):
         """Create the ship instance"""
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.ship = self.widget(QtGui.QComboBox, "Ship")
-
-        ship = self.ships[form.ship.currentIndex()]
+        ship = self.ships[self.form.ship.currentIndex()]
         Tools.createTank(self.solids, ship)
 
         return True
@@ -74,10 +71,7 @@ class TaskPanel:
 
     def setupUi(self):
         """Create and configurate the user interface"""
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.ship = self.widget(QtGui.QComboBox, "Ship")
-        self.form = form
+        self.form.ship = self.widget(QtGui.QComboBox, "Ship")
         if self.initValues():
             return True
         self.retranslateUi()
@@ -145,14 +139,11 @@ class TaskPanel:
             return True
 
         # Fill the ships combo box
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.ship = self.widget(QtGui.QComboBox, "Ship")
         icon = QtGui.QIcon(QtGui.QPixmap(":/icons/Ship_Instance.svg"))
-        form.ship.clear()
+        self.form.ship.clear()
         for ship in self.ships:
-            form.ship.addItem(icon, ship.Label)
-        form.ship.setCurrentIndex(0)
+            self.form.ship.addItem(icon, ship.Label)
+        self.form.ship.setCurrentIndex(0)
 
         return False
 

@@ -21,7 +21,6 @@
 #*                                                                         *
 #***************************************************************************
 
-import os
 import FreeCAD as App
 import FreeCADGui as Gui
 from FreeCAD import Units
@@ -29,22 +28,20 @@ from PySide import QtGui, QtCore
 from . import Tools
 from .. import WeightInstance as Instance
 from ..shipUtils import Units as USys
-from ..shipUtils import Locale, Paths
+from .. import Ship_rc
+from ..shipUtils import Locale
 
 class TaskPanel:
     def __init__(self):
         """Constructor"""
-        self.ui = os.path.join(Paths.modulePath(), "shipCreateWeight", "TaskPanel.ui")
+        self.name = "ship weight creation"
+        self.ui = ":/ui/TaskPanel_shipCreateWeight.ui"
+        self.form = Gui.PySideUic.loadUi(self.ui)
 
     def accept(self):
         """Create the ship instance"""
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.ship = self.widget(QtGui.QComboBox, "Ship")
-        form.weight = self.widget(QtGui.QLineEdit, "Weight")
-
-        ship = self.ships[form.ship.currentIndex()]
-        density = Units.parseQuantity(Locale.fromString(form.weight.text()))
+        ship = self.ships[self.form.ship.currentIndex()]
+        density = Units.parseQuantity(Locale.fromString(self.form.weight.text()))
 
         Tools.createWeight(self.shapes, ship, density)
         return True
@@ -76,11 +73,8 @@ class TaskPanel:
 
     def setupUi(self):
         """Create and configurate the user interface"""
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.ship = self.widget(QtGui.QComboBox, "Ship")
-        form.weight = self.widget(QtGui.QLineEdit, "Weight")
-        self.form = form
+        self.form.ship = self.widget(QtGui.QComboBox, "Ship")
+        self.form.weight = self.widget(QtGui.QLineEdit, "Weight")
         if self.initValues():
             return True
         self.retranslateUi()
@@ -184,15 +178,11 @@ class TaskPanel:
             return True
 
         # Fill the ships combo box
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.ship = self.widget(QtGui.QComboBox, "Ship")
-        form.weight = self.widget(QtGui.QLineEdit, "Weight")
         icon = QtGui.QIcon(QtGui.QPixmap(":/icons/Ship_Instance.svg"))
-        form.ship.clear()
+        self.form.ship.clear()
         for ship in self.ships:
-            form.ship.addItem(icon, ship.Label)
-        form.ship.setCurrentIndex(0)
+            self.form.ship.addItem(icon, ship.Label)
+        self.form.ship.setCurrentIndex(0)
 
         # Initialize the 0 mass/density string field
         m_unit = USys.getMassUnits()
@@ -205,7 +195,7 @@ class TaskPanel:
             w_unit = m_unit + '/' + l_unit + '^2'
         elif self.elem_type == 4:
             w_unit = m_unit + '/' + l_unit + '^3'
-        form.weight.setText('0 ' + w_unit)
+        self.form.weight.setText('0 ' + w_unit)
         return False
 
     def retranslateUi(self):

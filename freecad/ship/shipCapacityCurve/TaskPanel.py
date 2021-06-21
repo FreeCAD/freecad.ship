@@ -21,7 +21,6 @@
 #*                                                                         *
 #***************************************************************************
 
-import os
 import math
 import FreeCAD as App
 import FreeCADGui as Gui
@@ -30,23 +29,22 @@ from PySide import QtGui, QtCore
 from . import Tools
 from . import PlotAux
 import TankInstance as Instance
-from ..shipUtils import Paths
+from .. import Ship_rc
 from ..shipUtils import Units as USys
 
 
 class TaskPanel:
     def __init__(self):
-        self.ui = os.path.join(Paths.modulePath(), "shipCapacityCurve", "TaskPanel.ui")
+        self.name = "ship tank loading capacity curve"
+        self.ui = ":/ui/TaskPanel_shipCapacityCurve.ui"
+        self.form = Gui.PySideUic.loadUi(self.ui)
         self.tank = None
 
     def accept(self):
         if self.tank is None:
             return False
 
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.points = self.widget(QtGui.QSpinBox, "Points")
-        n = form.points.value()
+        n = self.form.points.value()
 
         points = Tools.tankCapacityCurve(self.tank, n)
         l = []
@@ -85,10 +83,7 @@ class TaskPanel:
         pass
 
     def setupUi(self):
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.points = self.widget(QtGui.QSpinBox, "Points")
-        self.form = form
+        self.form.points = self.widget(QtGui.QSpinBox, "Points")
         if self.initValues():
             return True
         self.retranslateUi()
@@ -152,9 +147,7 @@ class TaskPanel:
 
     def retranslateUi(self):
         """ Set user interface locale strings. """
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.setWindowTitle(QtGui.QApplication.translate(
+        self.form.setWindowTitle(QtGui.QApplication.translate(
             "ship_capacity",
             "Plot the tank capacity curve",
             None))
