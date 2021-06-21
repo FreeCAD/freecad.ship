@@ -28,7 +28,6 @@ from FreeCAD import Units
 from PySide import QtGui, QtCore
 from . import Tools
 from . import PlotAux
-import TankInstance as Instance
 from .. import Ship_rc
 from ..shipUtils import Units as USys
 
