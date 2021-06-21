@@ -1,26 +1,13 @@
 from setuptools import setup
 import os
-import subprocess as sub
+from freecad.ship.compile_resources import compile_resources
 
 version_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 
                             "freecad", "ship", "version.py")
 with open(version_path) as fp:
     exec(fp.read())
     
-# try to create a resource file
-# assume either pyside2-rcc or pyside-rcc are available.
-# if both are available pyside2-rcc is used.
-rc_input = os.path.abspath(os.path.join("freecad", "ship", "resources", "Ship.qrc"))
-rc_output = os.path.join("freecad", "ship", "Ship_rc.py")
-try:
-    proc = sub.Popen(["pyside2-rcc", "-o", rc_output, rc_input], stdout=sub.PIPE, stderr=sub.PIPE)
-    out, err = proc.communicate()
-except FileNotFoundError:
-    proc = sub.Popen(["pyside-rcc", "-o", rc_output, rc_input], stdout=sub.PIPE, stderr=sub.PIPE)
-    out, err = proc.communicate()
-
-print(out.decode("utf8"))
-print(err.decode("utf8"))
+compile_resources()
 
 setup(name='freecad.ship',
       version=str(__version__),
