@@ -107,7 +107,6 @@ def getUnderwaterSide(shape, force=True):
     length_format = USys.getLengthFormat()
     box.Placement = Placement(Vector(xmin - L, ymin - B, zmin - H),
                               Rotation(App.Vector(0,0,1),0))
-
     box.Length = length_format.format(3.0 * L)
     box.Width = length_format.format(3.0 * B)
     box.Height = length_format.format(- zmin + H)
@@ -115,7 +114,7 @@ def getUnderwaterSide(shape, force=True):
     App.ActiveDocument.recompute()
     common = App.activeDocument().addObject("Part::MultiCommon",
                                             "UnderwaterSideHelper")
-    common.Shapes = [box, orig]
+    common.Shapes = [orig, box]
     App.ActiveDocument.recompute()
     if force and len(common.Shape.Solids) == 0:
         # The common operation is failing, let's try moving a bit the free
@@ -134,6 +133,7 @@ def getUnderwaterSide(shape, force=True):
             box.Height = length_format.format(
                 - zmin + H + random.uniform(-random_bounds, random_bounds))
             App.ActiveDocument.recompute()
+
     out = common.Shape
     App.ActiveDocument.removeObject(common.Name)
     App.ActiveDocument.removeObject(orig.Name)

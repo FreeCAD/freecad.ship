@@ -27,7 +27,6 @@ from PySide import QtGui, QtCore
 import FreeCAD
 import FreeCADGui
 import Spreadsheet
-from ..shipUtils import Paths
 
 
 class Plot(object):

@@ -26,7 +26,6 @@ import FreeCADGui
 from FreeCAD import Base
 import Part
 from FreeCAD import Units
-from ..shipUtils import Paths
 
 
 class Preview(object):

@@ -29,11 +29,10 @@ class ShipWorkbench(Gui.Workbench):
     """Ships design workbench."""
     def __init__(self):
         _dir = os.path.dirname(__file__)
-        self.__class__.Icon = os.path.join(_dir, "resources", "icons", "ShipWorkbench.svg")
+        self.__class__.Icon = os.path.join(_dir, "resources", "icons", "Ship_Workbench.svg")
         self.__class__.MenuText = "Ship"
         self.__class__.ToolTip = "Ship module provides some of the commonly used tool to design ship forms"
 
-    from .shipUtils import Paths
     from . import ShipGui
 
     def Initialize(self):
