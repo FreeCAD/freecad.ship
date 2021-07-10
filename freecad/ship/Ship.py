@@ -1,7 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2015                                                    *
-#*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *
+#*   Copyright (c) 2015 Jose Luis Cercos Pita <jlcercos@gmail.com>         *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -24,7 +23,7 @@
 
 __title__="FreeCAD Ship module"
 __author__ = "Jose Luis Cercos-Pita"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 __doc__="The Ships module provide a set of tools to make some specific Naval" \
         " Architecture computations"
