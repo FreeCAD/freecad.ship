@@ -39,6 +39,21 @@ DENS = Units.parseQuantity("1025 kg/m^3")
 TRIM_RELAX_FACTOR = 10.0
 
 
+def __cog(weights):
+    W = Units.parseQuantity("0 kg")
+    mom_x = Units.parseQuantity("0 kg*m")
+    mom_y = Units.parseQuantity("0 kg*m")
+    mom_z = Units.parseQuantity("0 kg*m")
+    for w in weights:
+        W += w.Proxy.getMass(w)
+        m = w.Proxy.getMoment(w)
+        mom_x += m[0]
+        mom_y += m[1]
+        mom_z += m[2]
+    W = W * G
+    return Vector(mom_x / W, mom_y / W, mom_z / W), W
+
+
 def solve(ship, weights, tanks, rolls, var_trim=True):
     """Compute the ship GZ stability curve
 
@@ -58,19 +73,7 @@ def solve(ship, weights, tanks, rolls, var_trim=True):
     equilibrium draft, and the equilibrium trim angle (0 deg if var_trim is
     False)
     """
-    # Get the unloaded weight (ignoring the tanks for the moment).
-    W = Units.parseQuantity("0 kg")
-    mom_x = Units.parseQuantity("0 kg*m")
-    mom_y = Units.parseQuantity("0 kg*m")
-    mom_z = Units.parseQuantity("0 kg*m")
-    for w in weights:
-        W += w.Proxy.getMass(w)
-        m = w.Proxy.getMoment(w)
-        mom_x += m[0]
-        mom_y += m[1]
-        mom_z += m[2]
-    COG = Vector(mom_x / W, mom_y / W, mom_z / W)
-    W = W * G
+    COG, W = __cog(weights)
 
     # Get the tanks weight
     TW = Units.parseQuantity("0 kg")
@@ -304,4 +307,4 @@ def gz(lc, rolls, var_trim=True):
             continue
         tanks.append((t, dens, level))
 
-    return solve(ship, weights, tanks, rolls, var_trim)
+    return solve(ship, weights, tanks, rolls, var_trim), ship, weights, tanks

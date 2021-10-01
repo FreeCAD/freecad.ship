@@ -150,6 +150,49 @@ class Tank:
 
         return ret_value
 
+    def getFluidShape(self, fp, vol, roll=Units.parseQuantity("0 deg"),
+                                     trim=Units.parseQuantity("0 deg")):
+        """Return the tank fluid shape for the provided rotation angles. The
+        returned shape is however not rotated at all
+
+        Keyword arguments:
+        fp -- Part::FeaturePython object affected.
+        vol -- Volume of fluid.
+        roll -- Ship roll angle.
+        trim -- Ship trim angle.
+        """
+        if vol <= 0.0:
+            return None
+        if vol >= fp.Shape.Volume:
+            return fp.Shape.copy()
+        
+        # Get a first estimation of the level
+        level = vol.Value / fp.Shape.Volume
+
+        # Transform the tank shape
+        current_placement = fp.Placement
+        m = current_placement.toMatrix()
+        m.rotateX(roll.getValueAs("rad"))
+        m.rotateY(-trim.getValueAs("rad"))
+        fp.Placement = Placement(m)
+
+        # Iterate to find the fluid shape
+        for i in range(COMMON_BOOLEAN_ITERATIONS):
+            shape = self.getVolume(fp, level, return_shape=True)
+            error = (vol.Value - shape.Volume) / fp.Shape.Volume
+            if abs(error) < 0.01:
+                break
+            level += error
+
+        # Untransform the object to retrieve the original position
+        fp.Placement = current_placement
+        m = Matrix()
+        m.rotateY(trim.getValueAs("rad"))
+        m.rotateX(-roll.getValueAs("rad"))
+        shape.rotate(Placement(m))
+
+        return shape
+
     def getCoG(self, fp, vol, roll=Units.parseQuantity("0 deg"),
                               trim=Units.parseQuantity("0 deg")):
         """Return the fluid volume center of gravity, provided the volume of
@@ -183,23 +226,7 @@ class Tank:
             cog.z = cog.z / vol
             return cog
 
-        # Get a first estimation of the level
-        level = vol.Value / fp.Shape.Volume
-
-        # Transform the tank shape
-        current_placement = fp.Placement
-        m = current_placement.toMatrix()
-        m.rotateX(roll.getValueAs("rad"))
-        m.rotateY(-trim.getValueAs("rad"))
-        fp.Placement = Placement(m)
-
-        # Iterate to find the fluid shape
-        for i in range(COMMON_BOOLEAN_ITERATIONS):
-            shape = self.getVolume(fp, level, return_shape=True)
-            error = (vol.Value - shape.Volume) / fp.Shape.Volume
-            if abs(error) < 0.01:
-                break
-            level += error
+        shape = self.getFluidShape(fp, vol, roll, trim)
 
         # Get the center of gravity
         vol = 0.0
@@ -215,15 +242,7 @@ class Tank:
             cog.y = cog.y / vol
             cog.z = cog.z / vol
 
-        # Untransform the object to retrieve the original position
-        fp.Placement = current_placement
-        p = Part.Point(cog)
-        m = Matrix()
-        m.rotateY(trim.getValueAs("rad"))
-        m.rotateX(-roll.getValueAs("rad"))
-        p.rotate(Placement(m))
-
-        return Vector(p.X, p.Y, p.Z)
+        return cog
 
 
 class ViewProviderTank:

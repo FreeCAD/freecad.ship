@@ -59,5 +59,6 @@
         <file>ui/TaskPanel_shipHydrostatics.ui</file>
         <file>ui/TaskPanel_shipLoadExample.ui</file>
         <file>ui/TaskPanel_shipOutlineDraw.ui</file>
+        <file>ui/TaskPanel_shipSinkAndTrim.ui</file>
     </qresource>
 </RCC>

@@ -55,6 +55,7 @@ class ShipWorkbench(Gui.Workbench):
                        "Ship_Tank",
                        "Ship_Capacity",
                        "Ship_LoadCondition",
+                       "Ship_SinkAndTrim",
                        "Ship_GZ"]
 
         self.appendToolbar(

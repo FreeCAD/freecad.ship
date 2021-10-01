@@ -186,6 +186,23 @@ class LoadCondition:
                 'ToolTip': ToolTip}
 
 
+class SinkAndTrim:
+    def Activated(self):
+        from . import shipSinkAndTrim
+        shipSinkAndTrim.load()
+
+    def GetResources(self):
+        MenuText = QtCore.QT_TRANSLATE_NOOP(
+            'ship_sinkandtrim',
+            'Equilibrium draft and angle')
+        ToolTip = QtCore.QT_TRANSLATE_NOOP(
+            'ship_sinkandtrim',
+            'Create a eschematic view of the ship equilibrium state')
+        return {'Pixmap': 'Ship_SinkAndTrim',
+                'MenuText': MenuText,
+                'ToolTip': ToolTip}
+
+
 class GZ:
     def Activated(self):
         from . import shipGZ
@@ -212,4 +229,5 @@ FreeCADGui.addCommand('Ship_Weight', CreateWeight())
 FreeCADGui.addCommand('Ship_Tank', CreateTank())
 FreeCADGui.addCommand('Ship_Capacity', TankCapacity())
 FreeCADGui.addCommand('Ship_LoadCondition', LoadCondition())
+FreeCADGui.addCommand('Ship_SinkAndTrim', SinkAndTrim())
 FreeCADGui.addCommand('Ship_GZ', GZ())
