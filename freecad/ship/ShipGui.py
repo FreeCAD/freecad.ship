@@ -205,7 +205,6 @@ class GZ:
 
 FreeCADGui.addCommand('Ship_LoadExample', LoadExample())
 FreeCADGui.addCommand('Ship_CreateShip', CreateShip())
-FreeCADGui.addCommand('Ship_OutlineDraw', OutlineDraw())
 FreeCADGui.addCommand('Ship_AreasCurve', AreasCurve())
 FreeCADGui.addCommand('Ship_Hydrostatics', Hydrostatics())
 FreeCADGui.addCommand('Ship_Weight', CreateWeight())
