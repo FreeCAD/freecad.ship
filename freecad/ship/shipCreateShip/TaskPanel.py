@@ -282,6 +282,6 @@ def createTask():
     panel = TaskPanel()
     Gui.Control.showDialog(panel)
     if panel.setupUi():
-        Gui.Control.closeDialog(panel)
+        Gui.Control.closeDialog()
         return None
     return panel
