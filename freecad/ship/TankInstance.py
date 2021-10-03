@@ -96,19 +96,18 @@ class Tank:
 
         # Build up the cutting box
         bbox = fp.Shape.BoundBox
-        dx = bbox.XMax - bbox.XMin
-        dy = bbox.YMax - bbox.YMin
-        dz = bbox.ZMax - bbox.ZMin
+        dx = Units.Quantity(bbox.XMax - bbox.XMin, Units.Length)
+        dy = Units.Quantity(bbox.YMax - bbox.YMin, Units.Length)
+        dz = Units.Quantity(bbox.ZMax - bbox.ZMin, Units.Length)
 
         box = App.ActiveDocument.addObject("Part::Box","Box")
-        length_format = USys.getLengthFormat()
-        box.Placement = Placement(Vector(bbox.XMin - dx,
-                                         bbox.YMin - dy,
-                                         bbox.ZMin - dz),
-                                  Rotation(App.Vector(0,0,1),0))
-        box.Length = length_format.format(3.0 * dx)
-        box.Width = length_format.format(3.0 * dy)
-        box.Height = length_format.format((1.0 + level) * dz)
+        orig = Vector(Units.Quantity(bbox.XMin, Units.Length) - dx,
+                      Units.Quantity(bbox.YMin, Units.Length) - dy,
+                      Units.Quantity(bbox.ZMin, Units.Length) - dz)
+        box.Placement = Placement(orig, Rotation(App.Vector(0,0,1),0))
+        box.Length = 3.0 * dx
+        box.Width = 3.0 * dy
+        box.Height = ((1.0 + level) * dz)
 
         # Create a new object on top of a copy of the tank shape
         Part.show(fp.Shape.copy())
@@ -172,8 +171,8 @@ class Tank:
         # Transform the tank shape
         current_placement = fp.Placement
         m = current_placement.toMatrix()
-        m.rotateX(roll.getValueAs("rad"))
-        m.rotateY(-trim.getValueAs("rad"))
+        m.rotateX(roll)
+        m.rotateY(-trim)
         fp.Placement = Placement(m)
 
         # Iterate to find the fluid shape
@@ -186,10 +185,10 @@ class Tank:
 
         # Untransform the object to retrieve the original position
         fp.Placement = current_placement
-        m = Matrix()
-        m.rotateY(trim.getValueAs("rad"))
-        m.rotateX(-roll.getValueAs("rad"))
-        shape.rotate(Placement(m))
+        m = shape.Placement.toMatrix()
+        m.rotateY(trim)
+        m.rotateX(-roll)
+        shape.Placement = Placement(m)
 
         return shape
 

@@ -44,7 +44,7 @@ def __make_name(name, doc=App.ActiveDocument):
 
 def __place_shape(shape, draft, trim):
     return shape.translate(
-        (0, 0, draft.Value)).rotate((0, 0, 0), (0, 1, 0), -trim.Value)
+        (0, 0, -draft)).rotate((0, 0, 0), (0, 1, 0), -trim)
 
 
 def compute(lc, doc=App.ActiveDocument):
@@ -53,10 +53,9 @@ def compute(lc, doc=App.ActiveDocument):
     if points == []:
         return None
     gz, draft, trim = points[0]
-    App.Console.PrintError('{}, {}\n'.format(draft.UserString, trim.UserString))
     # Create a free surface
-    L = ship.Length.Value
-    B = ship.Breadth.Value
+    L = ship.Length
+    B = ship.Breadth
     name = __make_name('SinkAndTrim_FS', doc)
     Part.show(Part.makePlane(2.0 * L, 2.0 * B,
                              App.Vector(-L, -B, 0)),
@@ -70,8 +69,8 @@ def compute(lc, doc=App.ActiveDocument):
     name = __make_name('SinkAndTrim_{}'.format(ship.Name), doc)
     Part.show(__place_shape(ship.Shape.copy(), draft, trim), name)
     doc.recompute()
-    ship = Gui.getDocument(doc.Name).getObject(name)
-    ship.Transparency = 50
+    plot_ship = Gui.getDocument(doc.Name).getObject(name)
+    plot_ship.Transparency = 50
     # Copy and place the tanks
     for tank, dens, level in tanks:
         name = __make_name('SinkAndTrim {}'.format(tank.Name), doc)
