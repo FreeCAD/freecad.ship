@@ -208,7 +208,6 @@ class Tank:
         If the fluid volume is bigger than the total tank one, it will be
         conveniently clamped.
         """
-        # Change the units of the volume, and clamp the value
         if vol <= 0.0:
             return Vector()
         if vol >= fp.Shape.Volume:

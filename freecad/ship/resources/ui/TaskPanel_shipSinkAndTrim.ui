@@ -21,11 +21,31 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item row="2" column="0">
     <widget class="QTextEdit" name="ResultsBox">
      <property name="readOnly">
       <bool>true</bool>
      </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QComboBox" name="ReferenceSystem">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <property name="maxVisibleItems">
+      <number>2</number>
+     </property>
+     <item>
+      <property name="text">
+       <string>Reference on the free surface</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Upright</string>
+      </property>
+     </item>
     </widget>
    </item>
   </layout>

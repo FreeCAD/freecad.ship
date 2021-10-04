@@ -34,12 +34,12 @@ from ..shipHydrostatics import Tools as Hydrostatics
 
 
 G = Units.parseQuantity("9.81 m/s^2")
-MAX_EQUILIBRIUM_ITERS = 10
+MAX_EQUILIBRIUM_ITERS = 20
 DENS = Units.parseQuantity("1025 kg/m^3")
 TRIM_RELAX_FACTOR = 10.0
 
 
-def __cog(weights):
+def weights_cog(weights):
     W = Units.parseQuantity("0 kg")
     mom_x = Units.parseQuantity("0 kg*m")
     mom_y = Units.parseQuantity("0 kg*m")
@@ -50,8 +50,8 @@ def __cog(weights):
         mom_x += m[0]
         mom_y += m[1]
         mom_z += m[2]
-    W = W * G
-    return Vector(mom_x / W, mom_y / W, mom_z / W), W
+    W = W
+    return Vector(mom_x / W, mom_y / W, mom_z / W), W * G
 
 
 def solve(ship, weights, tanks, rolls, var_trim=True):
@@ -73,7 +73,7 @@ def solve(ship, weights, tanks, rolls, var_trim=True):
     equilibrium draft, and the equilibrium trim angle (0 deg if var_trim is
     False)
     """
-    COG, W = __cog(weights)
+    COG, W = weights_cog(weights)
 
     # Get the tanks weight
     TW = Units.parseQuantity("0 kg")
@@ -155,10 +155,14 @@ def solve_point(W, COG, TW, VOLS, ship, tanks, roll, var_trim=True):
         if not var_trim:
             trim_error = 0.0
         else:
-            trim_error = -TRIM_RELAX_FACTOR * R_x / ship.Length
+            c = math.cos(trim.getValueAs('rad'))
+            s = math.sin(trim.getValueAs('rad'))
+            rx = c * R_x - s * R_z
+            eq_angle = math.degrees(math.atan2(R_x.Value, R_z.Value))
+            trim_error = -TRIM_RELAX_FACTOR * rx / ship.Length
 
         # Check if we can tolerate the errors
-        if abs(draft_error) < 0.01 and abs(trim_error) < 0.1:
+        if abs(draft_error) < 0.01 and abs(trim_error) < 0.005:
             break
 
         # Get the new draft and trim

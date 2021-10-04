@@ -43,6 +43,7 @@ class TaskPanel:
         return True
 
     def reject(self):
+        self.clear()
         return True
 
     def clicked(self, index):
@@ -68,6 +69,7 @@ class TaskPanel:
 
     def setupUi(self):
         self.form.update = self.widget(QtGui.QPushButton, "UpdateButton")
+        self.form.ref = self.widget(QtGui.QComboBox, "ReferenceSystem")
         self.form.result = self.widget(QtGui.QTextEdit, "ResultsBox")
         if self.initValues():
             return True
@@ -76,6 +78,10 @@ class TaskPanel:
             self.form.update,
             QtCore.SIGNAL("pressed()"),
             self.onUpdate)
+        QtCore.QObject.connect(
+            self.form.ref,
+            QtCore.SIGNAL("activated(QString)"),
+            self.onReference)
 
     def getMainWindow(self):
         toplevel = QtGui.QApplication.topLevelWidgets()
@@ -189,12 +195,63 @@ class TaskPanel:
                 "ship_sinkandtrim",
                 "Update",
                 None))
+        self.form.ref.setItemText(
+            0,
+            QtGui.QApplication.translate(
+                "ship_sinkandtrim",
+                "Reference on the free surface",
+                None))
+        self.form.ref.setItemText(
+            1,
+            QtGui.QApplication.translate(
+                "ship_sinkandtrim",
+                "Upright",
+                None))
 
     def onUpdate(self):
         """Time to recompute!
         """
-        Tools.compute(self.lc, doc=self.doc)
+        self.clear()
+        fs_ref = self.form.ref.currentIndex() == 0
+        self.plot, draft, trim, disp = Tools.compute(self.lc,
+                                                     fs_ref=fs_ref,
+                                                     doc=self.doc)
+        if self.plot is None:
+            self.form.result.setText(QtGui.QApplication.translate(
+            "ship_sinkandtrim",
+            "The ship cannot float!",
+            None))
+            return
 
+        draft_str = QtGui.QApplication.translate(
+            "ship_create",
+            "Draft",
+            None)
+        trim_str = QtGui.QApplication.translate(
+            "ship_hydrostatic",
+            "Trim",
+            None)
+        self.form.result.setText(
+            "\u0394 = {}\n".format(disp.UserString) + \
+            "{} = {}\n".format(draft_str, draft.UserString) + \
+            "{} = {}\n".format(trim_str, trim.UserString)
+        )
+
+    def onReference(self):
+        """ Function called when the section type is changed.
+        """
+        if self.plot:
+            self.onUpdate()
+
+    def clear(self):
+        if self.plot is None:
+            return
+
+        for name in self.plot.getSubObjects():
+            obj = self.plot.getSubObjectList(name)[1]
+            App.ActiveDocument.removeObject(obj.Name)
+        App.ActiveDocument.removeObject(self.plot.Name)
+        self.plot = None
 
 def createTask():
     panel = TaskPanel()
