@@ -96,19 +96,18 @@ class Tank:
 
         # Build up the cutting box
         bbox = fp.Shape.BoundBox
-        dx = bbox.XMax - bbox.XMin
-        dy = bbox.YMax - bbox.YMin
-        dz = bbox.ZMax - bbox.ZMin
+        dx = Units.Quantity(bbox.XMax - bbox.XMin, Units.Length)
+        dy = Units.Quantity(bbox.YMax - bbox.YMin, Units.Length)
+        dz = Units.Quantity(bbox.ZMax - bbox.ZMin, Units.Length)
 
         box = App.ActiveDocument.addObject("Part::Box","Box")
-        length_format = USys.getLengthFormat()
-        box.Placement = Placement(Vector(bbox.XMin - dx,
-                                         bbox.YMin - dy,
-                                         bbox.ZMin - dz),
-                                  Rotation(App.Vector(0,0,1),0))
-        box.Length = length_format.format(3.0 * dx)
-        box.Width = length_format.format(3.0 * dy)
-        box.Height = length_format.format((1.0 + level) * dz)
+        orig = Vector(Units.Quantity(bbox.XMin, Units.Length) - dx,
+                      Units.Quantity(bbox.YMin, Units.Length) - dy,
+                      Units.Quantity(bbox.ZMin, Units.Length) - dz)
+        box.Placement = Placement(orig, Rotation(App.Vector(0,0,1),0))
+        box.Length = 3.0 * dx
+        box.Width = 3.0 * dy
+        box.Height = ((1.0 + level) * dz)
 
         # Create a new object on top of a copy of the tank shape
         Part.show(fp.Shape.copy())
@@ -150,6 +149,49 @@ class Tank:
 
         return ret_value
 
+    def getFluidShape(self, fp, vol, roll=Units.parseQuantity("0 deg"),
+                                     trim=Units.parseQuantity("0 deg")):
+        """Return the tank fluid shape for the provided rotation angles. The
+        returned shape is however not rotated at all
+
+        Keyword arguments:
+        fp -- Part::FeaturePython object affected.
+        vol -- Volume of fluid.
+        roll -- Ship roll angle.
+        trim -- Ship trim angle.
+        """
+        if vol <= 0.0:
+            return None
+        if vol >= fp.Shape.Volume:
+            return fp.Shape.copy()
+        
+        # Get a first estimation of the level
+        level = vol.Value / fp.Shape.Volume
+
+        # Transform the tank shape
+        current_placement = fp.Placement
+        m = current_placement.toMatrix()
+        m.rotateX(roll)
+        m.rotateY(-trim)
+        fp.Placement = Placement(m)
+
+        # Iterate to find the fluid shape
+        for i in range(COMMON_BOOLEAN_ITERATIONS):
+            shape = self.getVolume(fp, level, return_shape=True)
+            error = (vol.Value - shape.Volume) / fp.Shape.Volume
+            if abs(error) < 0.01:
+                break
+            level += error
+
+        # Untransform the object to retrieve the original position
+        fp.Placement = current_placement
+        m = shape.Placement.toMatrix()
+        m.rotateY(trim)
+        m.rotateX(-roll)
+        shape.Placement = Placement(m)
+
+        return shape
+
     def getCoG(self, fp, vol, roll=Units.parseQuantity("0 deg"),
                               trim=Units.parseQuantity("0 deg")):
         """Return the fluid volume center of gravity, provided the volume of
@@ -166,7 +208,6 @@ class Tank:
         If the fluid volume is bigger than the total tank one, it will be
         conveniently clamped.
         """
-        # Change the units of the volume, and clamp the value
         if vol <= 0.0:
             return Vector()
         if vol >= fp.Shape.Volume:
@@ -183,23 +224,7 @@ class Tank:
             cog.z = cog.z / vol
             return cog
 
-        # Get a first estimation of the level
-        level = vol.Value / fp.Shape.Volume
-
-        # Transform the tank shape
-        current_placement = fp.Placement
-        m = current_placement.toMatrix()
-        m.rotateX(roll.getValueAs("rad"))
-        m.rotateY(-trim.getValueAs("rad"))
-        fp.Placement = Placement(m)
-
-        # Iterate to find the fluid shape
-        for i in range(COMMON_BOOLEAN_ITERATIONS):
-            shape = self.getVolume(fp, level, return_shape=True)
-            error = (vol.Value - shape.Volume) / fp.Shape.Volume
-            if abs(error) < 0.01:
-                break
-            level += error
+        shape = self.getFluidShape(fp, vol, roll, trim)
 
         # Get the center of gravity
         vol = 0.0
@@ -215,15 +240,7 @@ class Tank:
             cog.y = cog.y / vol
             cog.z = cog.z / vol
 
-        # Untransform the object to retrieve the original position
-        fp.Placement = current_placement
-        p = Part.Point(cog)
-        m = Matrix()
-        m.rotateY(trim.getValueAs("rad"))
-        m.rotateX(-roll.getValueAs("rad"))
-        p.rotate(Placement(m))
-
-        return Vector(p.X, p.Y, p.Z)
+        return cog
 
 
 class ViewProviderTank:

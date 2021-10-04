@@ -90,12 +90,12 @@ def getUnderwaterSide(shape, force=True):
     orig = App.ActiveDocument.Objects[-1]
 
     bbox = shape.BoundBox
-    xmin = bbox.XMin
-    xmax = bbox.XMax
-    ymin = bbox.YMin
-    ymax = bbox.YMax
-    zmin = bbox.ZMin
-    zmax = bbox.ZMax
+    xmin = Units.Quantity(bbox.XMin, Units.Length)
+    xmax = Units.Quantity(bbox.XMax, Units.Length)
+    ymin = Units.Quantity(bbox.YMin, Units.Length)
+    ymax = Units.Quantity(bbox.YMax, Units.Length)
+    zmin = Units.Quantity(bbox.ZMin, Units.Length)
+    zmax = Units.Quantity(bbox.ZMax, Units.Length)
 
     # Create the "sea" box to intersect the ship
     L = xmax - xmin
@@ -103,12 +103,11 @@ def getUnderwaterSide(shape, force=True):
     H = zmax - zmin
 
     box = App.ActiveDocument.addObject("Part::Box","Box")
-    length_format = USys.getLengthFormat()
     box.Placement = Placement(Vector(xmin - L, ymin - B, zmin - H),
                               Rotation(App.Vector(0,0,1),0))
-    box.Length = length_format.format(3.0 * L)
-    box.Width = length_format.format(3.0 * B)
-    box.Height = length_format.format(- zmin + H)
+    box.Length = 3.0 * L
+    box.Width = 3.0 * B
+    box.Height = -zmin + H
 
     App.ActiveDocument.recompute()
     common = App.activeDocument().addObject("Part::MultiCommon",
@@ -125,12 +124,13 @@ def getUnderwaterSide(shape, force=True):
             " surface position",
             None)
         App.Console.PrintWarning(msg + '\n')
-        random_bounds = 0.01 * H
+        random_bounds = 0.01 * H.Value
         i = 0
         while len(common.Shape.Solids) == 0 and i < COMMON_BOOLEAN_ITERATIONS:
             i += 1
-            box.Height = length_format.format(
-                - zmin + H + random.uniform(-random_bounds, random_bounds))
+            dH = Units.Quantity(random.uniform(-random_bounds, random_bounds),
+                                Units.Length)
+            box.Height = -zmin + H + dH
             App.ActiveDocument.recompute()
 
     out = common.Shape
