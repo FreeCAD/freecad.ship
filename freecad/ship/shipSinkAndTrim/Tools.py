@@ -147,8 +147,9 @@ def compute(lc, fs_ref=True, doc=App.ActiveDocument):
 
     # Create a group where the results will be placed
     name = __make_name('SinkAndTrim_results', doc)
-    group = doc.addObject('App::LinkGroup', name)
-    group.setLink(group_objs)
+    group = doc.addObject('App::DocumentObjectGroup', name)
+    for obj in group_objs:
+        group.addObject(obj)
     doc.recompute()
 
     return group, draft, trim, disp / GZ.G
