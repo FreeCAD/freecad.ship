@@ -76,27 +76,25 @@ class TaskPanel:
 
     def setupUi(self):
         """Create and configurate the user interface"""
-        self.form.length = self.widget(QtGui.QLineEdit, "Length")
-        self.form.breadth = self.widget(QtGui.QLineEdit, "Breadth")
-        self.form.draft = self.widget(QtGui.QLineEdit, "Draft")
-        self.form.mainLogo = self.widget(QtGui.QLabel, "MainLogo")
-        self.form.mainLogo.setPixmap(QtGui.QPixmap(":/icons/Ship_Logo.svg"))
+        self.form.length = self.widget(QtGui.QLineEdit, "length")
+        self.form.breadth = self.widget(QtGui.QLineEdit, "breadth")
+        self.form.draft = self.widget(QtGui.QLineEdit, "draft")
         if self.initValues():
             return True
         self.retranslateUi()
         self.preview.update(self.L, self.B, self.T)
         QtCore.QObject.connect(
             self.form.length,
-            QtCore.SIGNAL("valueChanged(double)"),
-            self.onData)
+            QtCore.SIGNAL("valueChanged(const Base::Quantity&)"),
+            self.onLength)
         QtCore.QObject.connect(
             self.form.breadth,
-            QtCore.SIGNAL("valueChanged(double)"),
-            self.onData)
+            QtCore.SIGNAL("valueChanged(const Base::Quantity&)"),
+            self.onBreadth)
         QtCore.QObject.connect(
             self.form.draft,
-            QtCore.SIGNAL("valueChanged(double)"),
-            self.onData)
+            QtCore.SIGNAL("valueChanged(const Base::Quantity&)"),
+            self.onDraft)
 
     def getMainWindow(self):
         toplevel = QtGui.QApplication.topLevelWidgets()
@@ -113,7 +111,7 @@ class TaskPanel:
         name -- Name of the widget
         """
         mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
+        form = mw.findChild(QtGui.QWidget, "CreateShipTaskPanel")
         return form.findChild(class_id, name)
 
     def initValues(self):
@@ -203,17 +201,17 @@ class TaskPanel:
             "ship_create",
             "Create a new ship",
             None))
-        self.widget(QtGui.QLabel, "LengthLabel").setText(
+        self.widget(QtGui.QLabel, "lengthLabel").setText(
             QtGui.QApplication.translate(
                 "ship_create",
                 "Length",
                 None))
-        self.widget(QtGui.QLabel, "BreadthLabel").setText(
+        self.widget(QtGui.QLabel, "breadthLabel").setText(
             QtGui.QApplication.translate(
                 "ship_create",
                 "Breadth",
                 None))
-        self.widget(QtGui.QLabel, "DraftLabel").setText(
+        self.widget(QtGui.QLabel, "draftLabel").setText(
             QtGui.QApplication.translate(
                 "ship_create",
                 "Draft",
@@ -229,29 +227,59 @@ class TaskPanel:
             qty.getValueAs(USys.getLengthUnits()).Value)))
         return val
 
-    def onData(self, value):
+    def onData(self, widget, val_max):
         """Updates the 3D preview on data changes.
 
         Keyword arguments:
         value -- Edited value. This parameter is required in order to use this
         method as a callback function, but it is not useful.
         """
-        qty = Units.Quantity(Locale.fromString(self.form.length.text()))
         val_min = 0.001
-        val_max = self.bounds[0] / Units.Metre.Value
-        val = qty.getValueAs('m').Value
-        self.L = self.clampVal(self.form.length, val_min, val_max, val)
-        qty = Units.Quantity(Locale.fromString(self.form.breadth.text()))
-        val_min = 0.001
-        val_max = self.bounds[1] / Units.Metre.Value
-        val = qty.getValueAs('m').Value
-        self.B = self.clampVal(self.form.breadth, val_min, val_max, val)
-        qty = Units.Quantity(Locale.fromString(self.form.draft.text()))
-        val_min = 0.001
-        val_max = self.bounds[2] / Units.Metre.Value
-        val = qty.getValueAs('m').Value
-        self.T = self.clampVal(self.form.draft, val_min, val_max, val)
-        self.preview.update(self.L, self.B, self.T)
+        qty = Units.Quantity(Locale.fromString(widget.text()))
+        try:
+            val = qty.getValueAs('m').Value
+        except ValueError:
+            return
+        return self.clampVal(widget, val_min, val_max, val)
+
+    def onLength(self, value):
+        """Answer to length changes
+
+        Keyword arguments:
+        value -- Edited value. This parameter is required in order to use this
+        method as a callback function, but it is not useful.
+        """
+        L = self.onData(self.form.length,
+                        self.bounds[0] / Units.Metre.Value)
+        if L is not None:
+            self.L = L
+            self.preview.update(self.L, self.B, self.T)
+
+    def onBreadth(self, value):
+        """Answer to breadth changes
+
+        Keyword arguments:
+        value -- Edited value. This parameter is required in order to use this
+        method as a callback function, but it is not useful.
+        """
+        B = self.onData(self.form.breadth,
+                        self.bounds[1] / Units.Metre.Value)
+        if B is not None:
+            self.B = B
+            self.preview.update(self.L, self.B, self.T)
+
+    def onDraft(self, value):
+        """Answer to draft changes
+
+        Keyword arguments:
+        value -- Edited value. This parameter is required in order to use this
+        method as a callback function, but it is not useful.
+        """
+        T = self.onData(self.form.draft,
+                        self.bounds[2] / Units.Metre.Value)
+        if T is not None:
+            self.T = T
+            self.preview.update(self.L, self.B, self.T)
 
     def getSolids(self, obj):
         """Returns the solid entities from an object
