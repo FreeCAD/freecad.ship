@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>TaskPanel</class>
- <widget class="QWidget" name="TaskPanel">
+ <class>CreateWeightTaskPanel</class>
+ <widget class="QWidget" name="CreateWeightTaskPanel">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>260</width>
-    <height>78</height>
+    <width>524</width>
+    <height>86</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -25,41 +25,14 @@
   <property name="windowTitle">
    <string>Create new weight</string>
   </property>
+  <property name="toolTip">
+   <string>Create a new weight. If the selection contains just points, the weight will be featured by its Mass. If lines are also selected then the weight is featured by its Linear Density. If surfaces are also selected, then the weight is featured by its Surface Density. Finally, if one or more solids can be found in the selection then the weight is featured by its Density.</string>
+  </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="2" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <property name="spacing">
-      <number>6</number>
-     </property>
-     <item>
-      <widget class="QLabel" name="WeightLabel">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Weight</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="Gui::InputField" name="Weight">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
    <item row="1" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QHBoxLayout" name="group0_ship">
      <item>
-      <widget class="QLabel" name="ShipLabel">
+      <widget class="QLabel" name="ship_label">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -72,12 +45,135 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="Ship">
+      <widget class="QComboBox" name="ship">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
          <horstretch>1</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="0">
+    <layout class="QHBoxLayout" name="group1_point">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="weight_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Weight</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::InputField" name="weight">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true">kg</string>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>1.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="dens_line_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Linear Density</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::InputField" name="dens_line">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true">kg/m</string>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>0.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="dens_area_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Area Density</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::InputField" name="dens_area">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true">kg/m^2</string>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>0.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="dens_vol_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Density</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::InputField" name="dens_vol">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true">kg/m^3</string>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>0.000000000000000</double>
        </property>
       </widget>
      </item>

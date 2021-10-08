@@ -22,6 +22,7 @@
 
 import FreeCAD as App
 import FreeCADGui as Gui
+import sys
 
 
 def __get_shape_solids(obj):
@@ -35,10 +36,97 @@ def __get_shape_solids(obj):
     return []
 
 
+def __get_shape_surfaces(obj):
+    try:
+        return obj.Faces
+    except AttributeError:
+        try:
+            return __get_shape_surfaces(obj.Shape)
+        except AttributeError:
+            return []
+    return []
+
+
+def __get_shape_lines(obj):
+    try:
+        return obj.Edges
+    except AttributeError:
+        try:
+            return __get_shape_lines(obj.Shape)
+        except AttributeError:
+            return []
+    return []
+
+
+def __get_shape_points(obj):
+    try:
+        return obj.Vertexes
+    except AttributeError:
+        try:
+            return __get_shape_points(obj.Shape)
+        except AttributeError:
+            return []
+    return []
+
+
 def get_solids():
     """Returns the selected solids
     """
-    solids = []
+    shapes = []
     for obj in Gui.Selection.getSelection():
-        solids += __get_shape_solids(obj)
-    return solids
+        shapes += __get_shape_solids(obj)
+    return shapes
+
+
+def get_surfaces():
+    """Returns the selected faces
+    """
+    shapes = []
+    for obj in Gui.Selection.getSelection():
+        shapes += __get_shape_surfaces(obj)
+    return shapes
+
+
+def get_lines():
+    """Returns the selected edges
+    """
+    shapes = []
+    for obj in Gui.Selection.getSelection():
+        shapes += __get_shape_lines(obj)
+    return shapes
+
+
+def get_points():
+    """Returns the selected vertices
+    """
+    shapes = []
+    for obj in Gui.Selection.getSelection():
+        shapes += __get_shape_points(obj)
+    return shapes
+
+
+def get_shapes():
+    return get_points() + get_lines() + get_surfaces() + get_solids()
+
+
+def get_ships():
+    objs = []
+    for obj in Gui.Selection.getSelection():
+        try:
+            if obj.IsShip:
+                objs.append(obj)
+        except AttributeError:
+            continue
+    return objs
+
+
+def get_doc_ships(doc=None):
+    doc = doc or App.ActiveDocument
+    objs = []
+    for obj in doc.Objects:
+        try:
+            if obj.IsShip:
+                objs.append(obj)
+        except AttributeError:
+            continue
+    return objs

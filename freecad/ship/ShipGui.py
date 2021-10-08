@@ -123,6 +123,9 @@ class Hydrostatics:
 
 
 class CreateWeight:
+    def IsActive(self):
+        return bool(Selection.get_shapes()) and bool(Selection.get_doc_ships())
+
     def Activated(self):
         from . import shipCreateWeight
         shipCreateWeight.load()
