@@ -72,6 +72,9 @@ class CreateShip:
 
 
 class OutlineDraw:
+    def IsActive(self):
+        return bool(Selection.get_ships())
+
     def Activated(self):
         from . import shipOutlineDraw
         shipOutlineDraw.load()
@@ -89,6 +92,9 @@ class OutlineDraw:
 
 
 class AreasCurve:
+    def IsActive(self):
+        return bool(Selection.get_ships())
+
     def Activated(self):
         from . import shipAreasCurve
         shipAreasCurve.load()
@@ -106,6 +112,9 @@ class AreasCurve:
 
 
 class Hydrostatics:
+    def IsActive(self):
+        return bool(Selection.get_ships())
+
     def Activated(self):
         from . import shipHydrostatics
         shipHydrostatics.load()
