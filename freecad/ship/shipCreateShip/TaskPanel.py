@@ -82,7 +82,6 @@ class TaskPanel:
         self.form.draft = self.widget(QtGui.QLineEdit, "draft")
         if self.initValues():
             return True
-        self.retranslateUi()
         self.preview.update(self.L, self.B, self.T)
         QtCore.QObject.connect(
             self.form.length,
@@ -174,28 +173,6 @@ class TaskPanel:
             0.5 * qty.getValueAs(USys.getLengthUnits()).Value)))
         self.T = 0.5 * self.bounds[2] / Units.Metre.Value
         return False
-
-    def retranslateUi(self):
-        """Set the user interface locale strings."""
-        self.form.setWindowTitle(QtGui.QApplication.translate(
-            "ship_create",
-            "Create a new ship",
-            None))
-        self.widget(QtGui.QLabel, "lengthLabel").setText(
-            QtGui.QApplication.translate(
-                "ship_create",
-                "Length",
-                None))
-        self.widget(QtGui.QLabel, "breadthLabel").setText(
-            QtGui.QApplication.translate(
-                "ship_create",
-                "Breadth",
-                None))
-        self.widget(QtGui.QLabel, "draftLabel").setText(
-            QtGui.QApplication.translate(
-                "ship_create",
-                "Draft",
-                None))
 
     def clampVal(self, widget, val_min, val_max, val):
         if val >= val_min and val <= val_max:
