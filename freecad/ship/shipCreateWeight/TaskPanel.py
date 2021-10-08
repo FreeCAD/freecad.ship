@@ -29,6 +29,8 @@ from .. import WeightInstance as Instance
 from ..shipUtils import Units as USys
 from .. import Ship_rc
 from ..shipUtils import Locale
+from ..shipUtils import Selection
+
 
 class TaskPanel:
     def __init__(self):
@@ -40,8 +42,19 @@ class TaskPanel:
     def accept(self):
         """Create the ship instance"""
         ship = self.ships[self.form.ship.currentIndex()]
-        density = Units.parseQuantity(Locale.fromString(self.form.weight.text()))
-
+        density = None
+        if self.elem_type == 1:
+            density = Units.parseQuantity(Locale.fromString(
+                self.form.weight.text()))
+        elif self.elem_type == 2:
+            density = Units.parseQuantity(Locale.fromString(
+                self.form.dens_line.text()))
+        elif self.elem_type == 3:
+            density = Units.parseQuantity(Locale.fromString(
+                self.form.dens_area.text()))
+        elif self.elem_type == 4:
+            density = Units.parseQuantity(Locale.fromString(
+                self.form.dens_vol.text()))
         Tools.createWeight(self.shapes, ship, density)
         return True
 
@@ -72,11 +85,39 @@ class TaskPanel:
 
     def setupUi(self):
         """Create and configurate the user interface"""
-        self.form.ship = self.widget(QtGui.QComboBox, "Ship")
-        self.form.weight = self.widget(QtGui.QLineEdit, "Weight")
+        self.form.ship = self.widget(QtGui.QComboBox, "ship")
+        self.form.weight_label = self.widget(QtGui.QLabel, "weight_label")
+        self.form.weight = self.widget(QtGui.QLineEdit, "weight")
+        self.form.dens_line_label = self.widget(QtGui.QLabel, "dens_line_label")
+        self.form.dens_line = self.widget(QtGui.QLineEdit, "dens_line")
+        self.form.dens_area_label = self.widget(QtGui.QLabel, "dens_area_label")
+        self.form.dens_area = self.widget(QtGui.QLineEdit, "dens_area")
+        self.form.dens_vol_label = self.widget(QtGui.QLabel, "dens_vol_label")
+        self.form.dens_vol = self.widget(QtGui.QLineEdit, "dens_vol")
         if self.initValues():
             return True
-        self.retranslateUi()
+
+        # Show just the appropriate mass input
+        self.form.weight_label.hide()
+        self.form.weight.hide()
+        self.form.dens_line_label.hide()
+        self.form.dens_line.hide()
+        self.form.dens_area_label.hide()
+        self.form.dens_area.hide()
+        self.form.dens_vol_label.hide()
+        self.form.dens_vol.hide()
+        if self.elem_type == 1:
+            self.form.weight_label.show()
+            self.form.weight.show()
+        elif self.elem_type == 2:
+            self.form.dens_line_label.show()
+            self.form.dens_line.show()
+        elif self.elem_type == 3:
+            self.form.dens_area_label.show()
+            self.form.dens_area.show()
+        elif self.elem_type == 4:
+            self.form.dens_vol_label.show()
+            self.form.dens_vol.show()
 
     def getMainWindow(self):
         toplevel = QtGui.QApplication.topLevelWidgets()
@@ -93,82 +134,32 @@ class TaskPanel:
         name -- Name of the widget
         """
         mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
+        form = mw.findChild(QtGui.QWidget, "CreateWeightTaskPanel")
         return form.findChild(class_id, name)
 
     def initValues(self):
         """Setup the initial values"""
         # Ensure that there are at least one valid object to generate the
         # weight
-        selObjs = Gui.Selection.getSelection()
-        self.shapes = []
-        if not selObjs:
+        backends = [Selection.get_solids, Selection.get_surfaces,
+                    Selection.get_lines, Selection.get_points,]
+        for i, backend in enumerate(backends):
+            self.shapes = backend()
+            self.elem_type = 4 - i
+            if self.shapes:
+                break
+        if not self.shapes:
             msg = QtGui.QApplication.translate(
                 "ship_weight",
-                "Weight objects can only be created on top of its geometry"
-                " (no objects selected)",
-                None)
-            App.Console.PrintError(msg + '\n')
-            return True
-        for obj in selObjs:
-            try:
-                self.shapes.append(obj.Shape)
-            except:
-                continue
-        if not len(self.shapes):
-            msg = QtGui.QApplication.translate(
-                "ship_weight",
-                "No geometrical shapes found in the selected objects",
-                None)
-            App.Console.PrintError(msg + '\n')
-            return True
-
-        # Get the element type
-        # 0 = unknown, 1 = vertex, 2 = line, 3 = face, 4 = solids
-        self.elem_type = 0
-        for shape in self.shapes:
-            # Doing it in this way we are protected under strange entities,
-            # and we are prepared to add higher level type of entities in the
-            # future, just in case...
-            try:
-                if len(shape.Solids):
-                    self.elem_type = max(4, self.elem_type)
-            except:
-                pass
-            try:
-                if len(shape.Faces):
-                    self.elem_type = max(3, self.elem_type)
-            except:
-                pass
-            try:
-                if len(shape.Edges):
-                    self.elem_type = max(2, self.elem_type)
-            except:
-                pass
-            try:
-                if len(shape.Vertexes):
-                    self.elem_type = max(1, self.elem_type)
-            except:
-                pass
-        # Could it happens???
-        if self.elem_type == 0:
-            msg = QtGui.QApplication.translate(
-                "ship_weight",
-                "Unknown object shapes selected",
+                "No valid shapes selected",
                 None)
             App.Console.PrintError(msg + '\n')
             return True
 
         # Ensure as well that exist at least one valid ship to create the
         # entity inside it
-        self.ships = []
-        for obj in App.ActiveDocument.Objects:
-            try:
-                if obj.IsShip:
-                    self.ships.append(obj)
-            except:
-                continue
-        if not len(self.ships):
+        self.ships = Selection.get_doc_ships()
+        if not self.ships:
             msg = QtGui.QApplication.translate(
                 "ship_weight",
                 "There are not ship objects to create weights into them",
@@ -183,56 +174,7 @@ class TaskPanel:
             self.form.ship.addItem(icon, ship.Label)
         self.form.ship.setCurrentIndex(0)
 
-        # Initialize the 0 mass/density string field
-        m_unit = USys.getMassUnits()
-        l_unit = USys.getLengthUnits()
-        if self.elem_type == 1:
-            w_unit = m_unit
-        elif self.elem_type == 2:
-            w_unit = m_unit + '/' + l_unit
-        elif self.elem_type == 3:
-            w_unit = m_unit + '/' + l_unit + '^2'
-        elif self.elem_type == 4:
-            w_unit = m_unit + '/' + l_unit + '^3'
-        self.form.weight.setText('0 ' + w_unit)
         return False
-
-    def retranslateUi(self):
-        """Set the user interface locale strings."""
-        self.form.setWindowTitle(QtGui.QApplication.translate(
-            "ship_weight",
-            "Create a new weight",
-            None))
-        self.widget(QtGui.QLabel, "ShipLabel").setText(
-            QtGui.QApplication.translate(
-                "ship_weight",
-                "Ship",
-                None))
-        if self.elem_type == 1:
-            self.widget(QtGui.QLabel, "WeightLabel").setText(
-                QtGui.QApplication.translate(
-                    "ship_weight",
-                    "Mass",
-                    None))
-        elif self.elem_type == 2:
-            self.widget(QtGui.QLabel, "WeightLabel").setText(
-                QtGui.QApplication.translate(
-                    "ship_weight",
-                    "Linear density",
-                    None))
-        elif self.elem_type == 3:
-            self.widget(QtGui.QLabel, "WeightLabel").setText(
-                QtGui.QApplication.translate(
-                    "ship_weight",
-                    "Area density",
-                    None))
-        elif self.elem_type == 4:
-            self.widget(QtGui.QLabel, "WeightLabel").setText(
-                QtGui.QApplication.translate(
-                    "ship_weight",
-                    "Density",
-                    None))
-
 
 def createTask():
     panel = TaskPanel()
