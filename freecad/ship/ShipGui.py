@@ -27,6 +27,7 @@ import FreeCADGui
 import os
 
 from . import Ship_rc
+from .shipUtils import Selection
 
 
 FreeCADGui.addLanguagePath(":/Ship/translations")
@@ -51,6 +52,9 @@ class LoadExample:
 
 
 class CreateShip:
+    def IsActive(self):
+        return bool(Selection.get_solids())
+
     def Activated(self):
         from . import shipCreateShip
         shipCreateShip.load()

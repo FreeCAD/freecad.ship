@@ -29,7 +29,8 @@ from . import Tools
 from .. import Instance  # from .ship
 from .. import Ship_rc
 from ..shipUtils import Units as USys
-from ..shipUtils import Locale as Locale
+from ..shipUtils import Locale
+from ..shipUtils import Selection
 
 class TaskPanel:
     def __init__(self):
@@ -116,32 +117,11 @@ class TaskPanel:
 
     def initValues(self):
         """Setup the initial values"""
-        self.solids = None
-        selObjs = Gui.Selection.getSelection()
-        if not selObjs:
-            msg = QtGui.QApplication.translate(
-                "ship_console",
-                "Ship objects can only be created on top of hull geometry"
-                " (no objects selected)",
-                None)
-            App.Console.PrintError(msg + '\n')
-            msg = QtGui.QApplication.translate(
-                "ship_console",
-                "Please create or load a ship hull geometry before using"
-                " this tool",
-                None)
-            App.Console.PrintError(msg + '\n')
-            return True
-        self.solids = []
-        for i in range(0, len(selObjs)):
-            solids = self.getSolids(selObjs[i])
-            for j in range(0, len(solids)):
-                self.solids.append(solids[j])
+        self.solids = Selection.get_solids()
         if not self.solids:
             msg = QtGui.QApplication.translate(
                 "ship_console",
-                "Ship objects can only be created on top of hull geometry"
-                " (no solid found at selected objects)",
+                "Ship objects can only be created on top of hull geometry",
                 None)
             App.Console.PrintError(msg + '\n')
             msg = QtGui.QApplication.translate(
@@ -280,30 +260,6 @@ class TaskPanel:
         if T is not None:
             self.T = T
             self.preview.update(self.L, self.B, self.T)
-
-    def getSolids(self, obj):
-        """Returns the solid entities from an object
-        Keyword arguments:
-        obj -- FreeCAD object to extract the solids from.
-
-        Returns:
-        The solid entities, None if no solid have been found.
-        """
-        if not obj:
-            return None
-        if obj.isDerivedFrom('Part::Feature'):
-            # get shape
-            shape = obj.Shape
-            if not shape:
-                return None
-            obj = shape
-        if not obj.isDerivedFrom('Part::TopoShape'):
-            return None
-        # get face
-        solids = obj.Solids
-        if not solids:
-            return None
-        return solids
 
 
 def createTask():
