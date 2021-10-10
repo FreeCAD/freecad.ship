@@ -59,31 +59,35 @@ class Preview(object):
         Part.show(baseLine)
         objs = FreeCAD.ActiveDocument.Objects
         self.baseLine = objs[len(objs) - 1]
-        self.baseLine.Label = 'BaseLine'
-        try:
-            text = str(QtGui.QApplication.translate(
-                "ship_create",
-                "Base line",
-                None))
-        except:
-            text = "Base line"
+        # self.baseLine.Label = 'BaseLine'
+        guiObj = FreeCADGui.ActiveDocument.getObject(self.baseLine.Name)
+        guiObj.ShowInTree = False
+        text = str(QtGui.QApplication.translate(
+            "ship_create",
+            "Base line",
+            None))
         self.baseLineLabel = DrawText('BaseLineText',
                                       text,
                                       Base.Vector(xEnd, 0, 0))
+        guiObj = FreeCADGui.ActiveDocument.getObject(self.baseLineLabel.Name)
+        guiObj.ShowInTree = False
+
         # Draw the free surface line
         fsLine = Part.makeLine((xStart, 0, T), (xEnd, 0, T))
         Part.show(fsLine)
         objs = FreeCAD.ActiveDocument.Objects
         self.fsLine = objs[len(objs) - 1]
-        self.fsLine.Label = 'FreeSurface'
-        try:
-            text = str(QtGui.QApplication.translate(
-                "ship_create",
-                "Free surface",
-                None))
-        except:
-            text = "Free surface"
+        # self.fsLine.Label = 'FreeSurface'
+        guiObj = FreeCADGui.ActiveDocument.getObject(self.fsLine.Name)
+        guiObj.ShowInTree = False
+        text = str(QtGui.QApplication.translate(
+            "ship_create",
+            "Free surface",
+            None))
         self.fsLineLabel = DrawText('FSText', text, Base.Vector(xEnd, 0, T))
+        guiObj = FreeCADGui.ActiveDocument.getObject(self.fsLineLabel.Name)
+        guiObj.ShowInTree = False
+
         # Draw the forward perpendicular
         zStart = -0.1 * T
         zEnd = 1.1 * T
@@ -91,49 +95,52 @@ class Preview(object):
         Part.show(fpLine)
         objs = FreeCAD.ActiveDocument.Objects
         self.fpLine = objs[len(objs) - 1]
-        self.fpLine.Label = 'ForwardPerpendicular'
-        try:
-            text = str(QtGui.QApplication.translate(
-                "ship_create",
-                "Forward perpendicular",
-                None))
-        except:
-            text = "Forward perpendicular"
+        # self.fpLine.Label = 'ForwardPerpendicular'
+        guiObj = FreeCADGui.ActiveDocument.getObject(self.fpLine.Name)
+        guiObj.ShowInTree = False
+        text = str(QtGui.QApplication.translate(
+            "ship_create",
+            "Forward perpendicular",
+            None))
         self.fpLineLabel = DrawText('FPText',
                                     text,
                                     Base.Vector(0.5 * L, 0, zEnd))
+        guiObj = FreeCADGui.ActiveDocument.getObject(self.fpLineLabel.Name)
+        guiObj.ShowInTree = False
         # Draw the after perpendicular
         apLine = Part.makeLine((-0.5 * L, 0, zStart), (-0.5 * L, 0, zEnd))
         Part.show(apLine)
         objs = FreeCAD.ActiveDocument.Objects
         self.apLine = objs[len(objs) - 1]
-        self.apLine.Label = 'AfterPerpendicular'
-        try:
-            text = str(QtGui.QApplication.translate(
-                "ship_create",
-                "After perpendicular",
-                None))
-        except:
-            text = "After perpendicular"
+        # self.apLine.Label = 'AfterPerpendicular'
+        guiObj = FreeCADGui.ActiveDocument.getObject(self.apLine.Name)
+        guiObj.ShowInTree = False
+        text = str(QtGui.QApplication.translate(
+            "ship_create",
+            "After perpendicular",
+            None))
         self.apLineLabel = DrawText('APText',
                                     text,
                                     Base.Vector(-0.5 * L, 0, zEnd))
+        guiObj = FreeCADGui.ActiveDocument.getObject(self.apLineLabel.Name)
+        guiObj.ShowInTree = False
         # Draw the main frame
         amLine = Part.makeLine((0, -0.5 * B, zStart), (0, -0.5 * B, zEnd))
         Part.show(amLine)
         objs = FreeCAD.ActiveDocument.Objects
         self.amLine = objs[len(objs) - 1]
-        self.amLine.Label = 'AminFrame'
-        try:
-            text = str(QtGui.QApplication.translate(
-                "ship_create",
-                "Main frame",
-                None))
-        except:
-            text = "Main frame"
+        # self.amLine.Label = 'AminFrame'
+        guiObj = FreeCADGui.ActiveDocument.getObject(self.amLine.Name)
+        guiObj.ShowInTree = False
+        text = str(QtGui.QApplication.translate(
+            "ship_create",
+            "Main frame",
+            None))
         self.amLineLabel = DrawText('AMText',
                                     text,
                                     Base.Vector(0, -0.5 * B, zEnd))
+        guiObj = FreeCADGui.ActiveDocument.getObject(self.amLineLabel.Name)
+        guiObj.ShowInTree = False
 
     def clean(self):
         """Remove all previous annotations from screen."""
