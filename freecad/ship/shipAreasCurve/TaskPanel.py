@@ -31,6 +31,7 @@ from .. import Ship_rc
 from ..import Instance
 from ..shipUtils import Units as USys
 from ..shipUtils import Locale
+from ..shipUtils import Selection
 from ..shipHydrostatics import Tools as Hydrostatics
 
 
@@ -95,19 +96,18 @@ class TaskPanel:
         pass
 
     def setupUi(self):
-        self.form.draft = self.widget(QtGui.QLineEdit, "Draft")
-        self.form.trim = self.widget(QtGui.QLineEdit, "Trim")
-        self.form.num = self.widget(QtGui.QSpinBox, "Num")
-        self.form.output = self.widget(QtGui.QTextEdit, "OutputData")
-        self.form.doc = QtGui.QTextDocument(self.form.output)
+        self.form.draft = self.widget(QtGui.QLineEdit, "draft")
+        self.form.trim = self.widget(QtGui.QLineEdit, "trim")
+        self.form.num = self.widget(QtGui.QSpinBox, "num")
+        self.form.output_data = self.widget(QtGui.QTextEdit, "output_data")
+        self.form.doc = QtGui.QTextDocument(self.form.output_data)
         if self.initValues():
             return True
-        self.retranslateUi()
         QtCore.QObject.connect(self.form.draft,
-                               QtCore.SIGNAL("valueChanged(double)"),
+                               QtCore.SIGNAL("valueChanged(const Base::Quantity&)"),
                                self.onData)
         QtCore.QObject.connect(self.form.trim,
-                               QtCore.SIGNAL("valueChanged(double)"),
+                               QtCore.SIGNAL("valueChanged(const Base::Quantity&)"),
                                self.onData)
 
     def getMainWindow(self):
@@ -125,102 +125,52 @@ class TaskPanel:
         name -- Name of the widget
         """
         mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
+        form = mw.findChild(QtGui.QWidget, "AreasCurveTaskPanel")
         return form.findChild(class_id, name)
 
     def initValues(self):
         """ Set initial values for fields
         """
-        selObjs = Gui.Selection.getSelection()
-        if not selObjs:
+        sel_ships = Selection.get_ships()
+        if not sel_ships:
             msg = QtGui.QApplication.translate(
                 "ship_console",
-                "A ship instance must be selected before using this tool (no"
-                " objects selected)",
+                "A ship instance must be selected before using this tool",
                 None)
             App.Console.PrintError(msg + '\n')
             return True
-        for i in range(0, len(selObjs)):
-            obj = selObjs[i]
-            props = obj.PropertiesList
-            try:
-                props.index("IsShip")
-            except ValueError:
-                continue
-            if obj.IsShip:
-                if self.ship:
-                    msg = QtGui.QApplication.translate(
-                        "ship_console",
-                        "More than one ship have been selected (the extra"
-                        " ships will be ignored)",
-                        None)
-                    App.Console.PrintWarning(msg + '\n')
-                    break
-                self.ship = obj
-        if not self.ship:
+        self.ship = sel_ships[0]
+        if len(sel_ships) > 1:
             msg = QtGui.QApplication.translate(
                 "ship_console",
-                "A ship instance must be selected before using this tool (no"
-                " valid ship found at the selected objects)",
+                "More than one ship have been selected (just the one labelled"
+                "'{}' is considered)".format(self.ship.Label),
                 None)
-            App.Console.PrintError(msg + '\n')
-            return True
+            App.Console.PrintWarning(msg + '\n')
 
-        length_format = USys.getLengthFormat()
-        angle_format = USys.getAngleFormat()
+        self.form.draft.setText(self.ship.Draft.UserString)
 
-        self.form.draft.setText(Locale.toString(length_format.format(
-            self.ship.Draft.getValueAs(USys.getLengthUnits()).Value)))
-        self.form.trim.setText(Locale.toString(angle_format.format(0.0)))
         # Try to use saved values
         props = self.ship.PropertiesList
         try:
-            props.index("AreaCurveDraft")
-            self.form.draft.setText(Locale.toString(length_format.format(
-                self.ship.AreaCurveDraft.getValueAs(
-                    USys.getLengthUnits()).Value)))
-        except:
+            self.form.draft.setText(self.ship.AreaCurveDraft.UserString)
+        except AttributeError:
             pass
         try:
-            props.index("AreaCurveTrim")
-            self.form.trim.setText(Locale.toString(angle_format.format(
-                self.ship.AreaCurveTrim.getValueAs(
-                    USys.getAngleUnits()).Value)))
-        except ValueError:
+            self.form.trim.setText(self.ship.AreaCurveTrim.UserString)
+        except AttributeError:
             pass
         try:
-            props.index("AreaCurveNum")
             self.form.num.setValue(self.ship.AreaCurveNum)
-        except ValueError:
+        except AttributeError:
             pass
+
         # Update GUI
-        draft = Units.Quantity(self.form.draft.text()).getValueAs('m').Value
-        trim = Units.Quantity(self.form.trim.text()).getValueAs('deg').Value
+        draft = Units.Quantity(self.form.draft.text())
+        trim = Units.Quantity(self.form.trim.text())
         self.preview.update(draft, trim, self.ship)
         self.onUpdate()
         return False
-
-    def retranslateUi(self):
-        """ Set user interface locale strings. """
-        self.form.setWindowTitle(QtGui.QApplication.translate(
-            "ship_areas",
-            "Plot the transversal areas curve",
-            None))
-        self.widget(QtGui.QLabel, "DraftLabel").setText(
-            QtGui.QApplication.translate(
-                "ship_areas",
-                "Draft",
-                None))
-        self.widget(QtGui.QLabel, "TrimLabel").setText(
-            QtGui.QApplication.translate(
-                "ship_areas",
-                "Trim angle",
-                None))
-        self.widget(QtGui.QLabel, "NumLabel").setText(
-            QtGui.QApplication.translate(
-                "ship_areas",
-                "Number of points",
-                None))
 
     def clampValue(self, widget, val_min, val_max, val):
         if val_min <= val <= val_max:
@@ -233,28 +183,18 @@ class TaskPanel:
         """ Method called when the tool input data is touched.
         @param value Changed value.
         """
-        if not self.ship:
+        draft = Units.parseQuantity(Locale.fromString(self.form.draft.text()))
+        trim = Units.parseQuantity(Locale.fromString(self.form.trim.text()))
+        if draft.Unit != Units.Length or trim.Unit != Units.Angle:
             return
-
-        # Get the values (or fix them in bad setting case)
-        try:
-            draft = Units.parseQuantity(Locale.fromString(self.form.draft.text()))
-        except:
-            draft = self.ship.Draft
-            self.form.draft.setText(draft.UserString)
-        try:
-            trim = Units.parseQuantity(Locale.fromString(self.form.trim.text()))
-        except:
-            trim = Units.parseQuantity("0 deg")
-            self.form.trim.setText(trim.UserString)
 
         bbox = self.ship.Shape.BoundBox
         draft_min = Units.Quantity(bbox.ZMin, Units.Length)
         draft_max = Units.Quantity(bbox.ZMax, Units.Length)
         draft = self.clampValue(self.form.draft, draft_min, draft_max, draft)
 
-        trim_min = Units.parseQuantity("-180 deg")
-        trim_max = Units.parseQuantity("180 deg")
+        trim_min = Units.parseQuantity("-90 deg")
+        trim_max = Units.parseQuantity("90 deg")
         trim = self.clampValue(self.form.trim, trim_min, trim_max, trim)
 
         self.onUpdate()
@@ -269,8 +209,6 @@ class TaskPanel:
 
         # Calculate the drafts at each perpendicular
         angle = trim.getValueAs("rad").Value
-        L = self.ship.Length.getValueAs('m').Value
-        B = self.ship.Breadth.getValueAs('m').Value
         draftAP = draft + 0.5 * self.ship.Length * math.tan(angle)
         if draftAP < 0.0:
             draftAP = 0.0
@@ -290,13 +228,9 @@ class TaskPanel:
         string += u'Trim = {0}<BR>'.format(trim.UserString)
         string += u'T<sub>AP</sub> = {0}<BR>'.format(draftAP.UserString)
         string += u'T<sub>FP</sub> = {0}<HR>'.format(draftFP.UserString)
-        dispText = QtGui.QApplication.translate(
-            "ship_areas",
-            'Displacement',
-            None)
-        string += dispText + u' = {0}<BR>'.format(disp.UserString)
+        string += u'&#916; = {0}<BR>'.format(disp.UserString)
         string += u'XCB = {0}'.format(xcb.UserString)
-        self.form.output.setHtml(string)
+        self.form.output_data.setHtml(string)
 
     def save(self):
         """ Saves the data into ship instance. """

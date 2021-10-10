@@ -49,16 +49,18 @@ class Plot(object):
         @return True if error happens.
         """
         try:
-            from freecad.plot import Plot
-            plt = Plot.figure('Areas curve')
+            from FreeCAD.Plot import Plot
         except ImportError:
-            msg = QtGui.QApplication.translate(
-                "ship_console",
-                "Plot module is disabled, so I cannot perform the plot",
-                None)
-            FreeCAD.Console.PrintWarning(msg + '\n')
-            return True
-        # Plot areas curve
+            try:
+                from freecad.plot import Plot
+            except ImportError:
+                msg = QtGui.QApplication.translate(
+                    "ship_console",
+                    "Plot module is disabled",
+                    None)
+                FreeCAD.Console.PrintWarning(msg + '\n')
+                return True
+
         areas = Plot.plot(x, y, 'Transversal areas')
         areas.line.set_linestyle('-')
         areas.line.set_linewidth(2.0)
@@ -104,7 +106,6 @@ class Plot(object):
         # Show grid
         Plot.grid(True)
         # End
-        plt.update()
         return False
 
     def spreadSheet(self, x, y, ship):

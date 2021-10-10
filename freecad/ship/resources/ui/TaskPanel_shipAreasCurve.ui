@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>TaskPanel</class>
- <widget class="QWidget" name="TaskPanel">
+ <class>AreasCurveTaskPanel</class>
+ <widget class="QWidget" name="AreasCurveTaskPanel">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -13,9 +13,12 @@
   <property name="windowTitle">
    <string>Transversal areas curve</string>
   </property>
+  <property name="toolTip">
+   <string>Compute the transversal areas curve</string>
+  </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="1" column="0">
-    <widget class="QTextEdit" name="OutputData">
+    <widget class="QTextEdit" name="output_data">
      <property name="textInteractionFlags">
       <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
      </property>
@@ -24,7 +27,7 @@
    <item row="0" column="0">
     <layout class="QGridLayout" name="gridLayout_2">
      <item row="0" column="0">
-      <widget class="QLabel" name="DraftLabel">
+      <widget class="QLabel" name="draft_label">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -37,7 +40,7 @@
       </widget>
      </item>
      <item row="1" column="0">
-      <widget class="QLabel" name="TrimLabel">
+      <widget class="QLabel" name="trim_label">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -50,20 +53,40 @@
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="Gui::InputField" name="Draft"/>
+      <widget class="Gui::InputField" name="draft">
+       <property name="text">
+        <string notr="true">0 m</string>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true">m</string>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>1000.000000000000000</double>
+       </property>
+      </widget>
      </item>
      <item row="1" column="1">
-      <widget class="Gui::InputField" name="Trim"/>
+      <widget class="Gui::InputField" name="trim">
+       <property name="text">
+        <string notr="true">0 deg</string>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true">deg</string>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>1000.000000000000000</double>
+       </property>
+      </widget>
      </item>
      <item row="2" column="0">
-      <widget class="QLabel" name="NumLabel">
+      <widget class="QLabel" name="num_label">
        <property name="text">
         <string>Number of points</string>
        </property>
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QSpinBox" name="Num">
+      <widget class="QSpinBox" name="num">
        <property name="minimum">
         <number>2</number>
        </property>
