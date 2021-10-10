@@ -45,22 +45,23 @@ class Preview(object):
         self.clean()
         # Set free surface bounds
         bbox = ship.Shape.BoundBox
-        L = 1.5 * bbox.XLength
-        B = 3.0 * bbox.YLength
+        L = Units.Quantity(1.5 * bbox.XLength, Units.Length)
+        B = Units.Quantity(3.0 * bbox.YLength, Units.Length)
         # Create the plane
         x = -0.5 * L
         y = -0.5 * B
         point = Base.Vector(x, y, 0.0)
-        plane = Part.makePlane(L, B, point, Base.Vector(0, 0, 1))
-        plane.rotate(Base.Vector(0, 0, 0), Base.Vector(0, 1, 0), trim)
-        plane.translate(Base.Vector(0, 0, draft))
+        plane = Part.makePlane(L, B, point, Base.Vector(0, 0, 1)).rotate(
+            (0, 0, 0), (0, 1, 0), trim).translate(
+                Base.Vector(0, 0, draft))
         Part.show(plane)
-        objs = FreeCAD.ActiveDocument.Objects
-        self.obj = objs[len(objs) - 1]
+        FreeCAD.ActiveDocument.recompute()
+        self.obj = FreeCAD.ActiveDocument.Objects[-1]
         self.obj.Label = 'FreeSurfaceHelper'
         guiObj = FreeCADGui.ActiveDocument.getObject(self.obj.Name)
         guiObj.ShapeColor = (0.4, 0.8, 0.85)
-        guiObj.Transparency = 50
+        # guiObj.Transparency = 50
+        guiObj.ShowInTree = False
 
     def clean(self):
         """ Erase all the annotations from the 3D view. """

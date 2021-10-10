@@ -192,7 +192,7 @@ class TaskPanel:
         method as a callback function, but it is not useful.
         """
         val_min = 0.001
-        qty = Units.Quantity(Locale.fromString(widget.text()))
+        qty = Units.parseQuantity(Locale.fromString(widget.text()))
         try:
             val = qty.getValueAs('m').Value
         except ValueError:
