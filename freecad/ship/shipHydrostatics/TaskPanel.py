@@ -33,6 +33,7 @@ from .. import Instance
 from .. import Ship_rc
 from ..shipUtils import Units as USys
 from ..shipUtils import Locale
+from ..shipUtils import Selection
 
 
 class TaskPanel:
@@ -51,9 +52,9 @@ class TaskPanel:
         self.save()
 
         trim = Units.parseQuantity(Locale.fromString(self.form.trim.text()))
-        min_draft = Units.parseQuantity(Locale.fromString(self.form.minDraft.text()))
-        max_draft = Units.parseQuantity(Locale.fromString(self.form.maxDraft.text()))
-        n_draft = self.form.nDraft.value()
+        min_draft = Units.parseQuantity(Locale.fromString(self.form.min_draft.text()))
+        max_draft = Units.parseQuantity(Locale.fromString(self.form.max_draft.text()))
+        n_draft = self.form.n_draft.value()
 
         draft = min_draft
         drafts = [draft]
@@ -102,7 +103,7 @@ class TaskPanel:
             self.loop.exec_()
             if(not self.running):
                 break
-        PlotAux.Plot(self.ship, trim, points)
+        PlotAux.Plot(self.ship, points)
         return True
 
     def reject(self):
@@ -135,23 +136,22 @@ class TaskPanel:
         pass
 
     def setupUi(self):
-        self.form.trim = self.widget(QtGui.QLineEdit, "Trim")
-        self.form.minDraft = self.widget(QtGui.QLineEdit, "MinDraft")
-        self.form.maxDraft = self.widget(QtGui.QLineEdit, "MaxDraft")
-        self.form.nDraft = self.widget(QtGui.QSpinBox, "NDraft")
+        self.form.trim = self.widget(QtGui.QLineEdit, "trim")
+        self.form.min_draft = self.widget(QtGui.QLineEdit, "min_draft")
+        self.form.max_draft = self.widget(QtGui.QLineEdit, "max_draft")
+        self.form.n_draft = self.widget(QtGui.QSpinBox, "n_draft")
         # Initial values
         if self.initValues():
             return True
-        self.retranslateUi()
         # Connect Signals and Slots
         QtCore.QObject.connect(self.form.trim,
-                               QtCore.SIGNAL("valueChanged(double)"),
+                               QtCore.SIGNAL("valueChanged(const Base::Quantity&)"),
                                self.onData)
-        QtCore.QObject.connect(self.form.minDraft,
-                               QtCore.SIGNAL("valueChanged(double)"),
+        QtCore.QObject.connect(self.form.min_draft,
+                               QtCore.SIGNAL("valueChanged(const Base::Quantity&)"),
                                self.onData)
-        QtCore.QObject.connect(self.form.maxDraft,
-                               QtCore.SIGNAL("valueChanged(double)"),
+        QtCore.QObject.connect(self.form.max_draft,
+                               QtCore.SIGNAL("valueChanged(const Base::Quantity&)"),
                                self.onData)
 
     def getMainWindow(self):
@@ -169,47 +169,28 @@ class TaskPanel:
         name -- Name of the widget
         """
         mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
+        form = mw.findChild(QtGui.QWidget, "HydrostaticsTaskPanel")
         return form.findChild(class_id, name)
 
     def initValues(self):
         """ Set initial values for fields
         """
-        selObjs = Gui.Selection.getSelection()
-        if not selObjs:
+        sel_ships = Selection.get_ships()
+        if not sel_ships:
             msg = QtGui.QApplication.translate(
                 "ship_console",
-                "A ship instance must be selected before using this tool (no"
-                " objects selected)",
+                "A ship instance must be selected before using this tool",
                 None)
             App.Console.PrintError(msg + '\n')
             return True
-        for i in range(len(selObjs)):
-            obj = selObjs[i]
-            props = obj.PropertiesList
-            try:
-                props.index("IsShip")
-            except ValueError:
-                continue
-            if obj.IsShip:
-                if self.ship:
-                    msg = QtGui.QApplication.translate(
-                        "ship_console",
-                        "More than one ship have been selected (the extra"
-                        " ships will be ignored)",
-                        None)
-                    App.Console.PrintWarning(msg + '\n')
-                    break
-                self.ship = obj
-
-        if not self.ship:
+        self.ship = sel_ships[0]
+        if len(sel_ships) > 1:
             msg = QtGui.QApplication.translate(
                 "ship_console",
-                "A ship instance must be selected before using this tool (no"
-                " valid ship found at the selected objects)",
+                "More than one ship have been selected (just the one labelled"
+                "'{}' is considered)".format(self.ship.Label),
                 None)
-            App.Console.PrintError(msg + '\n')
-            return True
+            App.Console.PrintWarning(msg + '\n')
 
         props = self.ship.PropertiesList
 
@@ -218,164 +199,82 @@ class TaskPanel:
 
         try:
             props.index("HydrostaticsTrim")
-            self.form.trim.setText(Locale.toString(angle_format.format(
-                self.ship.HydrostaticsTrim.getValueAs(
-                    USys.getLengthUnits()).Value)))
+            self.form.trim.setText(self.ship.HydrostaticsTrim.UserString)
         except ValueError:
-            self.form.trim.setText(Locale.toString(angle_format.format(0.0)))
+            self.form.trim.setText("0 deg")
 
         try:
             props.index("HydrostaticsMinDraft")
-            self.form.minDraft.setText(Locale.toString(length_format.format(
-                self.ship.HydrostaticsMinDraft.getValueAs(
-                    USys.getLengthUnits()).Value)))
+            self.form.min_draft.setText(
+                self.ship.HydrostaticsMinDraft.UserString)
         except ValueError:
-            self.form.minDraft.setText(Locale.toString(length_format.format(
-                0.9 * self.ship.Draft.getValueAs(USys.getLengthUnits()).Value)))
+            self.form.min_draft.setText(
+                (0.9 * self.ship.Draft).UserString)
         try:
             props.index("HydrostaticsMaxDraft")
-            self.form.maxDraft.setText(Locale.toString(length_format.format(
-                self.ship.HydrostaticsMaxDraft.getValueAs(
-                    USys.getLengthUnits()).Value)))
+            self.form.max_draft.setText(
+                self.ship.HydrostaticsMaxDraft.UserString)
         except ValueError:
-            self.form.maxDraft.setText(Locale.toString(length_format.format(
-                1.1 * self.ship.Draft.getValueAs(USys.getLengthUnits()).Value)))
+            self.form.max_draft.setText(
+                (1.1 * self.ship.Draft).UserString)
 
         try:
             props.index("HydrostaticsNDraft")
-            self.form.nDraft.setValue(self.ship.HydrostaticsNDraft)
+            self.form.n_draft.setValue(self.ship.HydrostaticsNDraft)
         except ValueError:
             pass
 
         return False
 
-    def retranslateUi(self):
-        """ Set user interface locale strings.
-        """
-        self.form.setWindowTitle(QtGui.QApplication.translate(
-            "ship_hydrostatic",
-            "Plot hydrostatics",
-            None))
-        self.widget(QtGui.QLabel, "TrimLabel").setText(
-            QtGui.QApplication.translate(
-                "ship_hydrostatic",
-                "Trim",
-                None))
-        self.widget(QtGui.QLabel, "MinDraftLabel").setText(
-            QtGui.QApplication.translate(
-                "ship_hydrostatic",
-                "Minimum draft",
-                None))
-        self.widget(QtGui.QLabel, "MaxDraftLabel").setText(
-            QtGui.QApplication.translate(
-                "ship_hydrostatic",
-                "Maximum draft",
-                None))
-        self.widget(QtGui.QLabel, "NDraftLabel").setText(
-            QtGui.QApplication.translate(
-                "ship_hydrostatic",
-                "Number of points",
-                None))
-
-    def clampLength(self, widget, val_min, val_max, val):
-        if val >= val_min and val <= val_max:
+    def clampValue(self, widget, val_min, val_max, val):
+        if val_min <= val <= val_max:
             return val
-        input_format = USys.getLengthFormat()
         val = min(val_max, max(val_min, val))
-        qty = Units.Quantity('{} m'.format(val))
-        widget.setText(Locale.toString(input_format.format(
-            qty.getValueAs(USys.getLengthUnits()).Value)))
-        return val
-
-    def clampAngle(self, widget, val_min, val_max, val):
-        if val >= val_min and val <= val_max:
-            return val
-        input_format = USys.getAngleFormat()
-        val = min(val_max, max(val_min, val))
-        qty = Units.Quantity('{} deg'.format(val))
-        widget.setText(Locale.toString(input_format.format(
-            qty.getValueAs(USys.getLengthUnits()).Value)))
+        widget.setText(val.UserString)
         return val
 
     def onData(self, value):
         """ Method called when input data is changed.
          @param value Changed value.
         """
-        if not self.ship:
+        min_draft = Units.parseQuantity(Locale.fromString(
+            self.form.min_draft.text()))
+        max_draft = Units.parseQuantity(Locale.fromString(
+            self.form.max_draft.text()))
+        trim = Units.parseQuantity(Locale.fromString(self.form.trim.text()))
+        if min_draft.Unit != Units.Length or \
+            min_draft.Unit != Units.Length or \
+            trim.Unit != Units.Angle:
             return
-
-        # Get the values (or fix them in bad setting case)
-        try:
-            trim = Units.Quantity(Locale.fromString(
-                self.form.trim.text())).getValueAs('deg').Value
-        except:
-            trim = 0.0
-            input_format = USys.getAngleFormat()
-            qty = Units.Quantity('{} deg'.format(trim))
-            self.form.trim.setText(Locale.toString(input_format.format(
-                qty.getValueAs(USys.getLengthUnits()).Value)))
-        try:
-            min_draft = Units.Quantity(Locale.fromString(
-                self.form.minDraft.text())).getValueAs('m').Value
-        except:
-            min_draft = 0.9 * self.ship.Draft.getValueAs('m').Value
-            input_format = USys.getLengthFormat()
-            qty = Units.Quantity('{} m'.format(min_draft))
-            self.form.minDraft.setText(Locale.toString(input_format.format(
-                qty.getValueAs(USys.getLengthUnits()).Value)))
-        try:
-            max_draft = Units.Quantity(Locale.fromString(
-                self.form.minDraft.text())).getValueAs('m').Value
-        except:
-            max_draft = 0.9 * self.ship.Draft.getValueAs('m').Value
-            input_format = USys.getLengthFormat()
-            qty = Units.Quantity('{} m'.format(max_draft))
-            self.form.maxDraft.setText(Locale.toString(input_format.format(
-                qty.getValueAs(USys.getLengthUnits()).Value)))
 
         # Clamp the values to the bounds
         bbox = self.ship.Shape.BoundBox
-        draft_min = bbox.ZMin / Units.Metre.Value
-        draft_max = bbox.ZMax / Units.Metre.Value
-        min_draft = self.clampLength(self.form.minDraft,
-                                     draft_min,
-                                     draft_max,
-                                     min_draft)
-        max_draft = self.clampLength(self.form.maxDraft,
-                                     draft_min,
-                                     draft_max,
-                                     max_draft)
-        trim_min = -180.0
-        trim_max = 180.0
-        trim = self.clampAngle(self.form.trim, trim_min, trim_max, trim)
-
-        # Clamp draft values to assert that the minimum value is lower than
+        draft_min = Units.Quantity(bbox.ZMin, Units.Length)
+        draft_max = Units.Quantity(bbox.ZMax, Units.Length)
+        min_draft = self.clampValue(
+            self.form.min_draft, draft_min, draft_max, min_draft)
+        max_draft = self.clampValue(
+            self.form.min_draft, draft_min, draft_max, max_draft)
+        # Check that the minimum value is lower than
         # the maximum one
-        min_draft = self.clampLength(self.form.minDraft,
-                                     draft_min,
-                                     max_draft,
-                                     min_draft)
-        max_draft = self.clampLength(self.form.maxDraft,
-                                     min_draft,
-                                     draft_max,
-                                     max_draft)
+        min_draft = self.clampValue(self.form.min_draft,
+                                    draft_min,
+                                    max_draft,
+                                    min_draft)
 
+        # Clamp the trim angle to sensible values
+        trim = self.clampValue(self.form.trim,
+                               Units.parseQuantity("-90 deg"),
+                               Units.parseQuantity("90 deg"),
+                               trim)
 
     def save(self):
         """ Saves data into ship instance.
         """
-        self.form.trim = self.widget(QtGui.QLineEdit, "Trim")
-        self.form.minDraft = self.widget(QtGui.QLineEdit, "MinDraft")
-        self.form.maxDraft = self.widget(QtGui.QLineEdit, "MaxDraft")
-        self.form.nDraft = self.widget(QtGui.QSpinBox, "NDraft")
-
-        trim = Units.Quantity(Locale.fromString(
-            self.form.trim.text())).getValueAs('deg').Value
-        min_draft = Units.Quantity(Locale.fromString(
-            self.form.minDraft.text())).getValueAs('m').Value
-        max_draft = Units.Quantity(Locale.fromString(
-            self.form.maxDraft.text())).getValueAs('m').Value
-        n_draft = self.form.nDraft.value()
+        trim = Units.Quantity(self.form.trim.text())
+        min_draft = Units.Quantity(self.form.min_draft.text())
+        max_draft = Units.Quantity(self.form.max_draft.text())
+        n_draft = self.form.n_draft.value()
 
         props = self.ship.PropertiesList
         try:
@@ -383,39 +282,39 @@ class TaskPanel:
         except ValueError:
             tooltip = str(QtGui.QApplication.translate(
                 "ship_hydrostatic",
-                "Hydrostatics tool trim selected",
+                "Hydrostatics tool selected trim angle",
                 None))
             self.ship.addProperty("App::PropertyAngle",
                                   "HydrostaticsTrim",
                                   "Ship",
                                   tooltip)
-        self.ship.HydrostaticsTrim = '{} deg'.format(trim)
+        self.ship.HydrostaticsTrim = trim
 
         try:
             props.index("HydrostaticsMinDraft")
         except ValueError:
             tooltip = str(QtGui.QApplication.translate(
                 "ship_hydrostatic",
-                "Hydrostatics tool minimum draft selected [m]",
+                "Hydrostatics tool selected minimum draft",
                 None))
             self.ship.addProperty("App::PropertyLength",
                                   "HydrostaticsMinDraft",
                                   "Ship",
                                   tooltip)
-        self.ship.HydrostaticsMinDraft = '{} m'.format(min_draft)
+        self.ship.HydrostaticsMinDraft = min_draft
 
         try:
             props.index("HydrostaticsMaxDraft")
         except ValueError:
             tooltip = str(QtGui.QApplication.translate(
                 "ship_hydrostatic",
-                "Hydrostatics tool maximum draft selected [m]",
+                "Hydrostatics tool selected maximum draft",
                 None))
             self.ship.addProperty("App::PropertyLength",
                                   "HydrostaticsMaxDraft",
                                   "Ship",
                                   tooltip)
-        self.ship.HydrostaticsMaxDraft = '{} m'.format(max_draft)
+        self.ship.HydrostaticsMaxDraft = max_draft
 
         try:
             props.index("HydrostaticsNDraft")
@@ -428,7 +327,7 @@ class TaskPanel:
                                   "HydrostaticsNDraft",
                                   "Ship",
                                   tooltip)
-        self.ship.HydrostaticsNDraft = self.form.nDraft.value()
+        self.ship.HydrostaticsNDraft = self.form.n_draft.value()
 
     def lineFaceSection(self, line, surface):
         """ Returns the point of section of a line with a face

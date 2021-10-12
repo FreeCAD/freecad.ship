@@ -30,10 +30,9 @@ from ..shipUtils import Paths
 
 
 class Plot(object):
-    def __init__(self, ship, trim, points):
+    def __init__(self, ship, points):
         """ Constructor. performs plot and show it (Using pyxplot).
         @param ship Selected ship instance
-        @param trim Trim in degrees.
         @param points List of computed hydrostatics.
         """
         self.points = points[:]
@@ -42,7 +41,7 @@ class Plot(object):
         self.plotStability()
         self.plotCoeffs()
         # Save data
-        if self.spreadSheet(ship, trim):
+        if self.spreadSheet(ship):
             return
 
     def plotVolume(self):
@@ -295,10 +294,10 @@ class Plot(object):
         plt.update()
         return False
 
-    def spreadSheet(self, ship, trim):
+    def spreadSheet(self, ship):
         """ Write data file.
         @param ship Selected ship instance
-        @param trim Trim in degrees.
+        @param trim Trim angle.
         @return True if error happens.
         """
         s = FreeCAD.activeDocument().addObject('Spreadsheet::Sheet',
