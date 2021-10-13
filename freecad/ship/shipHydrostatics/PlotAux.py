@@ -49,15 +49,18 @@ class Plot(object):
         @return True if error happens.
         """
         try:
-            from freecad.plot import Plot
-            plt = Plot.figure('Volume')
+            from FreeCAD.Plot import Plot
         except ImportError:
-            msg = QtGui.QApplication.translate(
-                "ship_console",
-                "Plot module is disabled, so I cannot perform the plot",
-                None)
-            FreeCAD.Console.PrintWarning(msg + '\n')
-            return True
+            try:
+                from freecad.plot import Plot
+            except ImportError:
+                msg = QtGui.QApplication.translate(
+                    "ship_console",
+                    "Plot module is disabled, so I cannot perform the plot",
+                    None)
+                FreeCAD.Console.PrintWarning(msg + '\n')
+                return True
+        plt = Plot.figure('Volume')
 
         # Generate the set of axes
         Plot.grid(True)

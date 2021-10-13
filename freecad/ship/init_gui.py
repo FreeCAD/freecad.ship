@@ -38,13 +38,16 @@ class ShipWorkbench(Gui.Workbench):
         from PySide import QtCore, QtGui
 
         try:
-            import freecad.plot
+            import FreeCAD.Plot
         except ImportError:
-            msg = QtGui.QApplication.translate(
-                "ship_console",
-                "freecad.plot is disabled, tools cannot graph output curves, install freecad.plot with addon-manager",
-                None)
-            App.Console.PrintMessage(msg + '\n')
+            try:
+                import freecad.plot
+            except ImportError:
+                msg = QtGui.QApplication.translate(
+                    "ship_console",
+                    "freecad.plot is disabled, tools cannot graph output curves, install freecad.plot with addon-manager",
+                    None)
+                App.Console.PrintWarning(msg + '\n')
         # ToolBar
         shiplist = ["Ship_LoadExample",
                     "Ship_CreateShip",
