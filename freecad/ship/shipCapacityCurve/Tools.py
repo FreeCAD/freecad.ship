@@ -28,6 +28,22 @@ from ..shipUtils import Units as USys
 from PySide import QtGui
 
 
+def compute_capacity(tank, level):
+    """Compute the tank capacity
+
+    Position arguments:
+    tank -- Tank object (see createTank)
+    level -- The filling percentage (0, 1)
+
+    Returned value:
+    The level length and the volume
+    """
+    bbox = tank.Shape.BoundBox
+    dz = Units.Quantity(bbox.ZMax - bbox.ZMin, Units.Length)
+    vol = tank.Proxy.getVolume(tank, level)
+    return level * dz, vol
+    
+
 def tankCapacityCurve(tank, n):
     """Create a tank capacity curve
 
@@ -47,12 +63,12 @@ def tankCapacityCurve(tank, n):
 
     msg = QtGui.QApplication.translate(
         "ship_console",
-        "Computing capacity curves",
+        "Computing capacity curve",
         None)
     App.Console.PrintMessage(msg + '...\n')
     for i in range(1, n):
         App.Console.PrintMessage("\t{} / {}\n".format(i + 1, n))
         level = i * dlevel
         vol = tank.Proxy.getVolume(tank, level)
-        out.append((level, level * dz, level * vol))
+        out.append((level, level * dz, vol))
     return out

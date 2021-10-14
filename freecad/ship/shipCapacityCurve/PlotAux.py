@@ -27,25 +27,41 @@ import FreeCADGui
 from FreeCAD import Base
 import Spreadsheet
 import matplotlib.ticker as mtick
+from ..shipHydrostatics.PlotAux import autolim
 
 
 class Plot(object):
-    def __init__(self, l, z, v, tank):
+    def __init__(self, l, z, v):
         """ Constructor. performs the plot and shows it.
         @param l Percentages of filling level.
         @param z Level z coordinates.
         @param v Volume of fluid.
-        @param tank Active tank instance.
         """
-        self.plot(l, z, v, tank)
-        self.spreadSheet(l, z, v, tank)
+        z = [zz.getValueAs('m').Value for zz in z]
+        v = [vv.getValueAs('m^3').Value for vv in v]
+        self.plot(l, z, v)
+        self.spreadSheet(l, z, v)
 
-    def plot(self, l, z, v, tank):
+    def update(self, l, z, v):
+        z = [zz.getValueAs('m').Value for zz in z]
+        v = [vv.getValueAs('m^3').Value for vv in v]
+        self.fillSpreadSheet(l, z, v)
+        if self.plt is None:
+            # No GUI? No Plot module? It does not matters, we cannot proceed
+            return
+
+        self.l.line.set_data(l, v)
+        self.z.line.set_data(z, v)
+        for ax in self.plt.axesList:
+            autolim(ax)
+        self.plt.update()
+
+
+    def plot(self, l, z, v):
         """ Perform the areas curve plot.
         @param l Percentages of filling level.
         @param z Level z coordinates.
         @param v Volume of fluid.
-        @param tank Active tank instance.
         @return True if error happens.
         """
         try:
@@ -61,12 +77,14 @@ class Plot(object):
                 FreeCAD.Console.PrintWarning(msg + '\n')
                 return True
         plt = Plot.figure('Capacity curve')
+        self.plt = plt
 
         # Plot the volume as a function of the level percentage
         vols = Plot.plot(l, v, 'Capacity')
         vols.line.set_linestyle('-')
         vols.line.set_linewidth(2.0)
         vols.line.set_color((0.0, 0.0, 0.0))
+        self.l = vols
         Plot.xlabel(r'$\mathrm{level}$')
         Plot.ylabel(r'$V \; [\mathrm{m}^3]$')
         plt.axes.xaxis.label.set_fontsize(20)
@@ -98,6 +116,7 @@ class Plot(object):
         vols.line.set_linestyle('-')
         vols.line.set_linewidth(2.0)
         vols.line.set_color((0.0, 0.0, 1.0))
+        self.z = vols
         Plot.xlabel(r'$z \; [\mathrm{m}]$')
         Plot.ylabel(r'$V \; [\mathrm{m}^3]$')
         ax.xaxis.label.set_fontsize(20)
@@ -110,16 +129,8 @@ class Plot(object):
         plt.update()
         return False
 
-    def spreadSheet(self, l, z, v, tank):
-        """ Write the output data file.
-        @param l Percentages of filling level.
-        @param z Level z coordinates.
-        @param v Volume of fluid.
-        @param tank Active tank instance.
-        """
-        s = FreeCAD.activeDocument().addObject('Spreadsheet::Sheet',
-                                               'Capacity curve')
-
+    def fillSpreadSheet(self, l, z, v):
+        s = self.sheet
         # Print the header
         s.set("A1", "Percentage of filling level")
         s.set("B1", "Level [m]")
@@ -132,4 +143,14 @@ class Plot(object):
             s.set("C{}".format(i + 2), str(v[i]))
 
         # Recompute
-        FreeCAD.activeDocument().recompute()
+        FreeCAD.activeDocument().recompute()        
+
+    def spreadSheet(self, l, z, v):
+        """ Write the output data file.
+        @param l Percentages of filling level.
+        @param z Level z coordinates.
+        @param v Volume of fluid.
+        """
+        self.sheet = FreeCAD.activeDocument().addObject('Spreadsheet::Sheet',
+                                               'Capacity curve')
+        self.fillSpreadSheet(l, z, v)

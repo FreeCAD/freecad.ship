@@ -28,7 +28,7 @@ from PySide import QtGui, QtCore
 from . import Tools
 from . import PlotAux
 from .. import Ship_rc
-from ..shipUtils import Units as USys
+from ..shipUtils import Selection
 
 
 class TaskPanel:
@@ -39,24 +39,58 @@ class TaskPanel:
         self.tank = None
 
     def accept(self):
-        if self.tank is None:
+        if not self.tank:
             return False
+        self.form.group_pbar.show()
 
         n = self.form.points.value()
+        self.form.pbar.setMinimum(0)
+        self.form.pbar.setMaximum(n - 1)
+        self.form.pbar.setValue(0)
 
-        points = Tools.tankCapacityCurve(self.tank, n)
-        l = []
-        z = []
-        v = []
-        for p in points:
-            l.append(p[0] * 100)
-            z.append(p[1].getValueAs("m").Value)
-            v.append(p[2].getValueAs("m^3").Value)
-
-        PlotAux.Plot(l, z, v, self.tank)
+        # Start iterating
+        self.loop = QtCore.QEventLoop()
+        self.timer = QtCore.QTimer()
+        self.timer.setSingleShot(True)
+        QtCore.QObject.connect(self.timer,
+                               QtCore.SIGNAL("timeout()"),
+                               self.loop,
+                               QtCore.SLOT("quit()"))
+        self.running = True
+        # Get the hydrostatics
+        msg = QtGui.QApplication.translate(
+            "ship_console",
+            "Computing capacity curve",
+            None)
+        App.Console.PrintMessage(msg + '...\n')
+        l = [0.0]
+        z = [Units.parseQuantity("0 m")]
+        v = [Units.parseQuantity("0 m^3")]
+        plt = None
+        for i in range(1, n):
+            App.Console.PrintMessage("\t{} / {}\n".format(i, n - 1))
+            self.form.pbar.setValue(i)
+            level = i / (n - 1)
+            h, vol = Tools.compute_capacity(self.tank, level)
+            l.append(100 * level)
+            z.append(h)
+            v.append(vol)
+            if plt is None:
+                plt = PlotAux.Plot(l, z, v)
+            else:
+                plt.update(l, z, v)
+            self.timer.start(0.0)
+            self.loop.exec_()
+            if(not self.running):
+                break
         return True
 
     def reject(self):
+        if not self.tank:
+            return False
+        if self.running:
+            self.running = False
+            return
         return True
 
     def clicked(self, index):
@@ -81,10 +115,11 @@ class TaskPanel:
         pass
 
     def setupUi(self):
-        self.form.points = self.widget(QtGui.QSpinBox, "Points")
+        self.form.points = self.widget(QtGui.QSpinBox, "points")
+        self.form.pbar = self.widget(QtGui.QProgressBar, "pbar")
+        self.form.group_pbar = self.widget(QtGui.QGroupBox, "group_pbar")
         if self.initValues():
             return True
-        self.retranslateUi()
 
     def getMainWindow(self):
         toplevel = QtGui.QApplication.topLevelWidgets()
@@ -107,53 +142,26 @@ class TaskPanel:
     def initValues(self):
         """ Set initial values for fields
         """
-        selObjs = Gui.Selection.getSelection()
-        if not selObjs:
+        sel_tanks = Selection.get_tanks()
+        if not sel_tanks:
             msg = QtGui.QApplication.translate(
                 "ship_console",
-                "A tank instance must be selected before using this tool (no"
-                " objects selected)",
+                "A tank instance must be selected before using this tool",
                 None)
             App.Console.PrintError(msg + '\n')
             return True
-        for i in range(0, len(selObjs)):
-            obj = selObjs[i]
-            props = obj.PropertiesList
-            try:
-                props.index("IsTank")
-            except ValueError:
-                continue
-            if obj.IsTank:
-                if self.tank:
-                    msg = QtGui.QApplication.translate(
-                        "ship_console",
-                        "More than one tank have been selected (the extra"
-                        " tanks will be ignored)",
-                        None)
-                    App.Console.PrintWarning(msg + '\n')
-                    break
-                self.tank = obj
-        if not self.tank:
+        self.tank = sel_tanks[0]
+        if len(sel_tanks) > 1:
             msg = QtGui.QApplication.translate(
                 "ship_console",
-                "A tank instance must be selected before using this tool (no"
-                " valid tank found at the selected objects)",
+                "More than one tank have been selected (just the one labelled"
+                " '{}' is considered)".format(self.tank.Label),
                 None)
-            App.Console.PrintError(msg + '\n')
-            return True
+            App.Console.PrintWarning(msg + '\n')
+
+        self.form.group_pbar.hide()
         return False
 
-    def retranslateUi(self):
-        """ Set user interface locale strings. """
-        self.form.setWindowTitle(QtGui.QApplication.translate(
-            "ship_capacity",
-            "Plot the tank capacity curve",
-            None))
-        self.widget(QtGui.QLabel, "PointsLabel").setText(
-            QtGui.QApplication.translate(
-                "ship_capacity",
-                "Number of points",
-                None))
 
 def createTask():
     panel = TaskPanel()
