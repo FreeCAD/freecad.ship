@@ -28,7 +28,6 @@ import FreeCADGui as Gui
 from FreeCAD import Base, Vector, Matrix, Placement, Rotation, Units
 import Part
 from .shipUtils import Paths, Math
-from .shipUtils import Units as USys
 
 
 COMMON_BOOLEAN_ITERATIONS = 10

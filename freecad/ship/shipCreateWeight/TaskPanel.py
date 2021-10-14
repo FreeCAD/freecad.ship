@@ -26,7 +26,6 @@ from FreeCAD import Units
 from PySide import QtGui, QtCore
 from . import Tools
 from .. import WeightInstance as Instance
-from ..shipUtils import Units as USys
 from .. import Ship_rc
 from ..shipUtils import Locale
 from ..shipUtils import Selection

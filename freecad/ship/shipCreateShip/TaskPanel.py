@@ -28,7 +28,6 @@ from . import Preview
 from . import Tools
 from .. import Instance  # from .ship
 from .. import Ship_rc
-from ..shipUtils import Units as USys
 from ..shipUtils import Locale
 from ..shipUtils import Selection
 
@@ -158,30 +157,23 @@ class TaskPanel:
         self.bounds[1] = max(maxY - minY, abs(maxY), abs(minY))
         self.bounds[2] = maxZ - minZ
 
-        input_format = USys.getLengthFormat()
-
         qty = Units.Quantity(self.bounds[0], Units.Length)
-        self.form.length.setText(Locale.toString(input_format.format(
-            qty.getValueAs(USys.getLengthUnits()).Value)))
+        self.form.length.setText(qty.UserString)
         self.L = self.bounds[0] / Units.Metre.Value
         qty = Units.Quantity(self.bounds[1], Units.Length)
-        self.form.breadth.setText(Locale.toString(input_format.format(
-            qty.getValueAs(USys.getLengthUnits()).Value)))
+        self.form.breadth.setText(qty.UserString)
         self.B = self.bounds[1] / Units.Metre.Value
         qty = Units.Quantity(self.bounds[2], Units.Length)
-        self.form.draft.setText(Locale.toString(input_format.format(
-            0.5 * qty.getValueAs(USys.getLengthUnits()).Value)))
+        self.form.draft.setText(qty.UserString)
         self.T = 0.5 * self.bounds[2] / Units.Metre.Value
         return False
 
     def clampVal(self, widget, val_min, val_max, val):
         if val >= val_min and val <= val_max:
             return val
-        input_format = USys.getLengthFormat()
         val = min(val_max, max(val_min, val))
-        qty = Units.Quantity('{} m'.format(val))
-        widget.setText(Locale.toString(input_format.format(
-            qty.getValueAs(USys.getLengthUnits()).Value)))
+        qty = Units.Quantity(val, Units.Length)
+        widget.setText(qty.UserString)
         return val
 
     def onData(self, widget, val_max):

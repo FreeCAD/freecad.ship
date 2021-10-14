@@ -28,7 +28,6 @@ from PySide import QtGui, QtCore
 from . import PlotAux
 from . import Tools
 from .. import Ship_rc
-from ..shipUtils import Units as USys
 from ..shipUtils import Locale
 
 
@@ -190,18 +189,15 @@ class TaskPanel:
             return True
 
         # We have a valid loading condition, let's set the initial field values
-        angle_format = USys.getAngleFormat()
         self.form.angle = self.widget(QtGui.QLineEdit, "Angle")
         self.form.n_points = self.widget(QtGui.QSpinBox, "NumPoints")
         self.form.var_trim = self.widget(QtGui.QCheckBox, "VariableTrim")
-        self.form.angle.setText(Locale.toString(angle_format.format(90.0)))
+        self.form.angle.setText(Units.parseQuantity("90 deg").UserString)
         # Try to use saved values
         props = self.ship.PropertiesList
         try:
             props.index("GZAngle")
-            self.form.angle.setText(Locale.toString(angle_format.format(
-                self.ship.GZAngle.getValueAs(
-                    USys.getAngleUnits()).Value)))
+            self.form.angle.setText(self.ship.GZAngle.UserString)
         except:
             pass
         try:

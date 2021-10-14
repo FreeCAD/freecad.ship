@@ -24,7 +24,6 @@
 import FreeCAD as App
 from FreeCAD import Units
 from .. import WeightInstance as Instance
-from ..shipUtils import Units as USys
 
 
 def createWeight(shapes, ship, density):
