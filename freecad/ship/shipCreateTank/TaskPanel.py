@@ -27,7 +27,7 @@ from PySide import QtGui, QtCore
 from . import Tools
 from .. import TankInstance as Instance
 from .. import Ship_rc
-from ..shipUtils import Units as USys
+from ..shipUtils import Selection
 
 class TaskPanel:
     def __init__(self):
@@ -73,7 +73,6 @@ class TaskPanel:
         self.form.ship = self.widget(QtGui.QComboBox, "Ship")
         if self.initValues():
             return True
-        self.retranslateUi()
 
     def getMainWindow(self):
         toplevel = QtGui.QApplication.topLevelWidgets()
@@ -97,42 +96,22 @@ class TaskPanel:
         """Setup the initial values"""
         # Ensure that there are at least one valid object to generate the
         # tank
-        selObjs = Gui.Selection.getSelection()
-        self.solids = []
-        if not selObjs:
+        self.solids = Selection.get_solids()
+        if not self.solids:
             msg = QtGui.QApplication.translate(
                 "ship_tank",
-                "Tanks objects can only be created on top of its geometry"
-                " (no objects selected)",
-                None)
-            App.Console.PrintError(msg + '\n')
-            return True
-        for obj in selObjs:
-            try:
-                self.solids.extend(obj.Shape.Solids)
-            except:
-                continue
-        if not len(self.solids):
-            msg = QtGui.QApplication.translate(
-                "ship_tank",
-                "No solids found in the selected objects",
+                "Tanks objects can only be created on top of solids geometry",
                 None)
             App.Console.PrintError(msg + '\n')
             return True
 
         # Ensure as well that exist at least one valid ship to create the
         # entity inside it
-        self.ships = []
-        for obj in App.ActiveDocument.Objects:
-            try:
-                if obj.IsShip:
-                    self.ships.append(obj)
-            except:
-                continue
-        if not len(self.ships):
+        self.ships = Selection.get_doc_ships()
+        if not self.ships:
             msg = QtGui.QApplication.translate(
                 "ship_tank",
-                "There are not ship objects to create weights into them",
+                "There are not ship objects to create tanks into them",
                 None)
             App.Console.PrintError(msg + '\n')
             return True
@@ -145,18 +124,6 @@ class TaskPanel:
         self.form.ship.setCurrentIndex(0)
 
         return False
-
-    def retranslateUi(self):
-        """Set the user interface locale strings."""
-        self.form.setWindowTitle(QtGui.QApplication.translate(
-            "ship_tank",
-            "Create a new tank",
-            None))
-        self.widget(QtGui.QLabel, "ShipLabel").setText(
-            QtGui.QApplication.translate(
-                "ship_tank",
-                "Ship",
-                None))
 
 
 def createTask():

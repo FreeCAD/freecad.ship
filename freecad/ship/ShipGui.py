@@ -152,6 +152,9 @@ class CreateWeight:
 
 
 class CreateTank:
+    def IsActive(self):
+        return bool(Selection.get_solids()) and bool(Selection.get_doc_ships())
+
     def Activated(self):
         from . import shipCreateTank
         shipCreateTank.load()
