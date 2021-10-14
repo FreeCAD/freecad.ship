@@ -243,7 +243,7 @@ class TaskPanel:
             self.form.max_draft.text()))
         trim = Units.parseQuantity(Locale.fromString(self.form.trim.text()))
         if min_draft.Unit != Units.Length or \
-            min_draft.Unit != Units.Length or \
+            max_draft.Unit != Units.Length or \
             trim.Unit != Units.Angle:
             return
 
@@ -254,7 +254,7 @@ class TaskPanel:
         min_draft = self.clampValue(
             self.form.min_draft, draft_min, draft_max, min_draft)
         max_draft = self.clampValue(
-            self.form.min_draft, draft_min, draft_max, max_draft)
+            self.form.max_draft, draft_min, draft_max, max_draft)
         # Check that the minimum value is lower than
         # the maximum one
         min_draft = self.clampValue(self.form.min_draft,
