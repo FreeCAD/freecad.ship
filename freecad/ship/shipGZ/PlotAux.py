@@ -26,6 +26,7 @@ from PySide import QtGui, QtCore
 import FreeCAD
 import FreeCADGui
 import Spreadsheet
+from ..shipHydrostatics.PlotAux import autolim
 
 
 class Plot(object):
@@ -38,8 +39,27 @@ class Plot(object):
         draft -- List of equilibrium drafts (in meters).
         trim -- List of equilibrium trim angles (in degrees).
         """
+        roll = [r.getValueAs('deg').Value for r in roll]
+        gz = [l.getValueAs('m').Value for l in gz]
+        draft = [t.getValueAs('m').Value for t in draft]
+        trim = [t.getValueAs('deg').Value for t in trim]
         self.plot(roll, gz)
         self.spreadSheet(roll, gz, draft, trim)
+
+    def update(self, roll, gz, draft, trim):
+        roll = [r.getValueAs('deg').Value for r in roll]
+        gz = [l.getValueAs('m').Value for l in gz]
+        draft = [t.getValueAs('m').Value for t in draft]
+        trim = [t.getValueAs('deg').Value for t in trim]
+        self.fillSpreadSheet(roll, gz, draft, trim)
+        if self.plt is None:
+            # No GUI? No Plot module? It does not matters, we cannot proceed
+            return
+        self.gz.line.set_data(roll, gz)
+        for ax in self.plt.axesList:
+            autolim(ax)
+        self.plt.update()
+
 
     def plot(self, roll, gz):
         """ Plot the GZ curve.
@@ -61,11 +81,13 @@ class Plot(object):
                 FreeCAD.Console.PrintWarning(msg + '\n')
                 return True
         plt = Plot.figure('GZ')
+        self.plt = plt
 
         gz_plot = Plot.plot(roll, gz, 'GZ curve')
         gz_plot.line.set_linestyle('-')
         gz_plot.line.set_linewidth(1.0)
         gz_plot.line.set_color((0.0, 0.0, 0.0))
+        self.gz = gz_plot
 
         ax = Plot.axes()
         Plot.xlabel(r'$\phi \; [\mathrm{deg}]$')
@@ -77,17 +99,8 @@ class Plot(object):
         plt.update()
         return False
 
-    def spreadSheet(self, roll, gz, draft, trim):
-        """ Create a Spreadsheet with the results
-
-        Position arguments:
-        roll -- List of roll angles (in degrees).
-        gz -- List of GZ values (in meters).
-        draft -- List of equilibrium drafts (in meters).
-        trim -- List of equilibrium trim angles (in degrees).
-        """
-        s = FreeCAD.activeDocument().addObject('Spreadsheet::Sheet',
-                                               'GZ')
+    def fillSpreadSheet(self, roll, gz, draft, trim):
+        s = self.sheet
 
         # Print the header
         s.set("A1", "roll [deg]")
@@ -104,3 +117,16 @@ class Plot(object):
 
         # Recompute
         FreeCAD.activeDocument().recompute()
+
+    def spreadSheet(self, roll, gz, draft, trim):
+        """ Create a Spreadsheet with the results
+
+        Position arguments:
+        roll -- List of roll angles (in degrees).
+        gz -- List of GZ values (in meters).
+        draft -- List of equilibrium drafts (in meters).
+        trim -- List of equilibrium trim angles (in degrees).
+        """
+        self.sheet = FreeCAD.activeDocument().addObject('Spreadsheet::Sheet',
+                                                        'GZ')
+        self.fillSpreadSheet(roll, gz, draft, trim)
