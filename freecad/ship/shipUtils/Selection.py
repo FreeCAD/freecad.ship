@@ -120,6 +120,17 @@ def get_ships():
     return objs
 
 
+def get_tanks():
+    objs = []
+    for obj in Gui.Selection.getSelection():
+        try:
+            if obj.IsTank:
+                objs.append(obj)
+        except AttributeError:
+            continue
+    return objs
+
+
 def get_doc_ships(doc=None):
     doc = doc or App.ActiveDocument
     objs = []

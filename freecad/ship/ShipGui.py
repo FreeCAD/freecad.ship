@@ -172,6 +172,9 @@ class CreateTank:
 
 
 class TankCapacity:
+    def IsActive(self):
+        return bool(Selection.get_tanks())
+
     def Activated(self):
         from . import shipCapacityCurve
         shipCapacityCurve.load()

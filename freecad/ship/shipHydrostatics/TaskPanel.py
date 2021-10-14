@@ -199,7 +199,7 @@ class TaskPanel:
             msg = QtGui.QApplication.translate(
                 "ship_console",
                 "More than one ship have been selected (just the one labelled"
-                "'{}' is considered)".format(self.ship.Label),
+                " '{}' is considered)".format(self.ship.Label),
                 None)
             App.Console.PrintWarning(msg + '\n')
 
