@@ -55,7 +55,9 @@ class TaskPanel:
         elif self.elem_type == 4:
             density = Units.parseQuantity(Locale.fromString(
                 self.form.dens_vol.text()))
-        Tools.createWeight(self.shapes, ship, density)
+        obj = Tools.createWeight(self.shapes, ship, density)
+        guiobj = Gui.ActiveDocument.getObject(obj.Name)
+        guiobj.PointSize = 10.00
         return True
 
     def reject(self):
