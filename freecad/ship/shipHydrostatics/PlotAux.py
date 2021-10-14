@@ -31,8 +31,8 @@ from ..shipUtils import Paths
 
 
 def autolim(ax):
-    xmin, xmax = sys.float_info.max, sys.float_info.min
-    ymin, ymax = sys.float_info.max, sys.float_info.min
+    xmin, xmax = sys.float_info.max, -sys.float_info.max
+    ymin, ymax = sys.float_info.max, -sys.float_info.max
     for l in ax.get_lines():
         xmin = min(xmin, min(l.get_xdata()))
         xmax = max(xmax, max(l.get_xdata()))
