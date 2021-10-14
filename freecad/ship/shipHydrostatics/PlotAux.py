@@ -92,7 +92,7 @@ class Plot(object):
 
         axes = Plot.axesList()
         for ax in axes:
-            ax.set_position([0.1, 0.2, 0.8, 0.75])
+            ax.set_position([0.1, 0.35, 0.8, 0.65])
 
         plt.axes = axes[0]
         serie = Plot.plot(draft, disp, r'$T$')
@@ -174,7 +174,7 @@ class Plot(object):
 
         axes = Plot.axesList()
         for ax in axes:
-            ax.set_position([0.1, 0.2, 0.8, 0.75])
+            ax.set_position([0.1, 0.35, 0.8, 0.65])
 
         plt.axes = axes[0]
         serie = Plot.plot(draft, disp, r'$T$')
@@ -256,7 +256,7 @@ class Plot(object):
 
         axes = Plot.axesList()
         for ax in axes:
-            ax.set_position([0.1, 0.2, 0.8, 0.75])
+            ax.set_position([0.1, 0.35, 0.8, 0.65])
 
         plt.axes = axes[0]
         serie = Plot.plot(draft, disp, r'$T$')
