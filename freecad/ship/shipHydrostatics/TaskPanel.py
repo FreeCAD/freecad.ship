@@ -31,7 +31,6 @@ from . import PlotAux
 from . import Tools
 from .. import Instance
 from .. import Ship_rc
-from ..shipUtils import Units as USys
 from ..shipUtils import Locale
 from ..shipUtils import Selection
 
@@ -204,9 +203,6 @@ class TaskPanel:
             App.Console.PrintWarning(msg + '\n')
 
         props = self.ship.PropertiesList
-
-        length_format = USys.getLengthFormat()
-        angle_format = USys.getAngleFormat()
 
         try:
             props.index("HydrostaticsTrim")

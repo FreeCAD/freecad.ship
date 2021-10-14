@@ -192,6 +192,9 @@ class TankCapacity:
 
 
 class LoadCondition:
+    def IsActive(self):
+        return bool(Selection.get_ships())
+
     def Activated(self):
         from . import shipCreateLoadCondition
         shipCreateLoadCondition.load()
