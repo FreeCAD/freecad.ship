@@ -358,7 +358,7 @@ def floatingArea(ship, draft=None,
     Area = Units.Quantity(
         (bbox.XMax - bbox.XMin) * (bbox.YMax - bbox.YMin), Units.Area)
     try:
-        cf = area.Value / Area
+        cf = (area / Area).Value
     except ZeroDivisionError:
         msg = QtGui.QApplication.translate(
             "ship_console",
