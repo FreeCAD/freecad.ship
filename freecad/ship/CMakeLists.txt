@@ -97,7 +97,6 @@ SET(ShipUtils_SRCS
     shipUtils/Locale.py
     shipUtils/Math.py
     shipUtils/Paths.py
-    shipUtils/Units.py
 )
 SOURCE_GROUP("shiputils" FILES ${ShipUtils_SRCS})
 

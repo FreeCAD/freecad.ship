@@ -24,7 +24,6 @@
 import FreeCAD as App
 from FreeCAD import Units
 from .. import Ship_rc
-from ..shipUtils import Units as USys
 from PySide import QtGui
 
 

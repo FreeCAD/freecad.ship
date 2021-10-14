@@ -29,7 +29,6 @@ from . import Preview
 from . import PlotAux
 from .. import Ship_rc
 from ..import Instance
-from ..shipUtils import Units as USys
 from ..shipUtils import Locale
 from ..shipUtils import Selection
 from ..shipHydrostatics import Tools as Hydrostatics
