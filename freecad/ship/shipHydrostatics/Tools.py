@@ -88,6 +88,8 @@ def getUnderwaterSide(shape, force=True):
     # Convert the shape into an active object
     Part.show(shape)
     orig = App.ActiveDocument.Objects[-1]
+    guiObj = Gui.ActiveDocument.getObject(orig.Name)
+    guiObj.ShowInTree = False
 
     bbox = shape.BoundBox
     xmin = Units.Quantity(bbox.XMin, Units.Length)
@@ -108,11 +110,15 @@ def getUnderwaterSide(shape, force=True):
     box.Length = 3.0 * L
     box.Width = 3.0 * B
     box.Height = -zmin + H
+    guiObj = Gui.ActiveDocument.getObject(box.Name)
+    guiObj.ShowInTree = False
 
     App.ActiveDocument.recompute()
     common = App.activeDocument().addObject("Part::MultiCommon",
                                             "UnderwaterSideHelper")
     common.Shapes = [orig, box]
+    guiObj = Gui.ActiveDocument.getObject(common.Name)
+    guiObj.ShowInTree = False
     App.ActiveDocument.recompute()
     if force and len(common.Shape.Solids) == 0:
         # The common operation is failing, let's try moving a bit the free
@@ -171,15 +177,14 @@ def areas(ship, n, draft=None,
 
     # Sections distance computation
     bbox = shape.BoundBox
-    xmin = bbox.XMin
-    xmax = bbox.XMax
+    xmin = Units.Quantity(bbox.XMin, Units.Length)
+    xmax = Units.Quantity(bbox.XMax, Units.Length)
     dx = (xmax - xmin) / (n - 1.0)
 
     # Since we are computing the sections in the total length (not in the
     # length between perpendiculars), we can grant that the starting and
     # ending sections have null area
-    areas = [(Units.Quantity(xmin, Units.Length),
-              Units.Quantity(0.0, Units.Area))]
+    areas = [(xmin, Units.Quantity(0.0, Units.Area))]
     # And since we just need to compute areas we will create boxes with its
     # front face at the desired transversal area position, computing the
     # common solid part, dividing it by faces, and getting only the desired
@@ -195,7 +200,8 @@ def areas(ship, n, draft=None,
         except Part.OCCError:
             msg = QtGui.QApplication.translate(
                 "ship_console",
-                "Part.OCCError: Transversal area computation failed",
+                "Part.OCCError: Area computation failed (x={})".format(
+                    x.UserStrig),
                 None)
             App.Console.PrintError(msg + '\n')
             areas.append((Units.Quantity(x, Units.Length),
@@ -277,7 +283,6 @@ def displacement(ship, draft=None,
         App.Console.PrintError(msg + '\n')
         cb = 0.0
 
-
     # Return the computed data
     return (DENS * Units.Quantity(vol, Units.Volume),
             Vector(B.X, B.Y, B.Z),
@@ -297,49 +302,20 @@ def wettedArea(shape, draft, roll=Units.parseQuantity("0 deg"),
     trim -- Trim angle (0 degrees by default)
 
     Returned value:
-    The wetted area, i.e. The underwater side area
+    The wetted area, i.e. The underwater surface area
     """
     shape, _ = placeShipShape(shape.copy(), draft, roll, trim)
     shape = getUnderwaterSide(shape, force=False)
+    submerged_length = shape.BoundBox.ZLength
 
     area = 0.0
     for f in shape.Faces:
+        if f.BoundBox.ZLength < 0.01 * submerged_length and \
+           abs(f.BoundBox.ZMin) < 0.01 * submerged_length:
+            # Discard the eventual intersections with the free surface
+            continue
         area = area + f.Area
     return Units.Quantity(area, Units.Area)
-
-
-def moment(ship, draft=None,
-                 roll=Units.parseQuantity("0 deg"),
-                 trim=Units.parseQuantity("0 deg")):
-    """Compute the moment required to trim the ship 1cm
-
-    Position arguments:
-    ship -- Ship object (see createShip)
-
-    Keyword arguments:
-    draft -- Ship draft (Design ship draft by default)
-    roll -- Roll angle (0 degrees by default)
-    trim -- Trim angle (0 degrees by default)
-
-    Returned value:
-    Moment required to trim the ship 1cm. Such moment is positive if it cause a
-    positive trim angle. The moment is expressed as a mass by a distance, not as
-    a force by a distance
-    """
-    disp_orig, B_orig, _ = displacement(ship, draft, roll, trim)
-    xcb_orig = Units.Quantity(B_orig.x, Units.Length)
-
-    factor = 10.0
-    x = 0.5 * ship.Length.getValueAs('cm').Value
-    y = 1.0
-    angle = math.atan2(y, x) * Units.Radian
-    trim_new = trim + factor * angle
-    disp_new, B_new, _ = displacement(ship, draft, roll, trim_new)
-    xcb_new = Units.Quantity(B_new.x, Units.Length)
-
-    mom0 = -disp_orig * xcb_orig
-    mom1 = -disp_new * xcb_new
-    return (mom1 - mom0) / factor
 
 
 def floatingArea(ship, draft=None,
@@ -375,10 +351,12 @@ def floatingArea(ship, draft=None,
             "Part.OCCError: Floating area cannot be computed",
             None)
         App.Console.PrintError(msg + '\n')
+        f = None
         area = Units.Quantity(0.0, Units.Area)
 
     bbox = shape.BoundBox
-    Area = (bbox.XMax - bbox.XMin) * (bbox.YMax - bbox.YMin)
+    Area = Units.Quantity(
+        (bbox.XMax - bbox.XMin) * (bbox.YMax - bbox.YMin), Units.Area)
     try:
         cf = area.Value / Area
     except ZeroDivisionError:
@@ -390,14 +368,60 @@ def floatingArea(ship, draft=None,
         App.Console.PrintError(msg + '\n')
         cf = 0.0
 
-    return area, cf
+    return area, cf, f
 
 
-def BMT(ship, draft=None, trim=Units.parseQuantity("0 deg")):
+def moment(ship, fs, draft=None,
+                     roll=Units.parseQuantity("0 deg"),
+                     trim=Units.parseQuantity("0 deg")):
+    """Compute the moment required to trim the ship 1cm
+
+    Position arguments:
+    ship -- Ship object (see createShip)
+    fs -- The shape of the free surface. If None is passed, the BML will be
+          computed heuristically, i.e. the ship will be rotated a small angle,
+          tracking the bouyance center.
+
+    Keyword arguments:
+    draft -- Ship draft (Design ship draft by default)
+    roll -- Roll angle (0 degrees by default)
+    trim -- Trim angle (0 degrees by default)
+
+    Returned value:
+    Moment required to trim the ship 1cm. Such moment is positive if it cause a
+    positive trim angle. The moment is expressed as a mass by a distance, not as
+    a force by a distance
+    """
+    if draft is None:
+        draft = ship.Draft
+
+    disp_orig, B_orig, _ = displacement(ship, draft, roll, trim)
+    if fs is not None:
+        vol = disp_orig / DENS
+        inertia_unit = (Units.Quantity(1, Units.Length)**4).Unit
+        BML = Units.Quantity(fs.MatrixOfInertia.A22, inertia_unit) / vol
+        return disp_orig * BML / ship.Length.getValueAs('cm').Value
+
+    factor = 10.0
+    x = 0.5 * ship.Length.getValueAs('cm').Value
+    y = 1.0
+    angle = math.atan2(y, x) * Units.Radian
+    trim_new = trim + factor * angle
+    disp_new, B_new, _ = displacement(ship, draft, roll, trim_new)
+
+    mom0 = disp_orig * Units.Quantity(B_orig.x, Units.Length)
+    mom1 = disp_new * Units.Quantity(B_new.x, Units.Length)
+    return (mom1 - mom0) / factor
+
+
+def BMT(ship, fs, draft=None, trim=Units.parseQuantity("0 deg")):
     """Calculate "ship Bouyance center" - "transversal metacenter" radius
 
     Position arguments:
     ship -- Ship object (see createShip)
+    fs -- The shape of the free surface. If None is passed, the BMT will be
+          computed heuristically, i.e. the ship will be rotated a small angle,
+          tracking the bouyance center.
 
     Keyword arguments:
     draft -- Ship draft (Design ship draft by default)
@@ -410,8 +434,11 @@ def BMT(ship, draft=None, trim=Units.parseQuantity("0 deg")):
         draft = ship.Draft
 
     roll = Units.parseQuantity("0 deg")
-    _, B0, _ = displacement(ship, draft, roll, trim)
-
+    disp, B0, _ = displacement(ship, draft, roll=roll, trim=trim)
+    if fs is not None:
+        vol = disp / DENS
+        inertia_unit = (Units.Quantity(1, Units.Length)**4).Unit
+        return Units.Quantity(fs.MatrixOfInertia.A11, inertia_unit) / vol
 
     nRoll = 2
     maxRoll = Units.parseQuantity("7 deg")
@@ -514,9 +541,9 @@ class Point:
             wet = 0.0
         else:
             wet = wettedArea(faces, draft=draft, trim=trim)
-        mom = moment(ship, draft=draft, trim=trim)
-        farea, cf = floatingArea(ship, draft=draft, trim=trim)
-        bm = BMT(ship, draft=draft, trim=trim)
+        farea, cf, fshape = floatingArea(ship, draft=draft, trim=trim)
+        mom = moment(ship, fshape, draft=draft, trim=trim)
+        bm = BMT(ship, fshape, draft=draft, trim=trim)
         cm = mainFrameCoeff(ship, draft=draft)
         # Store final data
         self.draft = draft
