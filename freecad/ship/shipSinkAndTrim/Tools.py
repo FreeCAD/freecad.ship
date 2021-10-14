@@ -22,11 +22,13 @@
 
 import math
 import FreeCAD as App
-import FreeCADGui as Gui
+try:
+    import FreeCADGui as Gui
+except ImportError:
+    Gui = None
 from FreeCAD import Vector, Matrix, Placement
 import Part
 from FreeCAD import Units
-from PySide import QtGui
 from .. import Instance as ShipInstance
 from .. import WeightInstance
 from .. import TankInstance
@@ -78,10 +80,10 @@ def compute(lc, fs_ref=True, doc=App.ActiveDocument):
         shape = __place_shape(shape, -draft, -trim)
     Part.show(shape, name)
     doc.recompute()
-    fs = Gui.getDocument(doc.Name).getObject(name)
-    fs.LineColor = (0.0, 0.0, 0.5)
-    fs.ShapeColor = (0.0, 0.7, 1.0)
-    fs.Transparency = 75
+    if Gui:
+        fs = Gui.getDocument(doc.Name).getObject(name)
+        fs.LineColor = (0.0, 0.0, 0.5)
+        fs.ShapeColor = (0.0, 0.7, 1.0)
     group_objs.append(doc.getObject(name))
 
     # Copy and place the ship
@@ -91,8 +93,9 @@ def compute(lc, fs_ref=True, doc=App.ActiveDocument):
         shape = __place_shape(ship.Shape.copy(), draft, trim)
     Part.show(shape, name)
     doc.recompute()
-    plot_ship = Gui.getDocument(doc.Name).getObject(name)
-    plot_ship.Transparency = 50
+    if Gui:
+        plot_ship = Gui.getDocument(doc.Name).getObject(name)
+        plot_ship.Transparency = 50
     group_objs.append(doc.getObject(name))
     doc.getObject(name).Label = 'SinkAndTrim_' + ship.Label
     # Copy and place the tanks
@@ -119,6 +122,9 @@ def compute(lc, fs_ref=True, doc=App.ActiveDocument):
         shape = __place_shape(shape, draft, trim)
     Part.show(shape, name)
     doc.recompute()
+    if Gui:
+        b = Gui.getDocument(doc.Name).getObject(name)
+        b.PointSize = 10.00
     group_objs.append(doc.getObject(name))
     # Place the COG
     COG, W = GZ.weights_cog(weights)
@@ -143,6 +149,9 @@ def compute(lc, fs_ref=True, doc=App.ActiveDocument):
         shape = __place_shape(shape, draft, trim)
     Part.show(shape, name)
     doc.recompute()
+    if Gui:
+        cog = Gui.getDocument(doc.Name).getObject(name)
+        cog.PointSize = 10.00
     group_objs.append(doc.getObject(name))
 
     # Create a group where the results will be placed

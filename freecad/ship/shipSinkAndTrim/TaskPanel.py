@@ -27,7 +27,7 @@ from FreeCAD import Units
 from PySide import QtGui, QtCore
 from . import Tools
 from .. import Ship_rc
-from ..shipUtils import Locale
+from ..shipUtils import Selection
 
 
 class TaskPanel:
@@ -67,12 +67,11 @@ class TaskPanel:
         pass
 
     def setupUi(self):
-        self.form.update = self.widget(QtGui.QPushButton, "UpdateButton")
-        self.form.ref = self.widget(QtGui.QComboBox, "ReferenceSystem")
-        self.form.result = self.widget(QtGui.QTextEdit, "ResultsBox")
+        self.form.update = self.widget(QtGui.QPushButton, "update")
+        self.form.ref = self.widget(QtGui.QComboBox, "ref")
+        self.form.result = self.widget(QtGui.QTextEdit, "result")
         if self.initValues():
             return True
-        self.retranslateUi()
         QtCore.QObject.connect(
             self.form.update,
             QtCore.SIGNAL("pressed()"),
@@ -105,75 +104,22 @@ class TaskPanel:
         """
         self.doc = App.ActiveDocument
         # Look for selected loading conditions (Spreadsheets)
-        self.lc = None
-        selObjs = Gui.Selection.getSelection()
-        if not selObjs:
+        sel_lcs = Selection.get_lcs()
+        if not sel_lcs:
             msg = QtGui.QApplication.translate(
                 "ship_console",
-                "A loading condition instance must be selected before using"
-                " this tool (no objects selected)",
+                "A load condition instance must be selected before using this tool",
                 None)
             App.Console.PrintError(msg + '\n')
             return True
-        for i in range(len(selObjs)):
-            obj = selObjs[i]
-            try:
-                if obj.TypeId != 'Spreadsheet::Sheet':
-                    continue
-            except ValueError:
-                continue
-            # Check if it is a Loading condition:
-            # B1 cell must be a ship
-            # B2 cell must be the loading condition itself
-            doc = App.ActiveDocument
-            try:
-                if obj not in doc.getObjectsByLabel(obj.get('B2')):
-                    continue
-                ships = doc.getObjectsByLabel(obj.get('B1'))
-                if len(ships) != 1:
-                    if len(ships) == 0:
-                        msg = QtGui.QApplication.translate(
-                            "ship_console",
-                            "Wrong Ship label! (no instances labeled as"
-                            "'{}' found)",
-                            None)
-                        App.Console.PrintError(msg + '\n'.format(
-                            obj.get('B1')))
-                    else:
-                        msg = QtGui.QApplication.translate(
-                            "ship_console",
-                            "Ambiguous Ship label! ({} instances labeled as"
-                            "'{}' found)",
-                            None)
-                        App.Console.PrintError(msg + '\n'.format(
-                            len(ships),
-                            obj.get('B1')))
-                    continue
-                ship = ships[0]
-                if ship is None or not ship.PropertiesList.index("IsShip"):
-                    continue
-            except ValueError:
-                continue
-            # Let's see if several loading conditions have been selected (and
-            # prompt a warning)
-            if self.lc:
-                msg = QtGui.QApplication.translate(
-                    "ship_console",
-                    "More than one loading condition have been selected (the"
-                    " extra loading conditions will be ignored)",
-                    None)
-                App.Console.PrintWarning(msg + '\n')
-                break
-            self.lc = obj
-        if not self.lc:
+        self.lc = sel_lcs[0]
+        if len(sel_lcs) > 1:
             msg = QtGui.QApplication.translate(
                 "ship_console",
-                "A loading condition instance must be selected before using"
-                " this tool (no valid loading condition found at the selected"
-                " objects)",
+                "More than one load condition have been selected (just the one"
+                " labelled '{}' is considered)".format(self.lc.Label),
                 None)
-            App.Console.PrintError(msg + '\n')
-            return True
+            App.Console.PrintWarning(msg + '\n')
 
         # We have a valid loading condition, let's set the initial field values
         self.form.result.setText(QtGui.QApplication.translate(
@@ -182,30 +128,6 @@ class TaskPanel:
             None))
 
         return False
-
-    def retranslateUi(self):
-        """ Set user interface locale strings. """
-        self.form.setWindowTitle(QtGui.QApplication.translate(
-            "ship_sinkandtrim",
-            "Sink and trim",
-            None))
-        self.form.update.setText(
-            QtGui.QApplication.translate(
-                "ship_sinkandtrim",
-                "Update",
-                None))
-        self.form.ref.setItemText(
-            0,
-            QtGui.QApplication.translate(
-                "ship_sinkandtrim",
-                "Reference on the free surface",
-                None))
-        self.form.ref.setItemText(
-            1,
-            QtGui.QApplication.translate(
-                "ship_sinkandtrim",
-                "Upright",
-                None))
 
     def onUpdate(self):
         """Time to recompute!
@@ -233,8 +155,7 @@ class TaskPanel:
         self.form.result.setText(
             "\u0394 = {}\n".format(disp.UserString) + \
             "{} = {}\n".format(draft_str, draft.UserString) + \
-            "{} = {}\n".format(trim_str, trim.UserString)
-        )
+            "{} = {}\n".format(trim_str, trim.UserString))
 
     def onReference(self):
         """ Function called when the section type is changed.
@@ -251,6 +172,7 @@ class TaskPanel:
             App.ActiveDocument.removeObject(obj.Name)
         App.ActiveDocument.removeObject(self.plot.Name)
         self.plot = None
+
 
 def createTask():
     panel = TaskPanel()
