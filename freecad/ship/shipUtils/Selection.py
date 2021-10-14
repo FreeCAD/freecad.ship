@@ -131,6 +131,35 @@ def get_tanks():
     return objs
 
 
+def get_lcs():
+    objs = []
+    for obj in Gui.Selection.getSelection():
+        try:
+            if obj.TypeId != 'Spreadsheet::Sheet':
+                continue
+        except ValueError:
+            continue
+        # Check if it is a Loading condition:
+        # B1 cell must be a ship
+        # B2 cell must be the loading condition itself
+        try:
+            if obj not in App.ActiveDocument.getObjectsByLabel(obj.get('B2')):
+                continue
+            ships = App.ActiveDocument.getObjectsByLabel(obj.get('B1'))
+            if len(ships) != 1:
+                continue
+            ship = ships[0]
+            try:
+                if not ship.IsShip:
+                    continue
+            except AttributeError:
+                continue
+        except ValueError:
+            continue
+        objs.append(obj)
+    return objs
+
+
 def get_doc_ships(doc=None):
     doc = doc or App.ActiveDocument
     objs = []

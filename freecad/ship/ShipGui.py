@@ -212,6 +212,9 @@ class LoadCondition:
 
 
 class SinkAndTrim:
+    def IsActive(self):
+        return bool(Selection.get_lcs())
+
     def Activated(self):
         from . import shipSinkAndTrim
         shipSinkAndTrim.load()

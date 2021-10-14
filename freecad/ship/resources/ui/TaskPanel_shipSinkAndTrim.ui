@@ -15,21 +15,30 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <widget class="QPushButton" name="UpdateButton">
+    <widget class="QPushButton" name="update">
+     <property name="toolTip">
+      <string>Press to recompute the equilibrium state</string>
+     </property>
      <property name="text">
       <string>Update</string>
      </property>
     </widget>
    </item>
    <item row="2" column="0">
-    <widget class="QTextEdit" name="ResultsBox">
+    <widget class="QTextEdit" name="result">
+     <property name="toolTip">
+      <string>The resulting draft, trim angle and displacement are shown here</string>
+     </property>
      <property name="readOnly">
       <bool>true</bool>
      </property>
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="QComboBox" name="ReferenceSystem">
+    <widget class="QComboBox" name="ref">
+     <property name="toolTip">
+      <string>The results can be shown in 2 different reference systems: In the standard upright ship position (i.e. the ship is not moved), or in the free-surface flat plane (i.e. the free-surface is set to the plane z=0, and the ship is consistently translated and rotated).</string>
+     </property>
      <property name="currentIndex">
       <number>0</number>
      </property>
