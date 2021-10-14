@@ -21,12 +21,31 @@
 #***************************************************************************
 
 import os
+import sys
 import math
 from PySide import QtGui, QtCore
 import FreeCAD
 import FreeCADGui
 import Spreadsheet
 from ..shipUtils import Paths
+
+
+def autolim(ax):
+    xmin, xmax = sys.float_info.max, sys.float_info.min
+    ymin, ymax = sys.float_info.max, sys.float_info.min
+    for l in ax.get_lines():
+        xmin = min(xmin, min(l.get_xdata()))
+        xmax = max(xmax, max(l.get_xdata()))
+        ymin = min(ymin, min(l.get_ydata()))
+        ymax = max(ymax, max(l.get_ydata()))
+    try:
+        ax.set_xlim(xmin, xmax)
+    except TypeError:
+        pass
+    try:
+        ax.set_ylim(ymin, ymax)
+    except TypeError:
+        pass
 
 
 class Plot(object):
@@ -40,9 +59,57 @@ class Plot(object):
         self.plotVolume()
         self.plotStability()
         self.plotCoeffs()
-        # Save data
-        if self.spreadSheet(ship):
-            return
+        self.spreadSheet(ship)
+
+    def update(self, ship, points):
+        self.points = points[:]
+        disp = []
+        draft = []
+        warea = []
+        t1cm = []
+        xcb = []
+        farea = []
+        kbt = []
+        bmt = []
+        cb = []
+        cf = []
+        cm = []
+        for i in range(len(self.points)):
+            disp.append(self.points[i].disp.getValueAs("kg").Value / 1000.0)
+            draft.append(self.points[i].draft.getValueAs("m").Value)
+            warea.append(self.points[i].wet.getValueAs("m^2").Value)
+            t1cm.append(self.points[i].mom.getValueAs("kg*m").Value / 1000.0)
+            xcb.append(self.points[i].xcb.getValueAs("m").Value)
+            farea.append(self.points[i].farea.getValueAs("m^2").Value)
+            kbt.append(self.points[i].KBt.getValueAs("m").Value)
+            bmt.append(self.points[i].BMt.getValueAs("m").Value)
+            cb.append(self.points[i].Cb)
+            cf.append(self.points[i].Cf)
+            cm.append(self.points[i].Cm)
+
+        self.draft1.line.set_data(draft, disp)
+        self.warea.line.set_data(draft, disp)
+        self.t1cm.line.set_data(t1cm, disp)
+        self.xcb.line.set_data(xcb, disp)
+        for ax in self.plt1.axesList:
+            autolim(ax)
+        self.plt1.update()
+        self.draft2.line.set_data(draft, disp)
+        self.farea.line.set_data(farea, disp)
+        self.kbt.line.set_data(kbt, disp)
+        self.bmt.line.set_data(bmt, disp)
+        for ax in self.plt2.axesList:
+            autolim(ax)
+        self.plt2.update()
+        self.draft3.line.set_data(draft, disp)
+        self.cb.line.set_data(cb, disp)
+        self.cf.line.set_data(cf, disp)
+        self.cm.line.set_data(cm, disp)
+        for ax in self.plt3.axesList:
+            autolim(ax)
+        self.plt3.update()
+
+        self.fillSpreadSheet(ship)
 
     def plotVolume(self):
         """ Perform volumetric hydrostatics.
@@ -61,6 +128,7 @@ class Plot(object):
                 FreeCAD.Console.PrintWarning(msg + '\n')
                 return True
         plt = Plot.figure('Volume')
+        self.plt1 = plt
 
         # Generate the set of axes
         Plot.grid(True)
@@ -99,6 +167,7 @@ class Plot(object):
         serie.line.set_linestyle('-')
         serie.line.set_linewidth(2.0)
         serie.line.set_color((0.0, 0.0, 0.0))
+        self.draft1 = serie
         Plot.xlabel(r'$T \; \left[ \mathrm{m} \right]$')
         Plot.ylabel(r'$\bigtriangleup \; \left[ \mathrm{tons} \right]$')
         plt.axes.xaxis.label.set_fontsize(15)
@@ -108,6 +177,7 @@ class Plot(object):
         serie.line.set_linestyle('-')
         serie.line.set_linewidth(2.0)
         serie.line.set_color((1.0, 0.0, 0.0))
+        self.warea = serie
         Plot.xlabel(r'$Wetted \; area \; \left[ \mathrm{m}^2 \right]$')
         Plot.ylabel(r'$\bigtriangleup \; \left[ \mathrm{tons} \right]$')
         plt.axes.xaxis.label.set_fontsize(15)
@@ -117,6 +187,7 @@ class Plot(object):
         serie.line.set_linestyle('-')
         serie.line.set_linewidth(2.0)
         serie.line.set_color((0.0, 0.0, 1.0))
+        self.t1cm = serie
         Plot.xlabel(r'$Moment \; to \; trim \; 1 \mathrm{cm} \; \left['
                     r' \mathrm{tons} \; \times \; \mathrm{m} \right]$')
         plt.axes.xaxis.label.set_fontsize(15)
@@ -126,6 +197,7 @@ class Plot(object):
         serie.line.set_linestyle('-')
         serie.line.set_linewidth(2.0)
         serie.line.set_color((0.2, 0.8, 0.2))
+        self.xcb = serie
         Plot.xlabel(r'$XCB \; \left[ \mathrm{m} \right]$')
         plt.axes.xaxis.label.set_fontsize(15)
         plt.axes.yaxis.label.set_fontsize(15)
@@ -139,10 +211,19 @@ class Plot(object):
         @return True if error happens.
         """
         try:
-            from freecad.plot import Plot
-            plt = Plot.figure('Stability')
+            from FreeCAD.Plot import Plot
         except ImportError:
-            return True
+            try:
+                from freecad.plot import Plot
+            except ImportError:
+                msg = QtGui.QApplication.translate(
+                    "ship_console",
+                    "Plot module is disabled, so I cannot perform the plot",
+                    None)
+                FreeCAD.Console.PrintWarning(msg + '\n')
+                return True
+        plt = Plot.figure('Stability')
+        self.plt2 = plt
 
         # Generate the sets of axes
         Plot.grid(True)
@@ -181,6 +262,7 @@ class Plot(object):
         serie.line.set_linestyle('-')
         serie.line.set_linewidth(2.0)
         serie.line.set_color((0.0, 0.0, 0.0))
+        self.draft2 = serie
         Plot.xlabel(r'$T \; \left[ \mathrm{m} \right]$')
         Plot.ylabel(r'$\bigtriangleup \; \left[ \mathrm{tons} \right]$')
         plt.axes.xaxis.label.set_fontsize(15)
@@ -190,6 +272,7 @@ class Plot(object):
         serie.line.set_linestyle('-')
         serie.line.set_linewidth(2.0)
         serie.line.set_color((1.0, 0.0, 0.0))
+        self.farea = serie
         Plot.xlabel(r'$Floating \; area \; \left[ \mathrm{m}^2 \right]$')
         Plot.ylabel(r'$\bigtriangleup \; \left[ \mathrm{tons} \right]$')
         plt.axes.xaxis.label.set_fontsize(15)
@@ -199,6 +282,7 @@ class Plot(object):
         serie.line.set_linestyle('-')
         serie.line.set_linewidth(2.0)
         serie.line.set_color((0.0, 0.0, 1.0))
+        self.kbt = serie
         Plot.xlabel(r'$KB_T \; \left[ \mathrm{m} \right]$')
         plt.axes.xaxis.label.set_fontsize(15)
         plt.axes.yaxis.label.set_fontsize(15)
@@ -207,6 +291,7 @@ class Plot(object):
         serie.line.set_linestyle('-')
         serie.line.set_linewidth(2.0)
         serie.line.set_color((0.2, 0.8, 0.2))
+        self.bmt = serie
         Plot.xlabel(r'$BM_T \; \left[ \mathrm{m} \right]$')
         plt.axes.xaxis.label.set_fontsize(15)
         plt.axes.yaxis.label.set_fontsize(15)
@@ -221,10 +306,19 @@ class Plot(object):
         """
         # Create plot
         try:
-            from freecad.plot import Plot
-            plt = Plot.figure('Coefficients')
+            from FreeCAD.Plot import Plot
         except ImportError:
-            return True
+            try:
+                from freecad.plot import Plot
+            except ImportError:
+                msg = QtGui.QApplication.translate(
+                    "ship_console",
+                    "Plot module is disabled, so I cannot perform the plot",
+                    None)
+                FreeCAD.Console.PrintWarning(msg + '\n')
+                return True
+        plt = Plot.figure('Coefficients')
+        self.plt3 = plt
 
         # Generate the set of axes
         Plot.grid(True)
@@ -263,6 +357,7 @@ class Plot(object):
         serie.line.set_linestyle('-')
         serie.line.set_linewidth(2.0)
         serie.line.set_color((0.0, 0.0, 0.0))
+        self.draft3 = serie
         Plot.xlabel(r'$T \; \left[ \mathrm{m} \right]$')
         Plot.ylabel(r'$\bigtriangleup \; \left[ \mathrm{tons} \right]$')
         plt.axes.xaxis.label.set_fontsize(15)
@@ -272,6 +367,7 @@ class Plot(object):
         serie.line.set_linestyle('-')
         serie.line.set_linewidth(2.0)
         serie.line.set_color((1.0, 0.0, 0.0))
+        self.cb = serie
         Plot.xlabel(r'$Cb$ (Block coefficient)')
         Plot.ylabel(r'$\bigtriangleup \; \left[ \mathrm{tons} \right]$')
         plt.axes.xaxis.label.set_fontsize(15)
@@ -281,6 +377,7 @@ class Plot(object):
         serie.line.set_linestyle('-')
         serie.line.set_linewidth(2.0)
         serie.line.set_color((0.0, 0.0, 1.0))
+        self.cf = serie
         Plot.xlabel(r'$Cf$ (floating area coefficient)')
         plt.axes.xaxis.label.set_fontsize(15)
         plt.axes.yaxis.label.set_fontsize(15)
@@ -289,6 +386,7 @@ class Plot(object):
         serie.line.set_linestyle('-')
         serie.line.set_linewidth(2.0)
         serie.line.set_color((0.2, 0.8, 0.2))
+        self.cm = serie
         Plot.xlabel(r'$Cm$  (Main section coefficient)')
         plt.axes.xaxis.label.set_fontsize(15)
         plt.axes.yaxis.label.set_fontsize(15)
@@ -297,14 +395,8 @@ class Plot(object):
         plt.update()
         return False
 
-    def spreadSheet(self, ship):
-        """ Write data file.
-        @param ship Selected ship instance
-        @param trim Trim angle.
-        @return True if error happens.
-        """
-        s = FreeCAD.activeDocument().addObject('Spreadsheet::Sheet',
-                                               'Hydrostatics')
+    def fillSpreadSheet(self, ship):
+        s = self.sheet
 
         # Print the header
         s.set("A1", "displacement [ton]")
@@ -347,3 +439,13 @@ class Plot(object):
 
         # Recompute
         FreeCAD.activeDocument().recompute()
+
+    def spreadSheet(self, ship):
+        """ Write data file.
+        @param ship Selected ship instance
+        @param trim Trim angle.
+        @return True if error happens.
+        """
+        self.sheet = FreeCAD.activeDocument().addObject('Spreadsheet::Sheet',
+                                                        'Hydrostatics')
+        self.fillSpreadSheet(ship)

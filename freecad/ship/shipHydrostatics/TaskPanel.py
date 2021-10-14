@@ -91,6 +91,7 @@ class TaskPanel:
             None)
         App.Console.PrintMessage(msg + '...\n')
         points = []
+        plt = None
         for i in range(len(drafts)):
             App.Console.PrintMessage("\t{} / {}\n".format(i + 1, len(drafts)))
             draft = drafts[i]
@@ -99,11 +100,14 @@ class TaskPanel:
                                 draft,
                                 trim)
             points.append(point)
+            if plt is None:
+                plt = PlotAux.Plot(self.ship, points)
+            else:
+                plt.update(self.ship, points)
             self.timer.start(0.0)
             self.loop.exec_()
             if(not self.running):
                 break
-        PlotAux.Plot(self.ship, points)
         return True
 
     def reject(self):
