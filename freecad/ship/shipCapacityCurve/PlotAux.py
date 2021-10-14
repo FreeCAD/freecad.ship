@@ -49,15 +49,18 @@ class Plot(object):
         @return True if error happens.
         """
         try:
-            from freecad.plot import Plot
-            plt = Plot.figure('Capacity curve')
+            from FreeCAD.Plot import Plot
         except ImportError:
-            msg = QtGui.QApplication.translate(
-                "ship_console",
-                "Plot module is disabled, so I cannot perform the plot",
-                None)
-            FreeCAD.Console.PrintWarning(msg + '\n')
-            return True
+            try:
+                from freecad.plot import Plot
+            except ImportError:
+                msg = QtGui.QApplication.translate(
+                    "ship_console",
+                    "Plot module is disabled, so I cannot perform the plot",
+                    None)
+                FreeCAD.Console.PrintWarning(msg + '\n')
+                return True
+        plt = Plot.figure('Capacity curve')
 
         # Plot the volume as a function of the level percentage
         vols = Plot.plot(l, v, 'Capacity')

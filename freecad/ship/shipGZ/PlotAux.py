@@ -49,15 +49,18 @@ class Plot(object):
         gz -- List of GZ values (in meters).
         """
         try:
-            from freecad.plot import Plot
-            plt = Plot.figure('GZ')
+            from FreeCAD.Plot import Plot
         except ImportError:
-            msg = QtGui.QApplication.translate(
-                "ship_console",
-                "Plot module is disabled, so I cannot perform the plot",
-                None)
-            FreeCAD.Console.PrintWarning(msg + '\n')
-            return True
+            try:
+                from freecad.plot import Plot
+            except ImportError:
+                msg = QtGui.QApplication.translate(
+                    "ship_console",
+                    "Plot module is disabled, so I cannot perform the plot",
+                    None)
+                FreeCAD.Console.PrintWarning(msg + '\n')
+                return True
+        plt = Plot.figure('GZ')
 
         gz_plot = Plot.plot(roll, gz, 'GZ curve')
         gz_plot.line.set_linestyle('-')

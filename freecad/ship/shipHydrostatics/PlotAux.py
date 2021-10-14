@@ -55,6 +55,7 @@ class Plot(object):
         @param points List of computed hydrostatics.
         """
         self.points = points[:]
+        self.plt1 = self.plt2 = self.plt3 = None
         # Try to plot
         self.plotVolume()
         self.plotStability()
@@ -63,6 +64,11 @@ class Plot(object):
 
     def update(self, ship, points):
         self.points = points[:]
+        self.fillSpreadSheet(ship)
+        if self.plt1 is None:
+            # No GUI? No Plot module? It does not matters, we cannot proceed
+            return
+
         disp = []
         draft = []
         warea = []
@@ -108,8 +114,6 @@ class Plot(object):
         for ax in self.plt3.axesList:
             autolim(ax)
         self.plt3.update()
-
-        self.fillSpreadSheet(ship)
 
     def plotVolume(self):
         """ Perform volumetric hydrostatics.
