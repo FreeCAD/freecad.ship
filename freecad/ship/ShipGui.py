@@ -232,6 +232,9 @@ class SinkAndTrim:
 
 
 class GZ:
+    def IsActive(self):
+        return bool(Selection.get_lcs())
+
     def Activated(self):
         from . import shipGZ
         shipGZ.load()

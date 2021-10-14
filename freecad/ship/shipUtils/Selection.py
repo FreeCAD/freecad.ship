@@ -22,6 +22,7 @@
 
 import FreeCAD as App
 import FreeCADGui as Gui
+from FreeCAD import Units
 import sys
 
 
@@ -131,6 +132,87 @@ def get_tanks():
     return objs
 
 
+def get_lc_ship(lc):
+    try:
+        if lc not in App.ActiveDocument.getObjectsByLabel(lc.get('B2')):
+            return None
+        ships = App.ActiveDocument.getObjectsByLabel(lc.get('B1'))
+    except ValueError:
+        None
+    if len(ships) != 1:
+        return None
+    ship = ships[0]
+    try:
+        if not ship.IsShip:
+            return None
+    except AttributeError:
+        return None
+    return ship
+
+
+def get_lc_weights(lc):
+    objs = []
+    i = 6
+    while True:
+        try:
+            label = lc.get('A{}'.format(i))
+        except ValueError:
+            break
+        i += 1
+        weights = App.ActiveDocument.getObjectsByLabel(label)
+        if len(weights) != 1:
+            msg = QtGui.QApplication.translate(
+                "ship_console",
+                "Several weights are labelled '{}'!".format(label),
+                None)
+            App.Console.PrintError(msg + '\n')
+            continue
+        weight = weights[0]
+        try:
+            if not weight.IsWeight:
+                continue
+        except AttributeError:
+            continue
+        objs.append(weight)
+    return objs
+
+
+def get_lc_tanks(lc):
+    objs = []
+    i = 6
+    while True:
+        cells = ['{}{}'.format(c, i) for c in ('C', 'D', 'E')]
+        try:
+            label = lc.get('C{}'.format(i))
+            dens = lc.get('D{}'.format(i))
+            level = lc.get('E{}'.format(i))
+        except ValueError:
+            break
+        i += 1
+        tanks = App.ActiveDocument.getObjectsByLabel(label)
+        if len(tanks) != 1:
+            msg = QtGui.QApplication.translate(
+                "ship_console",
+                "Several tanks are labelled '{}'!".format(label),
+                None)
+            App.Console.PrintError(msg + '\n')
+            continue
+        tank = tanks[0]
+        try:
+            if not tank.IsTank:
+                continue
+        except AttributeError:
+            continue
+        try:
+            dens = float(dens)
+            level = float(level)
+        except ValueError:
+            continue
+        dens = Units.parseQuantity('{} kg / m^3'.format(dens))
+        objs.append((tank, dens, level))
+    return objs
+
+
 def get_lcs():
     objs = []
     for obj in Gui.Selection.getSelection():
@@ -140,21 +222,7 @@ def get_lcs():
         except ValueError:
             continue
         # Check if it is a Loading condition:
-        # B1 cell must be a ship
-        # B2 cell must be the loading condition itself
-        try:
-            if obj not in App.ActiveDocument.getObjectsByLabel(obj.get('B2')):
-                continue
-            ships = App.ActiveDocument.getObjectsByLabel(obj.get('B1'))
-            if len(ships) != 1:
-                continue
-            ship = ships[0]
-            try:
-                if not ship.IsShip:
-                    continue
-            except AttributeError:
-                continue
-        except ValueError:
+        if get_lc_ship(obj) is None:
             continue
         objs.append(obj)
     return objs

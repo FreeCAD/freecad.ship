@@ -22,7 +22,6 @@
 
 import math
 import FreeCAD as App
-import FreeCADGui as Gui
 from FreeCAD import Vector, Matrix, Placement
 import Part
 from FreeCAD import Units

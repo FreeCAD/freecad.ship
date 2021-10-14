@@ -28,7 +28,7 @@ from PySide import QtGui, QtCore
 from . import PlotAux
 from . import Tools
 from .. import Ship_rc
-from ..shipUtils import Locale
+from ..shipUtils import Selection
 
 
 class TaskPanel:
@@ -40,30 +40,73 @@ class TaskPanel:
     def accept(self):
         if self.lc is None:
             return False
+        self.form.group_pbar.show()
         self.save()
 
-        roll = Units.Quantity(Locale.fromString(self.form.angle.text()))
+        roll = Units.parseQuantity(self.form.angle.text())
         n_points = self.form.n_points.value()
         var_trim = self.form.var_trim.isChecked()
+        self.form.pbar.setMinimum(0)
+        self.form.pbar.setMaximum(n_points)
+        self.form.pbar.setValue(0)
 
+        # Compute some constants
+        COG, W = Tools.weights_cog(self.weights)
+        TW = Units.parseQuantity("0 kg")
+        VOLS = []
+        for t in self.tanks:
+            # t[0] = tank object
+            # t[1] = load density
+            # t[2] = filling level
+            vol = t[0].Proxy.getVolume(t[0], t[2])
+            VOLS.append(vol)
+            TW += vol * t[1]
+        TW = TW * Tools.G
+
+        # Start traversing the queried angles
+        self.loop = QtCore.QEventLoop()
+        self.timer = QtCore.QTimer()
+        self.timer.setSingleShot(True)
+        QtCore.QObject.connect(self.timer,
+                               QtCore.SIGNAL("timeout()"),
+                               self.loop,
+                               QtCore.SLOT("quit()"))
+        self.running = True
         rolls = []
-        for i in range(n_points):
-            rolls.append(roll * i / float(n_points - 1))
-
-        points, _, _, _ = Tools.gz(self.lc, rolls, var_trim)
         gzs = []
         drafts = []
         trims = []
-        for p in points:
-            gzs.append(p[0].getValueAs('m').Value)
-            drafts.append(p[1].getValueAs('m').Value)
-            trims.append(p[2].getValueAs('deg').Value)
-
-        PlotAux.Plot(rolls, gzs, drafts, trims)
-
+        plt = None
+        for i in range(n_points):
+            App.Console.PrintMessage("{0} / {1}\n".format(i + 1, n_points))
+            self.form.pbar.setValue(i + 1)
+            rolls.append(roll * i / float(n_points - 1))
+            point = Tools.solve_point(W, COG, TW, VOLS, self.ship, self.tanks,
+                                      rolls[-1], var_trim)
+            if point is None:
+                gzs.append(Units.Quantity(0, Units.Length))
+                drafts.append(Units.Quantity(0, Units.Length))
+                trims.append(Units.Quantity(0, Units.Angle))
+            else:
+                gzs.append(point[0])
+                drafts.append(point[1])
+                trims.append(point[2])
+            if plt is None:
+                plt = PlotAux.Plot(rolls, gzs, drafts, trims)
+            else:
+                plt.update(rolls, gzs, drafts, trims)
+            self.timer.start(0.0)
+            self.loop.exec_()
+            if(not self.running):
+                break
         return True
 
     def reject(self):
+        if not self.ship:
+            return False
+        if self.running:
+            self.running = False
+            return
         return True
 
     def clicked(self, index):
@@ -88,12 +131,13 @@ class TaskPanel:
         pass
 
     def setupUi(self):
-        self.form.angle = self.widget(QtGui.QLineEdit, "Angle")
-        self.form.n_points = self.widget(QtGui.QSpinBox, "NumPoints")
-        self.form.var_trim = self.widget(QtGui.QCheckBox, "VariableTrim")
+        self.form.angle = self.widget(QtGui.QLineEdit, "angle")
+        self.form.n_points = self.widget(QtGui.QSpinBox, "n_points")
+        self.form.var_trim = self.widget(QtGui.QCheckBox, "var_trim")
+        self.form.pbar = self.widget(QtGui.QProgressBar, "pbar")
+        self.form.group_pbar = self.widget(QtGui.QGroupBox, "group_pbar")
         if self.initValues():
             return True
-        self.retranslateUi()
 
     def getMainWindow(self):
         toplevel = QtGui.QApplication.topLevelWidgets()
@@ -116,82 +160,26 @@ class TaskPanel:
     def initValues(self):
         """ Set initial values for fields
         """
-        # Look for selected loading conditions (Spreadsheets)
-        self.lc = None
-        selObjs = Gui.Selection.getSelection()
-        if not selObjs:
+        sel_lcs = Selection.get_lcs()
+        if not sel_lcs:
             msg = QtGui.QApplication.translate(
                 "ship_console",
-                "A loading condition instance must be selected before using"
-                " this tool (no objects selected)",
+                "A load condition instance must be selected before using this tool",
                 None)
             App.Console.PrintError(msg + '\n')
             return True
-        for i in range(len(selObjs)):
-            obj = selObjs[i]
-            try:
-                if obj.TypeId != 'Spreadsheet::Sheet':
-                    continue
-            except ValueError:
-                continue
-            # Check if it is a Loading condition:
-            # B1 cell must be a ship
-            # B2 cell must be the loading condition itself
-            doc = App.ActiveDocument
-            try:
-                if obj not in doc.getObjectsByLabel(obj.get('B2')):
-                    continue
-                ships = doc.getObjectsByLabel(obj.get('B1'))
-                if len(ships) != 1:
-                    if len(ships) == 0:
-                        msg = QtGui.QApplication.translate(
-                            "ship_console",
-                            "Wrong Ship label! (no instances labeled as"
-                            "'{}' found)",
-                            None)
-                        App.Console.PrintError(msg + '\n'.format(
-                            obj.get('B1')))
-                    else:
-                        msg = QtGui.QApplication.translate(
-                            "ship_console",
-                            "Ambiguous Ship label! ({} instances labeled as"
-                            "'{}' found)",
-                            None)
-                        App.Console.PrintError(msg + '\n'.format(
-                            len(ships),
-                            obj.get('B1')))
-                    continue
-                ship = ships[0]
-                if ship is None or not ship.PropertiesList.index("IsShip"):
-                    continue
-            except ValueError:
-                continue
-            # Let's see if several loading conditions have been selected (and
-            # prompt a warning)
-            if self.lc:
-                msg = QtGui.QApplication.translate(
-                    "ship_console",
-                    "More than one loading condition have been selected (the"
-                    " extra loading conditions will be ignored)",
-                    None)
-                App.Console.PrintWarning(msg + '\n')
-                break
-            self.lc = obj
-            self.ship = ship
-        if not self.lc:
+        self.lc = sel_lcs[0]
+        if len(sel_lcs) > 1:
             msg = QtGui.QApplication.translate(
                 "ship_console",
-                "A loading condition instance must be selected before using"
-                " this tool (no valid loading condition found at the selected"
-                " objects)",
+                "More than one load condition have been selected (just the one"
+                " labelled '{}' is considered)".format(self.lc.Label),
                 None)
-            App.Console.PrintError(msg + '\n')
-            return True
+            App.Console.PrintWarning(msg + '\n')
+        self.ship = Selection.get_lc_ship(self.lc)
+        self.weights = Selection.get_lc_weights(self.lc)
+        self.tanks = Selection.get_lc_tanks(self.lc)
 
-        # We have a valid loading condition, let's set the initial field values
-        self.form.angle = self.widget(QtGui.QLineEdit, "Angle")
-        self.form.n_points = self.widget(QtGui.QSpinBox, "NumPoints")
-        self.form.var_trim = self.widget(QtGui.QCheckBox, "VariableTrim")
         self.form.angle.setText(Units.parseQuantity("90 deg").UserString)
         # Try to use saved values
         props = self.ship.PropertiesList
@@ -214,46 +202,12 @@ class TaskPanel:
         except ValueError:
             pass
 
-
+        self.form.group_pbar.hide()
         return False
-
-    def retranslateUi(self):
-        """ Set user interface locale strings. """
-        self.form.setWindowTitle(QtGui.QApplication.translate(
-            "ship_gz",
-            "Plot the GZ curve",
-            None))
-        self.widget(QtGui.QLabel, "AngleLabel").setText(
-            QtGui.QApplication.translate(
-                "ship_gz",
-                "Maximum angle",
-                None))
-        self.widget(QtGui.QLabel, "NumPointsLabel").setText(
-            QtGui.QApplication.translate(
-                "ship_gz",
-                "Number of points",
-                None))
-        self.widget(QtGui.QCheckBox, "VariableTrim").setText(
-            QtGui.QApplication.translate(
-                "ship_gz",
-                "Variable trim",
-                None))
-        self.widget(QtGui.QCheckBox, "VariableTrim").setToolTip(
-            QtGui.QApplication.translate(
-                "ship_gz",
-                "The ship will be rotated to the equilibrium trim angle for" + \
-                " each roll angle. It will significantly increase the" + \
-                " required computing time",
-                None))
 
     def save(self):
         """ Saves the data into ship instance. """
-        self.form.angle = self.widget(QtGui.QLineEdit, "Angle")
-        self.form.n_points = self.widget(QtGui.QSpinBox, "NumPoints")
-        self.form.var_trim = self.widget(QtGui.QCheckBox, "VariableTrim")
-
-        angle = Units.Quantity(Locale.fromString(
-            self.form.angle.text())).getValueAs('deg').Value
+        angle = Units.parseQuantity(self.form.angle.text())
         n_points = self.form.n_points.value()
         var_trim = self.form.var_trim.isChecked()
 
@@ -272,7 +226,7 @@ class TaskPanel:
                                   "GZAngle",
                                   "Ship",
                                   tooltip)
-        self.ship.GZAngle = '{} deg'.format(angle)
+        self.ship.GZAngle = angle
         try:
             props.index("GZNumPoints")
         except ValueError:
@@ -303,6 +257,7 @@ class TaskPanel:
                                   "Ship",
                                   tooltip)
         self.ship.GZVariableTrim = var_trim
+
 
 def createTask():
     panel = TaskPanel()
