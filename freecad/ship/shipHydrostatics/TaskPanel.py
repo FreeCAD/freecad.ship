@@ -49,12 +49,16 @@ class TaskPanel:
             return False
         if self.running:
             return
+        self.form.group_pbar.show()
         self.save()
 
         trim = Units.parseQuantity(Locale.fromString(self.form.trim.text()))
         min_draft = Units.parseQuantity(Locale.fromString(self.form.min_draft.text()))
         max_draft = Units.parseQuantity(Locale.fromString(self.form.max_draft.text()))
         n_draft = self.form.n_draft.value()
+        self.form.pbar.setMinimum(0)
+        self.form.pbar.setMaximum(n_draft)
+        self.form.pbar.setValue(0)
 
         draft = min_draft
         drafts = [draft]
@@ -94,6 +98,7 @@ class TaskPanel:
         plt = None
         for i in range(len(drafts)):
             App.Console.PrintMessage("\t{} / {}\n".format(i + 1, len(drafts)))
+            self.form.pbar.setValue(i + 1)
             draft = drafts[i]
             point = Tools.Point(self.ship,
                                 faces,
@@ -144,6 +149,8 @@ class TaskPanel:
         self.form.min_draft = self.widget(QtGui.QLineEdit, "min_draft")
         self.form.max_draft = self.widget(QtGui.QLineEdit, "max_draft")
         self.form.n_draft = self.widget(QtGui.QSpinBox, "n_draft")
+        self.form.pbar = self.widget(QtGui.QProgressBar, "pbar")
+        self.form.group_pbar = self.widget(QtGui.QGroupBox, "group_pbar")
         # Initial values
         if self.initValues():
             return True
@@ -228,6 +235,7 @@ class TaskPanel:
         except ValueError:
             pass
 
+        self.form.group_pbar.hide()
         return False
 
     def clampValue(self, widget, val_min, val_max, val):

@@ -20,6 +20,41 @@
    <string>Plot Hydrostatics</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="group_trim">
+     <property name="toolTip">
+      <string>The trim angle to be considered</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QLabel" name="trim_label">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Trim</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::InputField" name="trim">
+        <property name="text">
+         <string notr="true">0 deg</string>
+        </property>
+        <property name="unit" stdset="0">
+         <string notr="true">deg</string>
+        </property>
+        <property name="quantity" stdset="0">
+         <double>0.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
    <item row="2" column="0">
     <widget class="QGroupBox" name="group_draft">
      <property name="sizePolicy">
@@ -129,35 +164,16 @@
      </layout>
     </widget>
    </item>
-   <item row="0" column="0">
-    <widget class="QGroupBox" name="group_trim">
+   <item row="3" column="0">
+    <widget class="QGroupBox" name="group_pbar">
      <property name="toolTip">
-      <string>The trim angle to be considered</string>
+      <string>Progress of the computation</string>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <item>
-       <widget class="QLabel" name="trim_label">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Trim</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="Gui::InputField" name="trim">
-        <property name="text">
-         <string notr="true">0 deg</string>
-        </property>
-        <property name="unit" stdset="0">
-         <string notr="true">deg</string>
-        </property>
-        <property name="quantity" stdset="0">
-         <double>0.000000000000000</double>
+     <layout class="QGridLayout" name="group_progress">
+      <item row="0" column="0">
+       <widget class="QProgressBar" name="pbar">
+        <property name="value">
+         <number>0</number>
         </property>
        </widget>
       </item>
