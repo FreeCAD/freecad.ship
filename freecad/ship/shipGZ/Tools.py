@@ -32,10 +32,15 @@ from .. import TankInstance
 from ..shipHydrostatics import Tools as Hydrostatics
 
 
+def __linspace(val0, val1, n):
+    return [val0 + (val1 - val0) * i / (n - 1) for i in range(n)]
+
+
 G = Units.parseQuantity("9.81 m/s^2")
 MAX_EQUILIBRIUM_ITERS = 20
 DENS = Units.parseQuantity("1025 kg/m^3")
-TRIM_RELAX_FACTOR = 10.0
+DRAFT_RELAX_FACTOR = __linspace(1.0, 0.5, MAX_EQUILIBRIUM_ITERS)
+TRIM_RELAX_FACTOR = __linspace(1.0, 0.5, MAX_EQUILIBRIUM_ITERS)
 
 
 def weights_cog(weights):
@@ -137,9 +142,9 @@ def solve_point(W, COG, TW, VOLS, ship, tanks, roll, var_trim=True):
         mom_x = Units.Quantity(COG.x, Units.Length) * W
         mom_y = Units.Quantity(COG.y, Units.Length) * W
         mom_z = Units.Quantity(COG.z, Units.Length) * W
-        for i,t in enumerate(tanks):
-            tank_weight = VOLS[i] * t[1] * G
-            tank_cog = t[0].Proxy.getCoG(t[0], VOLS[i], roll, trim)
+        for j,t in enumerate(tanks):
+            tank_weight = VOLS[j] * t[1] * G
+            tank_cog = t[0].Proxy.getCoG(t[0], VOLS[j], roll, trim)
             mom_x += Units.Quantity(tank_cog.x, Units.Length) * tank_weight
             mom_y += Units.Quantity(tank_cog.y, Units.Length) * tank_weight
             mom_z += Units.Quantity(tank_cog.z, Units.Length) * tank_weight
@@ -147,26 +152,34 @@ def solve_point(W, COG, TW, VOLS, ship, tanks, roll, var_trim=True):
         cog_y = mom_y / (W + TW)
         cog_z = mom_z / (W + TW)
         # Compute the errors
-        draft_error = -((disp - W - TW) / max_disp).Value
+        draft_err = -DRAFT_RELAX_FACTOR[i] * ((disp - W - TW) / max_disp).Value
         R_x = cog_x - Units.Quantity(B.x, Units.Length)
         R_y = cog_y - Units.Quantity(B.y, Units.Length)
         R_z = cog_z - Units.Quantity(B.z, Units.Length)
         if not var_trim:
-            trim_error = 0.0
+            trim_err = 0.0
         else:
             c = math.cos(trim.getValueAs('rad'))
             s = math.sin(trim.getValueAs('rad'))
             rx = c * R_x - s * R_z
-            eq_angle = math.degrees(math.atan2(R_x.Value, R_z.Value))
-            trim_error = -TRIM_RELAX_FACTOR * rx / ship.Length
+            # We need the BMl to estimate the required angle change
+            _, _, fs_shape = Hydrostatics.floatingArea(ship, draft, roll, trim)
+            if fs_shape is not None:
+                bml, _ = Hydrostatics.BML(ship, fs_shape, draft, roll, trim)
+            else:
+                bml = ship.Length * math.cos(trim.getValueAs('rad').Value)
+            if bml < -B.y:
+                bml = -B.y
+            # We approximate tan(alpha) = alpha, which is fine for small angles
+            trim_err = -TRIM_RELAX_FACTOR[i] * rx / bml
 
         # Check if we can tolerate the errors
-        if abs(draft_error) < 0.01 and abs(trim_error) < 0.005:
+        if abs(draft_err) < 1E-2 and abs(trim_err) < 1E-4:
             break
 
         # Get the new draft and trim
-        draft += draft_error * max_draft
-        trim += trim_error * Units.Degree
+        draft += draft_err * max_draft
+        trim += trim_err * Units.Radian
 
     # GZ should be provided in the Free surface oriented frame of reference
     c = math.cos(roll.getValueAs('rad'))

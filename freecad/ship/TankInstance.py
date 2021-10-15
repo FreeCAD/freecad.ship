@@ -22,6 +22,7 @@
 
 import time
 from math import *
+import random
 from PySide import QtGui, QtCore
 import FreeCAD as App
 import FreeCADGui as Gui
@@ -30,7 +31,12 @@ import Part
 from .shipUtils import Paths, Math
 
 
+def __linspace(val0, val1, n):
+    return [val0 + (val1 - val0) * i / (n - 1) for i in range(n)]
+
+
 COMMON_BOOLEAN_ITERATIONS = 10
+COMMON_BOOLEAN_RELAXATION = __linspace(0.5, 0.1, COMMON_BOOLEAN_ITERATIONS)
 
 
 class Tank:
@@ -131,9 +137,10 @@ class Tank:
             i = 0
             while len(common.Shape.Solids) == 0 and i < COMMON_BOOLEAN_ITERATIONS:
                 i += 1
-                box.Height = length_format.format(
-                    (1.0 + level) * dz + random.uniform(-random_bounds,
-                                                        random_bounds))
+                random_bounds = (0.01 * dz).Value
+                random_dz = Units.Quantity(random.uniform(
+                    -random_bounds, random_bounds), Units.Length)
+                box.Height = (1.0 + level) * dz + random_dz
                 App.ActiveDocument.recompute()
 
         if return_shape:
@@ -180,7 +187,7 @@ class Tank:
             error = (vol.Value - shape.Volume) / fp.Shape.Volume
             if abs(error) < 0.01:
                 break
-            level += error
+            level += COMMON_BOOLEAN_RELAXATION[i] * error
 
         # Untransform the object to retrieve the original position
         fp.Placement = current_placement

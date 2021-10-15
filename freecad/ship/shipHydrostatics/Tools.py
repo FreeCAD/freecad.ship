@@ -370,9 +370,33 @@ def floatingArea(ship, draft=None,
     return area, cf, f
 
 
-def moment(ship, fs, draft=None,
-                     roll=Units.parseQuantity("0 deg"),
-                     trim=Units.parseQuantity("0 deg")):
+def BML(ship, fs, draft=None,
+                  roll=Units.parseQuantity("0 deg"),
+                  trim=Units.parseQuantity("0 deg")):
+    """Compute the moment required to trim the ship 1cm
+
+    Position arguments:
+    ship -- Ship object (see createShip)
+    fs -- The shape of the free surface
+
+    Keyword arguments:
+    draft -- Ship draft (Design ship draft by default)
+    roll -- Roll angle (0 degrees by default)
+    trim -- Trim angle (0 degrees by default)
+
+    Returned value:
+    BML radius and the displacement (would be useful for further computations,
+    like TMC)
+    """
+    disp, B_orig, _ = displacement(ship, draft, roll, trim)
+    vol = disp / DENS
+    inertia_unit = (Units.Quantity(1, Units.Length)**4).Unit
+    return Units.Quantity(fs.MatrixOfInertia.A22, inertia_unit) / vol, disp
+
+
+def TMC(ship, fs, draft=None,
+                  roll=Units.parseQuantity("0 deg"),
+                  trim=Units.parseQuantity("0 deg")):
     """Compute the moment required to trim the ship 1cm
 
     Position arguments:
@@ -394,13 +418,11 @@ def moment(ship, fs, draft=None,
     if draft is None:
         draft = ship.Draft
 
-    disp_orig, B_orig, _ = displacement(ship, draft, roll, trim)
     if fs is not None:
-        vol = disp_orig / DENS
-        inertia_unit = (Units.Quantity(1, Units.Length)**4).Unit
-        BML = Units.Quantity(fs.MatrixOfInertia.A22, inertia_unit) / vol
-        return disp_orig * BML / ship.Length.getValueAs('cm').Value
+        bml, disp = BML(ship, fs, draft=draft, roll=roll, trim=trim)
+        return disp * bml / ship.Length.getValueAs('cm').Value
 
+    disp_orig, B_orig, _ = displacement(ship, draft, roll, trim)
     factor = 10.0
     x = 0.5 * ship.Length.getValueAs('cm').Value
     y = 1.0
@@ -541,7 +563,7 @@ class Point:
         else:
             wet = wettedArea(faces, draft=draft, trim=trim)
         farea, cf, fshape = floatingArea(ship, draft=draft, trim=trim)
-        mom = moment(ship, fshape, draft=draft, trim=trim)
+        mom = TMC(ship, fshape, draft=draft, trim=trim)
         bm = BMT(ship, fshape, draft=draft, trim=trim)
         cm = mainFrameCoeff(ship, draft=draft)
         # Store final data
