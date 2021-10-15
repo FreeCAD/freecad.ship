@@ -35,14 +35,6 @@ SET(ShipCreateShip_SRCS
 )
 SOURCE_GROUP("shipcreateship" FILES ${ShipCreateShip_SRCS})
 
-SET(ShipOutlineDraw_SRCS
-    shipOutlineDraw/__init__.py
-    shipOutlineDraw/Preview.py
-    shipOutlineDraw/TaskPanel.py
-    shipOutlineDraw/TaskPanel.ui
-)
-SOURCE_GROUP("shipoutlinedraw" FILES ${ShipOutlineDraw_SRCS})
-
 SET(ShipAreasCurve_SRCS
     shipAreasCurve/__init__.py
     shipAreasCurve/PlotAux.py
@@ -110,7 +102,7 @@ SET(ShipUtils_SRCS
 )
 SOURCE_GROUP("shiputils" FILES ${ShipUtils_SRCS})
 
-SET(all_files ${ShipMain_SRCS} ${ShipExamples_SRCS} ${ShipLoadExample_SRCS} ${ShipCreateShip_SRCS} ${ShipOutlineDraw_SRCS} ${ShipAreasCurve_SRCS} ${ShipHydrostatics_SRCS} ${ShipCreateWeight_SRCS} ${ShipCreateTank_SRCS} ${ShipCapacityCurve_SRCS} ${ShipCreateLoadCondition_SRCS} ${ShipGZ_SRCS} ${ShipUtils_SRCS})
+SET(all_files ${ShipMain_SRCS} ${ShipExamples_SRCS} ${ShipLoadExample_SRCS} ${ShipCreateShip_SRCS} ${ShipAreasCurve_SRCS} ${ShipHydrostatics_SRCS} ${ShipCreateWeight_SRCS} ${ShipCreateTank_SRCS} ${ShipCapacityCurve_SRCS} ${ShipCreateLoadCondition_SRCS} ${ShipGZ_SRCS} ${ShipUtils_SRCS})
 
 SET(ShipGuiIcon_SVG
     resources/icons/ShipWorkbench.svg
@@ -148,12 +140,6 @@ INSTALL(
         ${ShipCreateShip_SRCS}
     DESTINATION
         Mod/Ship/shipCreateShip
-)
-INSTALL(
-    FILES
-        ${ShipOutlineDraw_SRCS}
-    DESTINATION
-        Mod/Ship/shipOutlineDraw
 )
 INSTALL(
     FILES

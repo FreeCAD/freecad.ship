@@ -51,7 +51,6 @@ class ShipWorkbench(Gui.Workbench):
         # ToolBar
         shiplist = ["Ship_LoadExample",
                     "Ship_CreateShip",
-                    "Ship_OutlineDraw",
                     "Ship_AreasCurve",
                     "Ship_Hydrostatics"]
         weightslist = ["Ship_Weight",
