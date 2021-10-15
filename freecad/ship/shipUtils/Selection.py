@@ -228,6 +228,18 @@ def get_lcs():
     return objs
 
 
+def get_meshes():
+    objs = []
+    for obj in Gui.Selection.getSelection():
+        try:
+            if obj.Module != 'Mesh':
+                continue
+        except AttributeError:
+            continue
+        objs.append(obj)
+    return objs    
+
+
 def get_doc_ships(doc=None):
     doc = doc or App.ActiveDocument
     objs = []

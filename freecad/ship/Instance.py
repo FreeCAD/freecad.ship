@@ -107,7 +107,14 @@ class Ship:
                         "LoadConditions",
                         "Ship",
                         tooltip).LoadConditions = []
-
+        tooltip = QtGui.QApplication.translate(
+            "Ship",
+            "The mesh associated with the ship",
+            None)
+        obj.addProperty("App::PropertyStringList",
+                        "Mesh",
+                        "Ship",
+                        tooltip).Mesh = []
         obj.Proxy = self
 
     def onChanged(self, fp, prop):
@@ -333,6 +340,16 @@ class ViewProviderShip:
                 objs.append(t_obj)
             except:
                 del obj.LoadConditions[i - bad_linked]
+                bad_linked += 1
+
+        # Claim the meshes
+        bad_linked = 0
+        for i, t in enumerate(obj.Mesh):
+            try:
+                t_obj = FreeCAD.ActiveDocument.getObject(t)
+                objs.append(t_obj)
+            except:
+                del obj.Mesh[i - bad_linked]
                 bad_linked += 1
 
         return objs

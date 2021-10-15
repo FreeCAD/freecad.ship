@@ -13,6 +13,7 @@
         <file>icons/Ship_Tank.svg</file>
         <file>icons/Ship_Weight.svg</file>
         <file>icons/Ship_Workbench.svg</file>
+        <file>icons/Seakeeping_SetMesh.svg</file>
         <file>translations/Ship.qm</file>
         <file>translations/Ship_af.qm</file>
         <file>translations/Ship_cs.qm</file>
@@ -58,5 +59,6 @@
         <file>ui/TaskPanel_shipHydrostatics.ui</file>
         <file>ui/TaskPanel_shipLoadExample.ui</file>
         <file>ui/TaskPanel_shipSinkAndTrim.ui</file>
+        <file>ui/TaskPanel_seakeepingSetMesh.ui</file>
     </qresource>
 </RCC>
