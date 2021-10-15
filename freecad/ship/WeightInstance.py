@@ -85,6 +85,19 @@ class Weight:
                         "Dens",
                         "Weight",
                         tooltip).Dens = 0.0
+        # Add the inertia matrix
+        tooltip = QtGui.QApplication.translate(
+            "ship_weight",
+            "Inertia [kg * m^2]",
+            None)
+        obj.addProperty("App::PropertyMatrix",
+                        "Inertia",
+                        "Weight",
+                        tooltip).Inertia = (1, 0, 0, 0,
+                                            0, 1, 0, 0,
+                                            0, 0, 1, 0,
+                                            0, 0, 0, 1)
+
         # Set the subshapes
         obj.Shape = Part.makeCompound(shapes)
 
@@ -274,6 +287,42 @@ class Weight:
             cog.append(moment[i] / mass)
         return Vector(cog[0].Value, cog[1].Value, cog[2].Value)
 
+    def getInertia(self, fp, center=None):
+        """Get the inertia with respect a point.
+
+        Position arguments:
+        fp -- Part::FeaturePython object affected.
+    
+        Keyword arguments:
+        center -- FreeCAD.Vector The reference point. If None the center of
+                  gravity is considered
+
+        Returned value:
+        Inertia matrix [kg * m^2]
+        """
+        mass = self.getMass(fp)
+        dens = fp.Mass or fp.LineDens or fp.AreaDens or fp.Dens
+        I = [[dens * fp.Inertia[i + j*4] for j in range(4)] for i in range(4)]
+        I[3][3] = 1.0
+        # Get the distance vector (in meters)
+        cog = self.getCenterOfMass(fp)
+        center = center or cog
+        r = center - cog
+        l_qty = Units.Quantity(1, Units.Length)
+        r = [(r.x * l_qty).getValueAs('m').Value,
+             (r.y * l_qty).getValueAs('m').Value,
+             (r.z * l_qty).getValueAs('m').Value]
+        # Apply parallel axes theorem (So-called Steiner)
+        r2 = r[0] * r[0] + r[1] * r[1] + r[2] * r[2]
+        for i in range(3):
+            I[i][i] += mass * r2
+            for j in range(3):
+                I[i][j] -= mass * r[i] * r[j]
+        # Convert everything to quantities
+        for i in range(4):
+            for j in range(4):
+                I[i][j] = Units.Quantity('{} kg * m^2'.format(I[i][j]))
+        return I
 
 class ViewProviderWeight:
     def __init__(self, obj):

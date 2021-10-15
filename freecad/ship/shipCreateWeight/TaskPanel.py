@@ -45,6 +45,25 @@ class TaskPanel:
         if self.elem_type == 1:
             density = Units.parseQuantity(Locale.fromString(
                 self.form.weight.text()))
+            I = Tools.matrix(3)
+            I[0][0] = Units.parseQuantity(Locale.fromString(
+                self.form.Ixx.text()))
+            I[0][1] = Units.parseQuantity(Locale.fromString(
+                self.form.Ixy.text()))
+            I[0][2] = Units.parseQuantity(Locale.fromString(
+                self.form.Ixz.text()))
+            I[1][0] = Units.parseQuantity(Locale.fromString(
+                self.form.Iyx.text()))
+            I[1][1] = Units.parseQuantity(Locale.fromString(
+                self.form.Iyy.text()))
+            I[1][2] = Units.parseQuantity(Locale.fromString(
+                self.form.Iyz.text()))
+            I[2][0] = Units.parseQuantity(Locale.fromString(
+                self.form.Izx.text()))
+            I[2][1] = Units.parseQuantity(Locale.fromString(
+                self.form.Izy.text()))
+            I[2][2] = Units.parseQuantity(Locale.fromString(
+                self.form.Izz.text()))
         elif self.elem_type == 2:
             density = Units.parseQuantity(Locale.fromString(
                 self.form.dens_line.text()))
@@ -54,7 +73,15 @@ class TaskPanel:
         elif self.elem_type == 4:
             density = Units.parseQuantity(Locale.fromString(
                 self.form.dens_vol.text()))
-        obj = Tools.createWeight(self.shapes, ship, density)
+
+        if self.elem_type != 1:
+            I = Tools.compute_inertia(self.shapes, self.elem_type)
+            for i,row in enumerate(I):
+                for j,val in enumerate(row):
+                    I[i][j] = val * density
+
+
+        obj = Tools.createWeight(self.shapes, ship, density, I)
         guiobj = Gui.ActiveDocument.getObject(obj.Name)
         guiobj.PointSize = 10.00
         return True
@@ -95,6 +122,16 @@ class TaskPanel:
         self.form.dens_area = self.widget(QtGui.QLineEdit, "dens_area")
         self.form.dens_vol_label = self.widget(QtGui.QLabel, "dens_vol_label")
         self.form.dens_vol = self.widget(QtGui.QLineEdit, "dens_vol")
+        self.form.Ixx = self.widget(QtGui.QLineEdit, "Ixx")
+        self.form.Ixy = self.widget(QtGui.QLineEdit, "Ixy")
+        self.form.Ixz = self.widget(QtGui.QLineEdit, "Ixz")
+        self.form.Iyx = self.widget(QtGui.QLineEdit, "Iyx")
+        self.form.Iyy = self.widget(QtGui.QLineEdit, "Iyy")
+        self.form.Iyz = self.widget(QtGui.QLineEdit, "Iyz")
+        self.form.Izx = self.widget(QtGui.QLineEdit, "Izx")
+        self.form.Izy = self.widget(QtGui.QLineEdit, "Izy")
+        self.form.Izz = self.widget(QtGui.QLineEdit, "Izz")
+        self.form.group_inertia = self.widget(QtGui.QGroupBox, "group_inertia")
         if self.initValues():
             return True
 
@@ -107,9 +144,11 @@ class TaskPanel:
         self.form.dens_area.hide()
         self.form.dens_vol_label.hide()
         self.form.dens_vol.hide()
+        self.form.group_inertia.hide()
         if self.elem_type == 1:
             self.form.weight_label.show()
             self.form.weight.show()
+            self.form.group_inertia.show()
         elif self.elem_type == 2:
             self.form.dens_line_label.show()
             self.form.dens_line.show()
