@@ -231,6 +231,26 @@ class GZ:
                 'ToolTip': ToolTip}
 
 
+class SetMesh:
+    def IsActive(self):
+        return bool(Selection.get_meshes()) and bool(Selection.get_doc_ships())
+
+    def Activated(self):
+        from . import seakeepingSetMesh
+        seakeepingSetMesh.load()
+
+    def GetResources(self):
+        MenuText = QtCore.QT_TRANSLATE_NOOP(
+            'seakeeping_setmesh',
+            'Set ship surface mesh')
+        ToolTip = QtCore.QT_TRANSLATE_NOOP(
+            'seakeeping_setmesh',
+            'Associate the surface mesh to the ship')
+        return {'Pixmap': 'Seakeeping_SetMesh',
+                'MenuText': MenuText,
+                'ToolTip': ToolTip}
+
+
 FreeCADGui.addCommand('Ship_LoadExample', LoadExample())
 FreeCADGui.addCommand('Ship_CreateShip', CreateShip())
 FreeCADGui.addCommand('Ship_AreasCurve', AreasCurve())
@@ -241,3 +261,4 @@ FreeCADGui.addCommand('Ship_Capacity', TankCapacity())
 FreeCADGui.addCommand('Ship_LoadCondition', LoadCondition())
 FreeCADGui.addCommand('Ship_SinkAndTrim', SinkAndTrim())
 FreeCADGui.addCommand('Ship_GZ', GZ())
+FreeCADGui.addCommand('Seakeeping_SetMesh', SetMesh())
