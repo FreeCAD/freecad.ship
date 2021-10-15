@@ -67,23 +67,6 @@ class CreateShip:
                 'ToolTip': ToolTip}
 
 
-class OutlineDraw:
-    def Activated(self):
-        from . import shipOutlineDraw
-        shipOutlineDraw.load()
-
-    def GetResources(self):
-        MenuText = QtCore.QT_TRANSLATE_NOOP(
-            'Ship_OutlineDraw',
-            'Outline draw')
-        ToolTip = QtCore.QT_TRANSLATE_NOOP(
-            'Ship_OutlineDraw',
-            'Plots the ship hull outline draw')
-        return {'Pixmap': 'Ship_OutlineDraw',
-                'MenuText': MenuText,
-                'ToolTip': ToolTip}
-
-
 class AreasCurve:
     def Activated(self):
         from . import shipAreasCurve
@@ -205,7 +188,6 @@ class GZ:
 
 FreeCADGui.addCommand('Ship_LoadExample', LoadExample())
 FreeCADGui.addCommand('Ship_CreateShip', CreateShip())
-FreeCADGui.addCommand('Ship_OutlineDraw', OutlineDraw())
 FreeCADGui.addCommand('Ship_AreasCurve', AreasCurve())
 FreeCADGui.addCommand('Ship_Hydrostatics', Hydrostatics())
 FreeCADGui.addCommand('Ship_Weight', CreateWeight())

@@ -9,7 +9,6 @@
         <file>icons/Ship_LoadCondition.svg</file>
         <file>icons/Ship_Logo.svg</file>
         <file>icons/Ship_Module.svg</file>
-        <file>icons/Ship_OutlineDraw.svg</file>
         <file>icons/Ship_Tank.svg</file>
         <file>icons/Ship_Weight.svg</file>
         <file>icons/Ship_Workbench.svg</file>
@@ -57,6 +56,5 @@
         <file>ui/TaskPanel_shipGZ.ui</file>
         <file>ui/TaskPanel_shipHydrostatics.ui</file>
         <file>ui/TaskPanel_shipLoadExample.ui</file>
-        <file>ui/TaskPanel_shipOutlineDraw.ui</file>
     </qresource>
 </RCC>
