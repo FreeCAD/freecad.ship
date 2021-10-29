@@ -134,9 +134,9 @@ class TaskPanel:
         """
         self.clear()
         fs_ref = self.form.ref.currentIndex() == 0
-        self.plot, draft, trim, disp = Tools.compute(self.lc,
-                                                     fs_ref=fs_ref,
-                                                     doc=self.doc)
+        self.plot, draft, trim, disp, _ = Tools.compute(self.lc,
+                                                        fs_ref=fs_ref,
+                                                        doc=self.doc)
         if self.plot is None:
             self.form.result.setText(QtGui.QApplication.translate(
             "ship_sinkandtrim",

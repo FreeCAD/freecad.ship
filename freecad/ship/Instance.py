@@ -30,6 +30,109 @@ import Part
 from .shipUtils import Paths, Math
 
 
+def add_ship_props(obj):
+    """This function adds the properties to a ship instance, in case they are
+    not already created
+
+    Position arguments:
+    obj -- Part::FeaturePython object
+
+    Returns:
+    The same input object, that now has the properties added
+    """
+    try:
+        obj.getPropertyByName('IsShip')
+    except AttributeError:
+        tooltip = QtGui.QApplication.translate(
+            "Ship",
+            "True if it is a valid ship instance, False otherwise",
+            None)
+        obj.addProperty("App::PropertyBool",
+                        "IsShip",
+                        "Ship",
+                        tooltip).IsShip = True
+    try:
+        obj.getPropertyByName('Length')
+    except AttributeError:
+        tooltip = QtGui.QApplication.translate(
+            "Ship",
+            "Ship length [m]",
+            None)
+        obj.addProperty("App::PropertyLength",
+                        "Length",
+                        "Ship",
+                        tooltip).Length = 0.0
+    try:
+        obj.getPropertyByName('Breadth')
+    except AttributeError:
+        tooltip = QtGui.QApplication.translate(
+            "Ship",
+            "Ship breadth [m]",
+            None)
+        obj.addProperty("App::PropertyLength",
+                        "Breadth",
+                        "Ship",
+                        tooltip).Breadth = 0.0
+    try:
+        obj.getPropertyByName('Draft')
+    except AttributeError:
+        tooltip = QtGui.QApplication.translate(
+            "Ship",
+            "Ship draft [m]",
+            None)
+        obj.addProperty("App::PropertyLength",
+                        "Draft",
+                        "Ship",
+                        tooltip).Draft = 0.0
+
+
+    try:
+        obj.getPropertyByName('Weights')
+    except AttributeError:
+        tooltip = QtGui.QApplication.translate(
+            "Ship",
+            "Set of weight instances",
+            None)
+        obj.addProperty("App::PropertyStringList",
+                        "Weights",
+                        "Ship",
+                        tooltip).Weights = []
+    try:
+        obj.getPropertyByName('Tanks')
+    except AttributeError:
+        tooltip = QtGui.QApplication.translate(
+            "Ship",
+            "Set of tank instances",
+            None)
+        obj.addProperty("App::PropertyStringList",
+                        "Tanks",
+                        "Ship",
+                        tooltip).Tanks = []
+    try:
+        obj.getPropertyByName('LoadConditions')
+    except AttributeError:
+        tooltip = QtGui.QApplication.translate(
+            "Ship",
+            "Set of load conditions",
+            None)
+        obj.addProperty("App::PropertyStringList",
+                        "LoadConditions",
+                        "Ship",
+                        tooltip).LoadConditions = []
+    try:
+        obj.getPropertyByName('Mesh')
+    except AttributeError:
+        tooltip = QtGui.QApplication.translate(
+            "Ship",
+            "The mesh associated with the ship",
+            None)
+        obj.addProperty("App::PropertyStringList",
+                        "Mesh",
+                        "Ship",
+                        tooltip).Mesh = []
+    return obj
+
+
 class Ship:
     def __init__(self, obj, solids):
         """ Transform a generic object to a ship instance.
@@ -39,82 +142,9 @@ class Ship:
         in a ship instance.
         solids -- Set of solids which will compound the ship hull.
         """
-        # Add an unique property to identify the Ship instances
-        tooltip = QtGui.QApplication.translate(
-            "Ship",
-            "True if it is a valid ship instance, False otherwise",
-            None)
-        obj.addProperty("App::PropertyBool",
-                        "IsShip",
-                        "Ship",
-                        tooltip).IsShip = True
-        # Add the main dimensions
-        tooltip = QtGui.QApplication.translate(
-            "Ship",
-            "Ship length [m]",
-            None)
-        obj.addProperty("App::PropertyLength",
-                        "Length",
-                        "Ship",
-                        tooltip).Length = 0.0
-        tooltip = QtGui.QApplication.translate(
-            "Ship",
-            "Ship breadth [m]",
-            None)
-        obj.addProperty("App::PropertyLength",
-                        "Breadth",
-                        "Ship",
-                        tooltip).Breadth = 0.0
-        tooltip = QtGui.QApplication.translate(
-            "Ship",
-            "Ship draft [m]",
-            None)
-        obj.addProperty("App::PropertyLength",
-                        "Draft",
-                        "Ship",
-                        tooltip).Draft = 0.0
+        add_ship_props(obj)
         # Add the subshapes
         obj.Shape = Part.makeCompound(solids)
-        tooltip = QtGui.QApplication.translate(
-            "Ship",
-            "Set of external faces of the ship hull",
-            None)
-        obj.addProperty("Part::PropertyPartShape",
-                        "ExternalFaces",
-                        "Ship",
-                        tooltip)
-        tooltip = QtGui.QApplication.translate(
-            "Ship",
-            "Set of weight instances",
-            None)
-        obj.addProperty("App::PropertyStringList",
-                        "Weights",
-                        "Ship",
-                        tooltip).Weights = []
-        tooltip = QtGui.QApplication.translate(
-            "Ship",
-            "Set of tank instances",
-            None)
-        obj.addProperty("App::PropertyStringList",
-                        "Tanks",
-                        "Ship",
-                        tooltip).Tanks = []
-        tooltip = QtGui.QApplication.translate(
-            "Ship",
-            "Set of load conditions",
-            None)
-        obj.addProperty("App::PropertyStringList",
-                        "LoadConditions",
-                        "Ship",
-                        tooltip).LoadConditions = []
-        tooltip = QtGui.QApplication.translate(
-            "Ship",
-            "The mesh associated with the ship",
-            None)
-        obj.addProperty("App::PropertyStringList",
-                        "Mesh",
-                        "Ship",
-                        tooltip).Mesh = []
         obj.Proxy = self
 
     def onChanged(self, fp, prop):
@@ -311,6 +341,9 @@ class ViewProviderShip:
             FreeCAD.Console.PrintError(self)
             FreeCAD.Console.PrintError('\n')
             return objs
+
+        # Check everything is all right
+        add_ship_props(obj)
 
         # Claim the weights
         bad_linked = 0

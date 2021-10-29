@@ -134,9 +134,9 @@ def get_tanks():
 
 def get_lc_ship(lc):
     try:
-        if lc not in App.ActiveDocument.getObjectsByLabel(lc.get('B2')):
+        if lc not in lc.Document.getObjectsByLabel(lc.get('B2')):
             return None
-        ships = App.ActiveDocument.getObjectsByLabel(lc.get('B1'))
+        ships = lc.Document.getObjectsByLabel(lc.get('B1'))
     except ValueError:
         None
     if len(ships) != 1:
@@ -159,7 +159,7 @@ def get_lc_weights(lc):
         except ValueError:
             break
         i += 1
-        weights = App.ActiveDocument.getObjectsByLabel(label)
+        weights = lc.Document.getObjectsByLabel(label)
         if len(weights) != 1:
             msg = QtGui.QApplication.translate(
                 "ship_console",
@@ -189,7 +189,7 @@ def get_lc_tanks(lc):
         except ValueError:
             break
         i += 1
-        tanks = App.ActiveDocument.getObjectsByLabel(label)
+        tanks = lc.Document.getObjectsByLabel(label)
         if len(tanks) != 1:
             msg = QtGui.QApplication.translate(
                 "ship_console",
@@ -249,4 +249,39 @@ def get_doc_ships(doc=None):
                 objs.append(obj)
         except AttributeError:
             continue
+    return objs
+
+# Some shortcuts for Seakeeping
+# =============================
+
+def get_lc_mesh(lc):
+    """Get the mesh associated to the ship associated to the load condition
+    """
+    ship = get_lc_ship(lc)
+    if ship is None:
+        return None
+    try:
+        if len(ship.Mesh) != 1:
+            return None
+    except AttributeError:
+        return None
+    return lc.Document.getObject(ship.Mesh[0])
+
+
+def get_lcs_with_mesh():
+    """Get the selected load conditions which has a ship with an associated
+    mesh
+    """
+    lcs = get_lcs()
+    objs = []
+    for lc in lcs:
+        ship = get_lc_ship(lc)
+        try:
+            if len(ship.Mesh) != 1:
+                continue
+        except AttributeError:
+            continue
+        if App.ActiveDocument.getObject(ship.Mesh[0]) is None:
+            continue
+        objs.append(lc)
     return objs
