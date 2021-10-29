@@ -250,6 +250,25 @@ class SetMesh:
                 'MenuText': MenuText,
                 'ToolTip': ToolTip}
 
+class RAOs:
+    def IsActive(self):
+        return bool(Selection.get_lcs_with_mesh())
+
+    def Activated(self):
+        from . import seakeepingRAOs
+        seakeepingRAOs.load()
+
+    def GetResources(self):
+        MenuText = QtCore.QT_TRANSLATE_NOOP(
+            'seakeeping_raos',
+            'Plot RAOs')
+        ToolTip = QtCore.QT_TRANSLATE_NOOP(
+            'seakeeping_raos',
+            'Compute and plot the RAOs')
+        return {'Pixmap': 'Seakeeping_RAOs',
+                'MenuText': MenuText,
+                'ToolTip': ToolTip}
+
 
 FreeCADGui.addCommand('Ship_LoadExample', LoadExample())
 FreeCADGui.addCommand('Ship_CreateShip', CreateShip())
@@ -262,3 +281,4 @@ FreeCADGui.addCommand('Ship_LoadCondition', LoadCondition())
 FreeCADGui.addCommand('Ship_SinkAndTrim', SinkAndTrim())
 FreeCADGui.addCommand('Ship_GZ', GZ())
 FreeCADGui.addCommand('Seakeeping_SetMesh', SetMesh())
+FreeCADGui.addCommand('Seakeeping_RAOs', RAOs())

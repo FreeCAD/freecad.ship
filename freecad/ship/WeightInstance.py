@@ -28,6 +28,89 @@ import FreeCADGui
 from FreeCAD import Base, Vector, Units
 import Part
 from .shipUtils import Paths, Math
+from .shipCreateWeight.Tools import compute_inertia
+
+
+def add_weight_props(obj):
+    """This function adds the properties to a weight instance, in case they are
+    not already created
+
+    Position arguments:
+    obj -- Part::FeaturePython object
+
+    Returns:
+    The same input object, that now has the properties added
+    """
+    try:
+        obj.getPropertyByName('IsWeight')
+    except AttributeError:
+        tooltip = QtGui.QApplication.translate(
+            "ship_weight",
+            "True if it is a valid weight instance, False otherwise",
+            None)
+        obj.addProperty("App::PropertyBool",
+                        "IsWeight",
+                        "Weight",
+                        tooltip).IsWeight = True
+    try:
+        obj.getPropertyByName('Mass')
+    except AttributeError:
+        tooltip = QtGui.QApplication.translate(
+            "ship_weight",
+            "Mass [kg]",
+            None)
+        obj.addProperty("App::PropertyFloat",
+                        "Mass",
+                        "Weight",
+                        tooltip).Mass = 0.0
+    try:
+        obj.getPropertyByName('LineDens')
+    except AttributeError:
+        tooltip = QtGui.QApplication.translate(
+            "ship_weight",
+            "Linear density [kg / m]",
+            None)
+        obj.addProperty("App::PropertyFloat",
+                        "LineDens",
+                        "Weight",
+                        tooltip).LineDens = 0.0
+    try:
+        obj.getPropertyByName('AreaDens')
+    except AttributeError:
+        tooltip = QtGui.QApplication.translate(
+            "ship_weight",
+            "Area density [kg / m^2]",
+            None)
+        obj.addProperty("App::PropertyFloat",
+                        "AreaDens",
+                        "Weight",
+                        tooltip).AreaDens = 0.0
+    try:
+        obj.getPropertyByName('Dens')
+    except AttributeError:
+        tooltip = QtGui.QApplication.translate(
+            "ship_weight",
+            "Density [kg / m^3]",
+            None)
+        obj.addProperty("App::PropertyFloat",
+                        "Dens",
+                        "Weight",
+                        tooltip).Dens = 0.0
+    try:
+        obj.getPropertyByName('Inertia')
+    except AttributeError:
+        tooltip = QtGui.QApplication.translate(
+            "ship_weight",
+            "Inertia [kg * m^2]",
+            None)
+        obj.addProperty("App::PropertyMatrix",
+                        "Inertia",
+                        "Weight",
+                        tooltip).Inertia = (0, 0, 0, 0,
+                                            0, 0, 0, 0,
+                                            0, 0, 0, 0,
+                                            0, 0, 0, 1)
+    return obj
 
 
 class Weight:
@@ -40,67 +123,8 @@ class Weight:
         shapes -- Set of shapes which will compound the weight element.
         ship -- Ship where the weight is allocated.
         """
-        # Add an unique property to identify the Weight instances
-        tooltip = QtGui.QApplication.translate(
-            "ship_weight",
-            "True if it is a valid weight instance, False otherwise",
-            None)
-        obj.addProperty("App::PropertyBool",
-                        "IsWeight",
-                        "Weight",
-                        tooltip).IsWeight = True
-        # Add the mass property for puntual weights
-        tooltip = QtGui.QApplication.translate(
-            "ship_weight",
-            "Mass [kg]",
-            None)
-        obj.addProperty("App::PropertyFloat",
-                        "Mass",
-                        "Weight",
-                        tooltip).Mass = 0.0
-        # Add the density property for linear elements
-        tooltip = QtGui.QApplication.translate(
-            "ship_weight",
-            "Linear density [kg / m]",
-            None)
-        obj.addProperty("App::PropertyFloat",
-                        "LineDens",
-                        "Weight",
-                        tooltip).LineDens = 0.0
-        # Add the area density property for surface elements
-        tooltip = QtGui.QApplication.translate(
-            "ship_weight",
-            "Area density [kg / m^2]",
-            None)
-        obj.addProperty("App::PropertyFloat",
-                        "AreaDens",
-                        "Weight",
-                        tooltip).AreaDens = 0.0
-        # Add the density property for volumetric elements
-        tooltip = QtGui.QApplication.translate(
-            "ship_weight",
-            "Density [kg / m^3]",
-            None)
-        obj.addProperty("App::PropertyFloat",
-                        "Dens",
-                        "Weight",
-                        tooltip).Dens = 0.0
-        # Add the inertia matrix
-        tooltip = QtGui.QApplication.translate(
-            "ship_weight",
-            "Inertia [kg * m^2]",
-            None)
-        obj.addProperty("App::PropertyMatrix",
-                        "Inertia",
-                        "Weight",
-                        tooltip).Inertia = (1, 0, 0, 0,
-                                            0, 1, 0, 0,
-                                            0, 0, 1, 0,
-                                            0, 0, 0, 1)
-
-        # Set the subshapes
+        add_weight_props(obj)
         obj.Shape = Part.makeCompound(shapes)
-
         obj.Proxy = self
 
     def onChanged(self, fp, prop):
@@ -301,27 +325,22 @@ class Weight:
         Inertia matrix [kg * m^2]
         """
         mass = self.getMass(fp)
-        dens = fp.Mass or fp.LineDens or fp.AreaDens or fp.Dens
-        I = [[dens * fp.Inertia[i + j*4] for j in range(4)] for i in range(4)]
-        I[3][3] = 1.0
-        # Get the distance vector (in meters)
-        cog = self.getCenterOfMass(fp)
-        center = center or cog
-        r = center - cog
-        l_qty = Units.Quantity(1, Units.Length)
-        r = [(r.x * l_qty).getValueAs('m').Value,
-             (r.y * l_qty).getValueAs('m').Value,
-             (r.z * l_qty).getValueAs('m').Value]
-        # Apply parallel axes theorem (So-called Steiner)
-        r2 = r[0] * r[0] + r[1] * r[1] + r[2] * r[2]
-        for i in range(3):
-            I[i][i] += mass * r2
-            for j in range(3):
-                I[i][j] -= mass * r[i] * r[j]
-        # Convert everything to quantities
-        for i in range(4):
-            for j in range(4):
-                I[i][j] = Units.Quantity('{} kg * m^2'.format(I[i][j]))
+        if fp.Mass != 0.0:
+            add_weight_props(fp)  # For backward compatibility
+            I = [[fp.Inertia.A[i + j*4] for j in range(3)] for i in range(3)]
+        else:
+            if fp.LineDens != 0.0:
+                dens = fp.LineDens
+                I = compute_inertia(fp.Shape.Edges, 2)
+            if fp.AreaDens != 0.0:
+                dens = fp.AreaDens
+                I = compute_inertia(fp.Shape.Faces, 3)
+            if fp.Dens != 0.0:
+                dens = fp.Dens
+                I = compute_inertia(fp.Shape.Solids, 3)
+            for i, row in range(I):
+                for j, value in range(row):
+                    I[i][j] = (dens * value).getValueAs('kg*m^2').Value
         return I
 
 class ViewProviderWeight:

@@ -59,7 +59,8 @@ class ShipWorkbench(Gui.Workbench):
                        "Ship_LoadCondition",
                        "Ship_SinkAndTrim",
                        "Ship_GZ"]
-        seakeepinglist = ["Seakeeping_SetMesh"]
+        seakeepinglist = ["Seakeeping_SetMesh",
+                          "Seakeeping_RAOs"]
 
         self.appendToolbar(
             str(QtCore.QT_TRANSLATE_NOOP("Ship", "Ship design")),

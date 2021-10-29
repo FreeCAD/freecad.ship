@@ -71,6 +71,11 @@ def compute(lc, fs_ref=True, doc=App.ActiveDocument):
         return None, 0, 0, 0
     gz, draft, trim = points[0]
     group_objs = []
+    objs = {'fs':None,
+            'ship':None,
+            'tanks':[],
+            'COG': None,
+            'B': None}
     # Create a free surface
     L = ship.Length
     B = ship.Breadth
@@ -85,6 +90,7 @@ def compute(lc, fs_ref=True, doc=App.ActiveDocument):
         fs.LineColor = (0.0, 0.0, 0.5)
         fs.ShapeColor = (0.0, 0.7, 1.0)
     group_objs.append(doc.getObject(name))
+    objs['fs'] = group_objs[-1]
 
     # Copy and place the ship
     name = __make_name('SinkAndTrim_{}'.format(ship.Name), doc)
@@ -98,6 +104,7 @@ def compute(lc, fs_ref=True, doc=App.ActiveDocument):
         plot_ship.Transparency = 50
     group_objs.append(doc.getObject(name))
     doc.getObject(name).Label = 'SinkAndTrim_' + ship.Label
+    objs['ship'] = group_objs[-1]
     # Copy and place the tanks
     tank_shapes = []  # Untransformed
     for tank, dens, level in tanks:
@@ -113,6 +120,7 @@ def compute(lc, fs_ref=True, doc=App.ActiveDocument):
         doc.recompute()
         group_objs.append(doc.getObject(name))
         doc.getObject(name).Label = 'SinkAndTrim_' + tank.Label
+        objs['tanks'].append(group_objs[-1])
     # Place the bouyancy center
     disp, B, _ = Hydrostatics.displacement(ship, draft, trim=trim)
     disp *= GZ.G
@@ -126,6 +134,7 @@ def compute(lc, fs_ref=True, doc=App.ActiveDocument):
         b = Gui.getDocument(doc.Name).getObject(name)
         b.PointSize = 10.00
     group_objs.append(doc.getObject(name))
+    objs['B'] = group_objs[-1]
     # Place the COG
     COG, W = GZ.weights_cog(weights)
     mom_x = Units.Quantity(COG.x, Units.Length) * W
@@ -153,6 +162,7 @@ def compute(lc, fs_ref=True, doc=App.ActiveDocument):
         cog = Gui.getDocument(doc.Name).getObject(name)
         cog.PointSize = 10.00
     group_objs.append(doc.getObject(name))
+    objs['COG'] = group_objs[-1]
 
     # Create a group where the results will be placed
     name = __make_name('SinkAndTrim_results', doc)
@@ -161,4 +171,4 @@ def compute(lc, fs_ref=True, doc=App.ActiveDocument):
         group.addObject(obj)
     doc.recompute()
 
-    return group, draft, trim, disp / GZ.G
+    return group, draft, trim, disp / GZ.G, objs
