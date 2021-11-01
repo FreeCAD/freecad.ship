@@ -23,11 +23,26 @@
 import os
 import sys
 import math
+import string
 import FreeCAD
 import Spreadsheet
 import numpy as np
 from .Tools import DIRS
 
+
+def cell_letter(i):
+    letters = string.ascii_uppercase
+    name = ""
+    if i <= 0:
+        return name
+    while True:
+        i -= 1
+        name = letters[i % len(letters)] + name
+        i //= len(letters)
+        if i == 0:
+            break
+    return name
+    
 
 class Plot(object):
     def __init__(self, title, periods):
@@ -58,16 +73,20 @@ class Plot(object):
         self.plt.setActiveAxes(-1)
         self.r, self.theta = np.meshgrid(periods, dirs)
         self.rao = np.zeros((len(dirs), len(periods)))
+        self.phase = np.zeros((len(dirs), len(periods)))
         cs = ax.contourf(self.theta, self.r, self.rao, cmap='jet')
         self.label = 'm / m' if not self.is_angle else 'deg / m'
         self.cb = fig.colorbar(cs, label=self.label)
         self.plt.update()
+
+        self.spreadSheet(title)
 
     def update(self, rao=None):
         if rao:
             self.rao[:rao.shape[0], :rao.shape[1]] = rao
         # Copy the 360deg dir data from the 0deg one
         self.rao[-1, :] = self.rao[0,:]
+        self.phase[-1, :] = self.phase[0,:]
         # Contour cannot be updated, so we must replot
         self.plt.axes.remove()
         fig = self.plt.fig
@@ -79,3 +98,38 @@ class Plot(object):
         self.cb.remove()
         self.cb = fig.colorbar(cs, label=self.label)
         self.plt.update()
+
+        self.fillSpreadSheet(rao, "RAO [" + self.label + "]")
+        self.fillSpreadSheet(self.phase, "Phase [rad]",
+                             i0=4 + self.phase.shape[0])
+
+    def fillSpreadSheet(self, data, title, i0=1):
+        s = self.sheet
+        periods = self.r[0, :]
+        dirs = np.degrees(self.theta[:, 0])
+
+        s.set("A{}".format(i0), title)
+        for i, d in enumerate(dirs):
+            s.set("A{}".format(i0 + i + 2),
+                  "{} deg".format(d))
+        for j, t in enumerate(periods):
+            s.set("{}{}".format(cell_letter(j + 2), i0 + 1),
+                  "{} s".format(t))
+        for i, d in enumerate(dirs):
+            for j, t in enumerate(periods):
+                s.set("{}{}".format(cell_letter(j + 2), i0 + i + 2),
+                  "{}".format(data[i][j]))
+
+        FreeCAD.activeDocument().recompute()
+
+    def spreadSheet(self, title):
+        """ Write data file.
+        @param ship Selected ship instance
+        @param trim Trim angle.
+        @return True if error happens.
+        """
+        self.sheet = FreeCAD.activeDocument().addObject('Spreadsheet::Sheet',
+                                                        title)
+        self.fillSpreadSheet(self.rao, "RAO [" + self.label + "]")
+        self.fillSpreadSheet(self.phase, "Phase [rad]",
+                             i0=4 + self.phase.shape[0])
