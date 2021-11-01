@@ -21,6 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
+import cmath
 import numpy as np
 import FreeCAD as App
 import FreeCADGui as Gui
@@ -87,8 +88,9 @@ class TaskPanel:
             self.form.pbar.setValue(i + 1)
             ii, jj, dataset = data
             for dof in Tools.DOFS:
-                plts[dof].rao[ii, jj + 1] = abs(
-                    dataset.sel(radiating_dof=dof).data[0])
+                rao_complex = dataset.sel(radiating_dof=dof).data[0]
+                plts[dof].rao[ii, jj + 1] = abs(rao_complex)
+                plts[dof].phase[ii, jj + 1] = cmath.phase(rao_complex)
                 plts[dof].update()
             self.timer.start(0.0)
             self.loop.exec_()
