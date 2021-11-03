@@ -28,6 +28,10 @@ import FreeCAD
 import Spreadsheet
 import numpy as np
 from .Tools import DIRS
+from ..shipGZ.Tools import G
+
+
+TITLE_CELL_COLOR = (0.9, 0.9, 0.9)
 
 
 def cell_letter(i):
@@ -106,18 +110,39 @@ class Plot(object):
     def fillSpreadSheet(self, data, title, i0=1):
         s = self.sheet
         periods = self.r[0, :]
+        g = G.getValueAs('m/s^2').Value
+        wavelengths = periods**2 / (2.0 * np.pi / g)
         dirs = np.degrees(self.theta[:, 0])
 
+        # Title block
+        max_letter = cell_letter(len(periods) + 2)
+        max_number = i0 + 3 + len(dirs)
+        s.splitCell('A{}'.format(i0))
+        s.splitCell('A{}'.format(i0 + 1))
+        s.Document.recompute()
+        s.setBackground('A{}:{}{}'.format(i0, max_letter, i0 + 3),
+                        TITLE_CELL_COLOR)
+        s.setBackground('A{}:B{}'.format(i0 + 4, max_number),
+                        TITLE_CELL_COLOR)
+        s.mergeCells('A{}:{}{}'.format(i0, max_letter, i0))
+        s.Document.recompute()
+
         s.set("A{}".format(i0), title)
+        s.set("B{}".format(i0 + 1), "Wave period [s]")
+        s.set("B{}".format(i0 + 2), "Wave length [m]")
+        s.set("A{}".format(i0 + 3), "Direction [deg]")
         for i, d in enumerate(dirs):
-            s.set("A{}".format(i0 + i + 2),
-                  "{} deg".format(d))
+            s.set("A{}".format(i0 + 4 + i),
+                  "{}".format(d))
         for j, t in enumerate(periods):
-            s.set("{}{}".format(cell_letter(j + 2), i0 + 1),
-                  "{} s".format(t))
+            s.set("{}{}".format(cell_letter(3 + j), i0 + 1),
+                  "{}".format(t))
+            s.set("{}{}".format(cell_letter(3 + j), i0 + 2),
+                  "{}".format(wavelengths[j]))
+
         for i, d in enumerate(dirs):
             for j, t in enumerate(periods):
-                s.set("{}{}".format(cell_letter(j + 2), i0 + i + 2),
+                s.set("{}{}".format(cell_letter(3 + j), i0 + 4 + i),
                   "{}".format(data[i][j]))
 
         FreeCAD.activeDocument().recompute()
