@@ -81,7 +81,7 @@ The main transversal stability indicator, it is unsurprisingly required by the v
 
 ![RAOs](https://user-images.githubusercontent.com/1668392/140480149-88bbd2e4-a255-4f9d-893a-c325356d4263.png)
 
-With FreeCAD you can easily compute the Response Amplitude Operators (RAOs), considering the wide validated frequency domain code [Nemoh](https://lheea.ec-nantes.fr/logiciels-et-brevets/nemoh-presentation-192863.kjsp), and more specifially its Python wrapper [Capytaine](https://github.com/mancellin/capytaine).
+With FreeCAD you can easily compute the Response Amplitude Operators (RAOs), considering the widely validated frequency domain code [Nemoh](https://lheea.ec-nantes.fr/logiciels-et-brevets/nemoh-presentation-192863.kjsp), and more specifially its Python wrapper [Capytaine](https://github.com/mancellin/capytaine).
 
 ## Install
 
