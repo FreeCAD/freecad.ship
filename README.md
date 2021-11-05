@@ -8,14 +8,6 @@ FreeCAD-Ship is a free module for [FreeCAD](https://www.freecadweb.org) oriented
 
 It currently offers the following tools:
 
-### Outline drawing
-
-![Ship OutlineDraw Icon](freecad/ship/resources/icons/Ship_OutlineDraw.svg)
-
-![image](https://user-images.githubusercontent.com/4140247/128526134-24a0854a-b47c-4d90-9ae5-d0d945a06ab2.png)
-
-*Since FreeCAD already provides tools to carry out this task, this tool will be removed in a close future.*
-
 ### Areas curve
 
 ![Ship_AreaCurve Icon](freecad/ship/resources/icons/Ship_AreaCurve.svg)
@@ -82,6 +74,15 @@ Get a visual hint on the equilibrium draft and trim angle for a certain load con
 
 The main transversal stability indicator, it is unsurprisingly required by the vast majority of the classification societies to certify a ship. This tool is computing that for you, providing a plot and the associated spreadsheet.
 
+### RAOs
+
+![Seakeeping_SetMesh Icon](freecad/ship/resources/icons/Seakeeping_SetMesh.svg)
+![Seakeeping_RAOs Icon](freecad/ship/resources/icons/Seakeeping_RAOs.svg)
+
+![RAOs](https://user-images.githubusercontent.com/1668392/140480149-88bbd2e4-a255-4f9d-893a-c325356d4263.png)
+
+With FreeCAD you can easily compute the Response Amplitude Operators (RAOs), considering the wide validated frequency domain code [Nemoh](https://lheea.ec-nantes.fr/logiciels-et-brevets/nemoh-presentation-192863.kjsp), and more specifially its Python wrapper [Capytaine](https://github.com/mancellin/capytaine).
+
 ## Install
 
 This workbench is available for download via the FreeCAD [Addon Manager](https://wiki.freecadweb.org/Addon_manager)
@@ -102,7 +103,6 @@ There are many tools and features which will be implemented in this module:
  - Wiki documentation
  - Tutorials
  - Seakeeping
-   - RAOs
    - Added masses
    - Time domain solver
  - Deterministic damaged stability
