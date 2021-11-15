@@ -27,8 +27,8 @@ from PySide import QtGui, QtCore
 from . import Tools
 from .. import WeightInstance as Instance
 from .. import Ship_rc
-from ..shipUtils import Locale
-from ..shipUtils import Selection
+from ..shipUtils import Locale, Selection
+from ..shipUtils.Math import compute_inertia
 
 
 class TaskPanel:
@@ -75,7 +75,7 @@ class TaskPanel:
                 self.form.dens_vol.text()))
 
         if self.elem_type != 1:
-            I = Tools.compute_inertia(self.shapes, self.elem_type)
+            I = compute_inertia(self.shapes, self.elem_type)
             for i,row in enumerate(I):
                 for j,val in enumerate(row):
                     I[i][j] = val * density
