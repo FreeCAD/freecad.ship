@@ -28,7 +28,7 @@ import FreeCADGui
 from FreeCAD import Base, Vector, Units
 import Part
 from .shipUtils import Paths, Math
-from .shipCreateWeight.Tools import compute_inertia
+from .shipUtils.Math import compute_inertia
 
 
 def add_weight_props(obj):
