@@ -65,17 +65,17 @@ def __vol_cog(shape):
 
 
 def compute(lc, fs_ref=True, doc=App.ActiveDocument):
-    points, ship, weights, tanks = GZ.gz(
-        lc, [Units.parseQuantity("0 deg")], True)
-    if points == []:
-        return None, 0, 0, 0
-    gz, draft, trim = points[0]
-    group_objs = []
     objs = {'fs':None,
             'ship':None,
             'tanks':[],
             'COG': None,
             'B': None}
+    points, ship, weights, tanks = GZ.gz(
+        lc, [Units.parseQuantity("0 deg")], True)
+    if points == []:
+        return None, 0, 0, 0, objs
+    gz, draft, trim = points[0]
+    group_objs = []
     # Create a free surface
     L = ship.Length
     B = ship.Breadth
