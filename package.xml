@@ -2,8 +2,8 @@
 <package format="1" xmlns="https://wiki.freecad.org/Package_Metadata">
   <name>Ship Workbench</name>
   <description>Naval ship design (architecture, seakeeping, and ship resistance)</description>
-  <version></version>
-  <date></date>
+  <version>2022.4.11</version>
+  <date>2022-04-11</date>
   <maintainer email="jlcercos@gmail.com">Jose Luis Cercós Pita</maintainer>
   <license file="LICENSE">LGPLv2.1</license>
   <url type="repository" branch="master">https://github.com/FreeCAD/freecad.ship</url>
@@ -15,10 +15,10 @@
   <content>
     <workbench>
       <name>Ship Workbench</name>
-      <!-- <classname>MetadataCreationWorkbench</classname> -->
-      <!-- <subdirectory>MCW</subdirectory> -->
-      <!-- <icon>Resources/mcw.svg</icon> -->
-      <depend>plot</depend>  <!-- Python package dependencies (no support for version information) -->
+      <classname>ShipWorkbench</classname>
+      <subdirectory>./</subdirectory>
+      <icon>freecad/ship/resources/icons/Ship_Logo.svg</icon>
+      <depend>plot</depend>
       <tag>ship</tag>
       <tag>naval</tag>
       <tag>fem</tag>
