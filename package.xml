@@ -18,6 +18,7 @@
       <classname>ShipWorkbench</classname>
       <subdirectory>./</subdirectory>
       <icon>freecad/ship/resources/icons/Ship_Logo.svg</icon>
+      <depend>capytaine</depend>
       <depend>plot</depend>
       <tag>ship</tag>
       <tag>naval</tag>
