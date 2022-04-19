@@ -42,6 +42,9 @@ class ShipWorkbench(Gui.Workbench):
     def Initialize(self):
         from PySide import QtCore, QtGui
 
+        Gui.addLanguagePath(os.path.join(os.path.dirname(__file__),
+                                         "resources", "translations"))
+
         try:
             import FreeCAD.Plot
         except ImportError:
