@@ -21,9 +21,7 @@
 #***************************************************************************
 
 import os
-from PySide import QtGui, QtCore
 import FreeCAD
-import FreeCADGui
 from FreeCAD import Base
 import Spreadsheet
 
@@ -54,10 +52,9 @@ class Plot(object):
             try:
                 from freecad.plot import Plot
             except ImportError:
-                msg = QtGui.QApplication.translate(
+                msg = FreeCAD.Qt.translate(
                     "ship_console",
-                    "Plot module is disabled",
-                    None)
+                    "Plot module is disabled")
                 FreeCAD.Console.PrintWarning(msg + '\n')
                 return True
 

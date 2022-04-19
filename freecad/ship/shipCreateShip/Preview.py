@@ -25,7 +25,6 @@ import FreeCADGui
 from FreeCAD import Base
 import Part
 from FreeCAD import Units
-from PySide import QtGui, QtCore
 
 
 class Preview(object):
@@ -62,10 +61,9 @@ class Preview(object):
         # self.baseLine.Label = 'BaseLine'
         guiObj = FreeCADGui.ActiveDocument.getObject(self.baseLine.Name)
         guiObj.ShowInTree = False
-        text = str(QtGui.QApplication.translate(
+        text = FreeCAD.Qt.translate(
             "ship_create",
-            "Base line",
-            None))
+            "Base line")
         self.baseLineLabel = DrawText('BaseLineText',
                                       text,
                                       Base.Vector(xEnd, 0, 0))
@@ -80,10 +78,9 @@ class Preview(object):
         # self.fsLine.Label = 'FreeSurface'
         guiObj = FreeCADGui.ActiveDocument.getObject(self.fsLine.Name)
         guiObj.ShowInTree = False
-        text = str(QtGui.QApplication.translate(
+        text = FreeCAD.Qt.translate(
             "ship_create",
-            "Free surface",
-            None))
+            "Free surface")
         self.fsLineLabel = DrawText('FSText', text, Base.Vector(xEnd, 0, T))
         guiObj = FreeCADGui.ActiveDocument.getObject(self.fsLineLabel.Name)
         guiObj.ShowInTree = False
@@ -98,10 +95,9 @@ class Preview(object):
         # self.fpLine.Label = 'ForwardPerpendicular'
         guiObj = FreeCADGui.ActiveDocument.getObject(self.fpLine.Name)
         guiObj.ShowInTree = False
-        text = str(QtGui.QApplication.translate(
+        text = FreeCAD.Qt.translate(
             "ship_create",
-            "Forward perpendicular",
-            None))
+            "Forward perpendicular")
         self.fpLineLabel = DrawText('FPText',
                                     text,
                                     Base.Vector(0.5 * L, 0, zEnd))
@@ -115,10 +111,9 @@ class Preview(object):
         # self.apLine.Label = 'AfterPerpendicular'
         guiObj = FreeCADGui.ActiveDocument.getObject(self.apLine.Name)
         guiObj.ShowInTree = False
-        text = str(QtGui.QApplication.translate(
+        text = FreeCAD.Qt.translate(
             "ship_create",
-            "After perpendicular",
-            None))
+            "After perpendicular")
         self.apLineLabel = DrawText('APText',
                                     text,
                                     Base.Vector(-0.5 * L, 0, zEnd))
@@ -132,10 +127,9 @@ class Preview(object):
         # self.amLine.Label = 'AminFrame'
         guiObj = FreeCADGui.ActiveDocument.getObject(self.amLine.Name)
         guiObj.ShowInTree = False
-        text = str(QtGui.QApplication.translate(
+        text = FreeCAD.Qt.translate(
             "ship_create",
-            "Main frame",
-            None))
+            "Main frame")
         self.amLineLabel = DrawText('AMText',
                                     text,
                                     Base.Vector(0, -0.5 * B, zEnd))

@@ -132,19 +132,17 @@ class TaskPanel:
         """
         sel_ships = Selection.get_ships()
         if not sel_ships:
-            msg = QtGui.QApplication.translate(
+            msg = App.Qt.translate(
                 "ship_console",
-                "A ship instance must be selected before using this tool",
-                None)
+                "A ship instance must be selected before using this tool")
             App.Console.PrintError(msg + '\n')
             return True
         self.ship = sel_ships[0]
         if len(sel_ships) > 1:
-            msg = QtGui.QApplication.translate(
+            msg = App.Qt.translate(
                 "ship_console",
                 "More than one ship have been selected (just the one labelled"
-                "'{}' is considered)".format(self.ship.Label),
-                None)
+                "'{}' is considered)".format(self.ship.Label))
             App.Console.PrintWarning(msg + '\n')
 
         self.form.draft.setText(self.ship.Draft.UserString)
@@ -242,10 +240,9 @@ class TaskPanel:
             props.index("AreaCurveDraft")
         except ValueError:
             try:
-                tooltip = str(QtGui.QApplication.translate(
-                    "ship_areas",
-                    "Areas curve tool draft selected [m]",
-                    None))
+                tooltip = QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Areas curve tool draft selected [m]")
             except:
                 tooltip = "Areas curve tool draft selected [m]"
             self.ship.addProperty("App::PropertyLength",
@@ -257,10 +254,9 @@ class TaskPanel:
             props.index("AreaCurveTrim")
         except ValueError:
             try:
-                tooltip = str(QtGui.QApplication.translate(
-                    "ship_areas",
-                    "Areas curve tool trim selected [deg]",
-                    None))
+                tooltip = QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Areas curve tool trim selected [deg]")
             except:
                 tooltip = "Areas curve tool trim selected [deg]"
             self.ship.addProperty("App::PropertyAngle",
@@ -272,10 +268,9 @@ class TaskPanel:
             props.index("AreaCurveNum")
         except ValueError:
             try:
-                tooltip = str(QtGui.QApplication.translate(
-                    "ship_areas",
-                    "Areas curve tool number of points",
-                    None))
+                tooltip = QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Areas curve tool number of points")
             except:
                 tooltip = "Areas curve tool number of points"
             self.ship.addProperty("App::PropertyInteger",

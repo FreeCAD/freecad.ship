@@ -58,10 +58,9 @@ class TaskPanel:
                                QtCore.SLOT("quit()"))
         self.running = True
         # Get the hydrostatics
-        msg = QtGui.QApplication.translate(
+        msg = App.Qt.translate(
             "ship_console",
-            "Computing capacity curve",
-            None)
+            "Computing capacity curve")
         App.Console.PrintMessage(msg + '...\n')
         l = [0.0]
         z = [Units.parseQuantity("0 m")]
@@ -144,19 +143,17 @@ class TaskPanel:
         """
         sel_tanks = Selection.get_tanks()
         if not sel_tanks:
-            msg = QtGui.QApplication.translate(
+            msg = App.Qt.translate(
                 "ship_console",
-                "A tank instance must be selected before using this tool",
-                None)
+                "A tank instance must be selected before using this tool")
             App.Console.PrintError(msg + '\n')
             return True
         self.tank = sel_tanks[0]
         if len(sel_tanks) > 1:
-            msg = QtGui.QApplication.translate(
+            msg = App.Qt.translate(
                 "ship_console",
                 "More than one tank have been selected (just the one labelled"
-                " '{}' is considered)".format(self.tank.Label),
-                None)
+                " '{}' is considered)".format(self.tank.Label))
             App.Console.PrintWarning(msg + '\n')
 
         self.form.group_pbar.hide()

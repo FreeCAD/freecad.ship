@@ -106,26 +106,23 @@ class TaskPanel:
         # Look for selected loading conditions (Spreadsheets)
         sel_lcs = Selection.get_lcs()
         if not sel_lcs:
-            msg = QtGui.QApplication.translate(
+            msg = App.Qt.translate(
                 "ship_console",
-                "A load condition instance must be selected before using this tool",
-                None)
+                "A load condition instance must be selected before using this"
+                " tool")
             App.Console.PrintError(msg + '\n')
             return True
         self.lc = sel_lcs[0]
         if len(sel_lcs) > 1:
-            msg = QtGui.QApplication.translate(
+            msg = App.Qt.translate(
                 "ship_console",
                 "More than one load condition have been selected (just the one"
-                " labelled '{}' is considered)".format(self.lc.Label),
-                None)
+                " labelled '{}' is considered)").format(self.lc.Label)
             App.Console.PrintWarning(msg + '\n')
 
         # We have a valid loading condition, let's set the initial field values
-        self.form.result.setText(QtGui.QApplication.translate(
-            "ship_sinkandtrim",
-            "Press update button to compute",
-            None))
+        self.form.result.setText(App.Qt.translate(
+            "ship_sinkandtrim", "Press update button to compute"))
 
         return False
 
@@ -138,20 +135,12 @@ class TaskPanel:
                                                         fs_ref=fs_ref,
                                                         doc=self.doc)
         if self.plot is None:
-            self.form.result.setText(QtGui.QApplication.translate(
-            "ship_sinkandtrim",
-            "The ship cannot float!",
-            None))
+            self.form.result.setText(App.Qt.translate(
+                "ship_sinkandtrim", "The ship cannot float!"))
             return
 
-        draft_str = QtGui.QApplication.translate(
-            "ship_create",
-            "Draft",
-            None)
-        trim_str = QtGui.QApplication.translate(
-            "ship_hydrostatic",
-            "Trim",
-            None)
+        draft_str = App.Qt.translate("ship_create", "Draft")
+        trim_str = App.Qt.translate("ship_hydrostatic", "Trim")
         self.form.result.setText(
             "\u0394 = {}\n".format(disp.UserString) + \
             "{} = {}\n".format(draft_str, draft.UserString) + \

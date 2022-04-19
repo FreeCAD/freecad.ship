@@ -26,8 +26,10 @@ from FreeCAD import Vector, Rotation, Matrix, Placement
 import Part
 from FreeCAD import Units
 import FreeCAD as App
-import FreeCADGui as Gui
-from PySide import QtGui, QtCore
+try:
+    import FreeCADGui as Gui
+except ImportError:
+    pass
 from .. import Instance
 from ..shipUtils import Math
 
@@ -87,8 +89,11 @@ def getUnderwaterSide(shape, force=True):
     # Convert the shape into an active object
     Part.show(shape)
     orig = App.ActiveDocument.Objects[-1]
-    guiObj = Gui.ActiveDocument.getObject(orig.Name)
-    guiObj.ShowInTree = False
+    try:
+        guiObj = Gui.ActiveDocument.getObject(orig.Name)
+        guiObj.ShowInTree = False
+    except:
+        pass
 
     bbox = shape.BoundBox
     xmin = Units.Quantity(bbox.XMin, Units.Length)
@@ -109,20 +114,26 @@ def getUnderwaterSide(shape, force=True):
     box.Length = 3.0 * L
     box.Width = 3.0 * B
     box.Height = -zmin + H
-    guiObj = Gui.ActiveDocument.getObject(box.Name)
-    guiObj.ShowInTree = False
+    try:
+        guiObj = Gui.ActiveDocument.getObject(box.Name)
+        guiObj.ShowInTree = False
+    except:
+        pass
 
     App.ActiveDocument.recompute()
     common = App.activeDocument().addObject("Part::MultiCommon",
                                             "UnderwaterSideHelper")
     common.Shapes = [orig, box]
-    guiObj = Gui.ActiveDocument.getObject(common.Name)
-    guiObj.ShowInTree = False
+    try:
+        guiObj = Gui.ActiveDocument.getObject(common.Name)
+        guiObj.ShowInTree = False
+    except:
+        pass
     App.ActiveDocument.recompute()
     if force and len(common.Shape.Solids) == 0:
         # The common operation is failing, let's try moving a bit the free
         # surface
-        msg = QtGui.QApplication.translate(
+        msg = App.Qt.translate(
             "ship_console",
             "Boolean operation failed when trying to get the underwater side."
             " The tool is retrying such operation slightly moving the free"
@@ -197,11 +208,10 @@ def areas(ship, n, draft=None,
         try:
             f = Part.Face(shape.slice(Vector(1,0,0), x))
         except Part.OCCError:
-            msg = QtGui.QApplication.translate(
+            msg = App.Qt.translate(
                 "ship_console",
-                "Part.OCCError: Area computation failed (x={})".format(
-                    x.UserStrig),
-                None)
+                "Part.OCCError: Area computation failed (x={})").format(
+                    x.UserStrig)
             App.Console.PrintError(msg + '\n')
             areas.append((Units.Quantity(x, Units.Length),
                           Units.Quantity(0.0, Units.Area)))
@@ -274,11 +284,10 @@ def displacement(ship, draft=None,
     try:
         cb = vol / Vol
     except ZeroDivisionError:
-        msg = QtGui.QApplication.translate(
+        msg = App.Qt.translate(
             "ship_console",
             "ZeroDivisionError: Null volume found during the displacement"
-            " computation!",
-            None)
+            " computation!")
         App.Console.PrintError(msg + '\n')
         cb = 0.0
 
@@ -345,10 +354,9 @@ def floatingArea(ship, draft=None,
         f = Part.Face(shape.slice(Vector(0,0,1), 0.0))
         area = Units.Quantity(f.Area, Units.Area)
     except Part.OCCError:
-        msg = QtGui.QApplication.translate(
+        msg = App.Qt.translate(
             "ship_console",
-            "Part.OCCError: Floating area cannot be computed",
-            None)
+            "Part.OCCError: Floating area cannot be computed")
         App.Console.PrintError(msg + '\n')
         f = None
         area = Units.Quantity(0.0, Units.Area)
@@ -359,11 +367,10 @@ def floatingArea(ship, draft=None,
     try:
         cf = (area / Area).Value
     except ZeroDivisionError:
-        msg = QtGui.QApplication.translate(
+        msg = App.Qt.translate(
             "ship_console",
             "ZeroDivisionError: Null area found during the floating area"
-            " computation!",
-            None)
+            " computation!")
         App.Console.PrintError(msg + '\n')
         cf = 0.0
 
@@ -505,10 +512,9 @@ def mainFrameCoeff(ship, draft=None):
         f = Part.Face(shape.slice(Vector(1,0,0), 0.0))
         area = f.Area
     except Part.OCCError:
-        msg = QtGui.QApplication.translate(
+        msg = App.Qt.translate(
             "ship_console",
-            "Part.OCCError: Main frame area cannot be computed",
-            None)
+            "Part.OCCError: Main frame area cannot be computed")
         App.Console.PrintError(msg + '\n')
         area = 0.0
 
@@ -518,11 +524,10 @@ def mainFrameCoeff(ship, draft=None):
     try:
         cm = area / Area
     except ZeroDivisionError:
-        msg = QtGui.QApplication.translate(
+        msg = App.Qt.translate(
             "ship_console",
             "ZeroDivisionError: Null area found during the main frame area"
-            " coefficient computation!",
-            None)
+            " coefficient computation!")
         App.Console.PrintError(msg + '\n')
         cm = 0.0
 

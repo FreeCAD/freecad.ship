@@ -98,14 +98,10 @@ class TaskPanel:
 
     def retranslateUi(self):
         """Set the user interface locale strings."""
-        self.form.setWindowTitle(QtGui.QApplication.translate(
-            "ship_load",
-            "Load example ship",
-            None))
+        self.form.setWindowTitle(App.Qt.translate(
+            "ship_load", "Load example ship"))
         self.widget(QtGui.QGroupBox, "ShipSelectionBox").setTitle(
-            QtGui.QApplication.translate("ship_load",
-                                         "Select ship example geometry",
-                                         None))
+            App.Qt.translate("ship_load", "Select ship example geometry"))
 
 
 def createTask():

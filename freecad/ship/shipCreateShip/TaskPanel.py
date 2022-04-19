@@ -117,16 +117,14 @@ class TaskPanel:
         """Setup the initial values"""
         self.solids = Selection.get_solids()
         if not self.solids:
-            msg = QtGui.QApplication.translate(
+            msg = App.Qt.translate(
                 "ship_console",
-                "Ship objects can only be created on top of hull geometry",
-                None)
+                "Ship objects can only be created on top of hull geometry")
             App.Console.PrintError(msg + '\n')
-            msg = QtGui.QApplication.translate(
+            msg = App.Qt.translate(
                 "ship_console",
                 "Please create or load a ship hull geometry before using"
-                " this tool",
-                None)
+                " this tool")
             App.Console.PrintError(msg + '\n')
             return True
         # Get the ship bounds. The ship instance can not have dimensions

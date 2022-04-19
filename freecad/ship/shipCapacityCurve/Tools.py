@@ -24,7 +24,6 @@
 import FreeCAD as App
 from FreeCAD import Units
 from .. import Ship_rc
-from PySide import QtGui
 
 
 def compute_capacity(tank, level):
@@ -60,7 +59,7 @@ def tankCapacityCurve(tank, n):
     dlevel = 1.0 / (n - 1)
     out = [(0.0, Units.parseQuantity("0 m"), Units.parseQuantity("0 m^3"))]
 
-    msg = QtGui.QApplication.translate(
+    msg = App.Qt.translate(
         "ship_console",
         "Computing capacity curve",
         None)
