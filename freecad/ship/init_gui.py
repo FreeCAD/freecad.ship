@@ -24,6 +24,11 @@ import FreeCADGui as Gui
 import FreeCAD as App
 import os
 
+
+def QT_TRANSLATE_NOOP(context, text):
+    return text
+
+
 class ShipWorkbench(Gui.Workbench):
     """Ships design workbench."""
     def __init__(self):
@@ -43,7 +48,7 @@ class ShipWorkbench(Gui.Workbench):
             try:
                 import freecad.plot
             except ImportError:
-                msg = QtGui.QApplication.translate(
+                msg = App.Qt.translate(
                     "ship_console",
                     "freecad.plot is disabled, tools cannot graph output curves, install freecad.plot with addon-manager",
                     None)
@@ -63,22 +68,16 @@ class ShipWorkbench(Gui.Workbench):
                           "Seakeeping_RAOs"]
 
         self.appendToolbar(
-            str(QtCore.QT_TRANSLATE_NOOP("Ship", "Ship design")),
-            shiplist)
+            QT_TRANSLATE_NOOP("Workbench", "Ship design"), shiplist)
         self.appendToolbar(
-            str(QtCore.QT_TRANSLATE_NOOP("Ship", "Weights")),
-            weightslist)
+            QT_TRANSLATE_NOOP("Workbench", "Weights"), weightslist)
         self.appendToolbar(
-            str(QtCore.QT_TRANSLATE_NOOP("Ship", "Seakeeping")),
-            seakeepinglist)
+            QT_TRANSLATE_NOOP("Workbench", "Seakeeping"), seakeepinglist)
         self.appendMenu(
-            str(QtCore.QT_TRANSLATE_NOOP("Ship", "Ship design")),
-            shiplist)
+            QT_TRANSLATE_NOOP("Workbench", "Ship design"), shiplist)
         self.appendMenu(
-            str(QtCore.QT_TRANSLATE_NOOP("Ship", "Weights")),
-            weightslist)
+            QT_TRANSLATE_NOOP("Workbench", "Weights"), weightslist)
         self.appendMenu(
-            str(QtCore.QT_TRANSLATE_NOOP("Ship", "Seakeeping")),
-            seakeepinglist)
+            QT_TRANSLATE_NOOP("Workbench", "Seakeeping"), seakeepinglist)
 
 Gui.addWorkbench(ShipWorkbench())
