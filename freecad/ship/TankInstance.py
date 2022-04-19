@@ -23,9 +23,7 @@
 import time
 from math import *
 import random
-from PySide import QtGui, QtCore
 import FreeCAD as App
-import FreeCADGui as Gui
 from FreeCAD import Base, Vector, Matrix, Placement, Rotation, Units
 import Part
 from .shipUtils import Paths, Math
@@ -50,8 +48,8 @@ class Tank:
         ship -- Ship where the tank is allocated.
         """
         # Add an unique property to identify the Weight instances
-        tooltip = QtGui.QApplication.translate(
-            "ship_tank",
+        tooltip = QT_TRANSLATE_NOOP(
+            "App::Property",
             "True if it is a valid tank instance, False otherwise",
             None)
         obj.addProperty("App::PropertyBool",
@@ -127,11 +125,10 @@ class Tank:
         if len(common.Shape.Solids) == 0:
             # The common operation is failing, let's try moving a bit the free
             # surface
-            msg = QtGui.QApplication.translate(
+            msg = App.Qt.translate(
                 "ship_console",
                 "Tank volume operation failed. The tool is retrying that"
-                " slightly moving the free surface position",
-                None)
+                " slightly moving the free surface position")
             App.Console.PrintWarning(msg + '\n')
             rand_bounds = 0.01 * dz
             i = 0

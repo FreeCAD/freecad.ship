@@ -22,9 +22,7 @@
 
 import time
 from math import *
-from PySide import QtGui, QtCore
 import FreeCAD
-import FreeCADGui
 from FreeCAD import Base, Vector
 import Part
 from .shipUtils import Paths, Math
@@ -43,10 +41,9 @@ def add_ship_props(obj):
     try:
         obj.getPropertyByName('IsShip')
     except AttributeError:
-        tooltip = QtGui.QApplication.translate(
-            "Ship",
-            "True if it is a valid ship instance, False otherwise",
-            None)
+        tooltip = QT_TRANSLATE_NOOP(
+            "App::Property",
+            "True if it is a valid ship instance, False otherwise")
         obj.addProperty("App::PropertyBool",
                         "IsShip",
                         "Ship",
@@ -54,10 +51,9 @@ def add_ship_props(obj):
     try:
         obj.getPropertyByName('Length')
     except AttributeError:
-        tooltip = QtGui.QApplication.translate(
-            "Ship",
-            "Ship length [m]",
-            None)
+        tooltip = QT_TRANSLATE_NOOP(
+            "App::Property",
+            "Ship length [m]")
         obj.addProperty("App::PropertyLength",
                         "Length",
                         "Ship",
@@ -65,10 +61,9 @@ def add_ship_props(obj):
     try:
         obj.getPropertyByName('Breadth')
     except AttributeError:
-        tooltip = QtGui.QApplication.translate(
-            "Ship",
-            "Ship breadth [m]",
-            None)
+        tooltip = QT_TRANSLATE_NOOP(
+            "App::Property",
+            "Ship breadth [m]")
         obj.addProperty("App::PropertyLength",
                         "Breadth",
                         "Ship",
@@ -76,10 +71,9 @@ def add_ship_props(obj):
     try:
         obj.getPropertyByName('Draft')
     except AttributeError:
-        tooltip = QtGui.QApplication.translate(
-            "Ship",
-            "Ship draft [m]",
-            None)
+        tooltip = QT_TRANSLATE_NOOP(
+            "App::Property",
+            "Ship draft [m]")
         obj.addProperty("App::PropertyLength",
                         "Draft",
                         "Ship",
@@ -89,10 +83,9 @@ def add_ship_props(obj):
     try:
         obj.getPropertyByName('Weights')
     except AttributeError:
-        tooltip = QtGui.QApplication.translate(
-            "Ship",
-            "Set of weight instances",
-            None)
+        tooltip = QT_TRANSLATE_NOOP(
+            "App::Property",
+            "Set of weight instances")
         obj.addProperty("App::PropertyStringList",
                         "Weights",
                         "Ship",
@@ -100,10 +93,9 @@ def add_ship_props(obj):
     try:
         obj.getPropertyByName('Tanks')
     except AttributeError:
-        tooltip = QtGui.QApplication.translate(
-            "Ship",
-            "Set of tank instances",
-            None)
+        tooltip = QT_TRANSLATE_NOOP(
+            "App::Property",
+            "Set of tank instances")
         obj.addProperty("App::PropertyStringList",
                         "Tanks",
                         "Ship",
@@ -111,10 +103,9 @@ def add_ship_props(obj):
     try:
         obj.getPropertyByName('LoadConditions')
     except AttributeError:
-        tooltip = QtGui.QApplication.translate(
-            "Ship",
-            "Set of load conditions",
-            None)
+        tooltip = QT_TRANSLATE_NOOP(
+            "App::Property",
+            "Set of load conditions")
         obj.addProperty("App::PropertyStringList",
                         "LoadConditions",
                         "Ship",
@@ -122,10 +113,9 @@ def add_ship_props(obj):
     try:
         obj.getPropertyByName('Mesh')
     except AttributeError:
-        tooltip = QtGui.QApplication.translate(
-            "Ship",
-            "The mesh associated with the ship",
-            None)
+        tooltip = QT_TRANSLATE_NOOP(
+            "App::Property",
+            "The mesh associated with the ship")
         obj.addProperty("App::PropertyStringList",
                         "Mesh",
                         "Ship",
