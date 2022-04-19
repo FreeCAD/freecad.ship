@@ -79,16 +79,15 @@ class TaskPanel:
         if not self.running:
             return False
         if len(faces) == 0:
-            msg = QtGui.QApplication.translate(
+            msg = App.Qt.translate(
                 "ship_console",
-                "Failure detecting external faces from the ship object",
-                None)
+                "Failure detecting external faces from the ship object")
             App.Console.PrintError(msg + '\n')
             return False
         faces = Part.makeShell(faces)
 
         # Get the hydrostatics
-        msg = QtGui.QApplication.translate(
+        msg = App.Qt.translate(
             "ship_console",
             "Computing hydrostatics",
             None)
@@ -187,19 +186,17 @@ class TaskPanel:
         """
         sel_ships = Selection.get_ships()
         if not sel_ships:
-            msg = QtGui.QApplication.translate(
+            msg = App.Qt.translate(
                 "ship_console",
-                "A ship instance must be selected before using this tool",
-                None)
+                "A ship instance must be selected before using this tool")
             App.Console.PrintError(msg + '\n')
             return True
         self.ship = sel_ships[0]
         if len(sel_ships) > 1:
-            msg = QtGui.QApplication.translate(
+            msg = App.Qt.translate(
                 "ship_console",
                 "More than one ship have been selected (just the one labelled"
-                " '{}' is considered)".format(self.ship.Label),
-                None)
+                " '{}' is considered)".format(self.ship.Label))
             App.Console.PrintWarning(msg + '\n')
 
         props = self.ship.PropertiesList
@@ -288,10 +285,9 @@ class TaskPanel:
         try:
             props.index("HydrostaticsTrim")
         except ValueError:
-            tooltip = str(QtGui.QApplication.translate(
-                "ship_hydrostatic",
-                "Hydrostatics tool selected trim angle",
-                None))
+            tooltip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Hydrostatics tool selected trim angle")
             self.ship.addProperty("App::PropertyAngle",
                                   "HydrostaticsTrim",
                                   "Ship",
@@ -301,10 +297,9 @@ class TaskPanel:
         try:
             props.index("HydrostaticsMinDraft")
         except ValueError:
-            tooltip = str(QtGui.QApplication.translate(
-                "ship_hydrostatic",
-                "Hydrostatics tool selected minimum draft",
-                None))
+            tooltip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Hydrostatics tool selected minimum draft")
             self.ship.addProperty("App::PropertyLength",
                                   "HydrostaticsMinDraft",
                                   "Ship",
@@ -314,10 +309,9 @@ class TaskPanel:
         try:
             props.index("HydrostaticsMaxDraft")
         except ValueError:
-            tooltip = str(QtGui.QApplication.translate(
-                "ship_hydrostatic",
-                "Hydrostatics tool selected maximum draft",
-                None))
+            tooltip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Hydrostatics tool selected maximum draft")
             self.ship.addProperty("App::PropertyLength",
                                   "HydrostaticsMaxDraft",
                                   "Ship",
@@ -327,10 +321,9 @@ class TaskPanel:
         try:
             props.index("HydrostaticsNDraft")
         except ValueError:
-            tooltip = str(QtGui.QApplication.translate(
-                "ship_hydrostatic",
-                "Hydrostatics tool number of points selected",
-                None))
+            tooltip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Hydrostatics tool number of points selected")
             self.ship.addProperty("App::PropertyInteger",
                                   "HydrostaticsNDraft",
                                   "Ship",
@@ -364,10 +357,9 @@ class TaskPanel:
         B = bbox.YMax - bbox.YMin
         T = bbox.ZMax - bbox.ZMin
         dist = math.sqrt(L*L + B*B + T*T)
-        msg = QtGui.QApplication.translate(
+        msg = App.Qt.translate(
             "ship_console",
-            "Computing external faces",
-            None)
+            "Computing external faces")
         App.Console.PrintMessage(msg + '...\n')
         # Valid/unvalid faces detection loop
         for i in range(len(faces)):

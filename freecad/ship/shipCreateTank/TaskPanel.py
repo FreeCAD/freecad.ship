@@ -98,10 +98,9 @@ class TaskPanel:
         # tank
         self.solids = Selection.get_solids()
         if not self.solids:
-            msg = QtGui.QApplication.translate(
+            msg = App.Qt.translate(
                 "ship_tank",
-                "Tanks objects can only be created on top of solids geometry",
-                None)
+                "Tanks objects can only be created on top of solids geometry")
             App.Console.PrintError(msg + '\n')
             return True
 
@@ -109,10 +108,9 @@ class TaskPanel:
         # entity inside it
         self.ships = Selection.get_doc_ships()
         if not self.ships:
-            msg = QtGui.QApplication.translate(
+            msg = App.Qt.translate(
                 "ship_tank",
-                "There are not ship objects to create tanks into them",
-                None)
+                "There are not ship objects to create tanks into them")
             App.Console.PrintError(msg + '\n')
             return True
 

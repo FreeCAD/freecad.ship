@@ -72,8 +72,7 @@ class Plot(object):
             except ImportError:
                 msg = QtGui.QApplication.translate(
                     "ship_console",
-                    "Plot module is disabled, so I cannot perform the plot",
-                    None)
+                    "Plot module is disabled, so I cannot perform the plot")
                 FreeCAD.Console.PrintWarning(msg + '\n')
                 return True
         plt = Plot.figure('Capacity curve')

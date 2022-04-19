@@ -74,10 +74,9 @@ class TaskPanel:
         self.form.pbar.setMinimum(0)
         self.form.pbar.setMaximum(n)
         self.form.pbar.setValue(0)
-        msg = QtGui.QApplication.translate(
+        msg = App.Qt.translate(
             "ship_console",
-            "Computing RAOs",
-            None)
+            "Computing RAOs")
         App.Console.PrintMessage(msg + '...\n')
         points = []
         plts = {}
@@ -159,19 +158,18 @@ class TaskPanel:
         # weight
         sel_lcs = Selection.get_lcs_with_mesh()
         if not sel_lcs:
-            msg = QtGui.QApplication.translate(
+            msg = App.Qt.translate(
                 "ship_console",
-                "A load condition instance must be selected before using this tool",
-                None)
+                "A load condition instance must be selected before using this"
+                " tool")
             App.Console.PrintError(msg + '\n')
             return True
         self.lc = sel_lcs[0]
         if len(sel_lcs) > 1:
-            msg = QtGui.QApplication.translate(
+            msg = App.Qt.translate(
                 "ship_console",
                 "More than one load condition have been selected (just the one"
-                " labelled '{}' is considered)".format(self.lc.Label),
-                None)
+                " labelled '{}' is considered)".format(self.lc.Label))
             App.Console.PrintWarning(msg + '\n')
         self.ship = Selection.get_lc_ship(self.lc)
         self.weights = Selection.get_lc_weights(self.lc)

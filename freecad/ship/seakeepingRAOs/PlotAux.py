@@ -56,10 +56,9 @@ class Plot(object):
             try:
                 from freecad.plot import Plot
             except ImportError:
-                msg = QtGui.QApplication.translate(
+                msg = FreeCAD.Qt.translate(
                     "ship_console",
-                    "Plot module is disabled, so I cannot perform the plot",
-                    None)
+                    "Plot module is disabled, so I cannot perform the plot")
                 FreeCAD.Console.PrintWarning(msg + '\n')
                 return True
 

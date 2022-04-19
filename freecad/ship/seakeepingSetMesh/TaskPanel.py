@@ -98,7 +98,7 @@ class TaskPanel:
         # weight
         sel_meshes = Selection.get_meshes()
         if not sel_meshes:
-            msg = QtGui.QApplication.translate(
+            msg = App.Qt.translate(
                 "ship_tank",
                 "Please, select a mesh before executing this tool",
                 None)
@@ -106,20 +106,18 @@ class TaskPanel:
             return True
         self.mesh = sel_meshes[0]
         if len(sel_meshes) > 1:
-            msg = QtGui.QApplication.translate(
+            msg = App.Qt.translate(
                 "ship_console",
                 "More than one mesh have been selected (just the one labelled"
-                " '{}' is considered)".format(self.mesh.Label),
-                None)
+                " '{}' is considered)".format(self.mesh.Label))
             App.Console.PrintWarning(msg + '\n')
         # Ensure as well that exist at least one valid ship to create the
         # entity inside it
         self.ships = Selection.get_doc_ships()
         if not self.ships:
-            msg = QtGui.QApplication.translate(
+            msg = App.Qt.translate(
                 "seakeeping_setmesh",
-                "There are not ship objects to attach meshes",
-                None)
+                "There are not ship objects to attach meshes")
             App.Console.PrintError(msg + '\n')
             return True
 

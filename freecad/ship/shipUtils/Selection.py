@@ -161,10 +161,9 @@ def get_lc_weights(lc):
         i += 1
         weights = lc.Document.getObjectsByLabel(label)
         if len(weights) != 1:
-            msg = QtGui.QApplication.translate(
+            msg = App.Qt.translate(
                 "ship_console",
-                "Several weights are labelled '{}'!".format(label),
-                None)
+                "Several weights are labelled '{}'!".format(label))
             App.Console.PrintError(msg + '\n')
             continue
         weight = weights[0]
@@ -191,10 +190,9 @@ def get_lc_tanks(lc):
         i += 1
         tanks = lc.Document.getObjectsByLabel(label)
         if len(tanks) != 1:
-            msg = QtGui.QApplication.translate(
+            msg = App.Qt.translate(
                 "ship_console",
-                "Several tanks are labelled '{}'!".format(label),
-                None)
+                "Several tanks are labelled '{}'!".format(label))
             App.Console.PrintError(msg + '\n')
             continue
         tank = tanks[0]

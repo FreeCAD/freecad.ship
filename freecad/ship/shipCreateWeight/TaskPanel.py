@@ -189,10 +189,9 @@ class TaskPanel:
             if self.shapes:
                 break
         if not self.shapes:
-            msg = QtGui.QApplication.translate(
+            msg = App.Qt.translate(
                 "ship_weight",
-                "No valid shapes selected",
-                None)
+                "No valid shapes selected")
             App.Console.PrintError(msg + '\n')
             return True
 
@@ -200,10 +199,9 @@ class TaskPanel:
         # entity inside it
         self.ships = Selection.get_doc_ships()
         if not self.ships:
-            msg = QtGui.QApplication.translate(
+            msg = App.Qt.translate(
                 "ship_weight",
-                "There are not ship objects to create weights into them",
-                None)
+                "There are not ship objects to create weights into them")
             App.Console.PrintError(msg + '\n')
             return True
 

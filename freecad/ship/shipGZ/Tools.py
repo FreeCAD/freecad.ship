@@ -25,7 +25,6 @@ import FreeCAD as App
 from FreeCAD import Vector, Matrix, Placement
 import Part
 from FreeCAD import Units
-from PySide import QtGui
 from .. import Instance as ShipInstance
 from .. import WeightInstance
 from .. import TankInstance
@@ -121,10 +120,9 @@ def solve_point(W, COG, TW, VOLS, ship, tanks, roll, var_trim=True):
     draft = ship.Draft
     max_disp = Units.Quantity(ship.Shape.Volume, Units.Volume) * DENS * G
     if max_disp < W + TW:
-        msg = QtGui.QApplication.translate(
+        msg = App.Qt.translate(
             "ship_console",
-            "Too much weight! The ship will never displace water enough",
-            None)
+            "Too much weight! The ship will never displace water enough")
         App.Console.PrintError(msg + ' ({} vs. {})\n'.format(
             (max_disp / G).UserString, ((W + TW) / G).UserString))
         return None
@@ -212,7 +210,7 @@ def gz(lc, rolls, var_trim=True):
         ships = doc.getObjectsByLabel(lc.get('B1'))
         if len(ships) != 1:
             if len(ships) == 0:
-                msg = QtGui.QApplication.translate(
+                msg = App.Qt.translate(
                     "ship_console",
                     "Wrong Ship label! (no instances labeled as"
                     "'{}' found)",
@@ -220,11 +218,10 @@ def gz(lc, rolls, var_trim=True):
                 App.Console.PrintError(msg + '\n'.format(
                     lc.get('B1')))
             else:
-                msg = QtGui.QApplication.translate(
+                msg = App.Qt.translate(
                     "ship_console",
                     "Ambiguous Ship label! ({} instances labeled as"
-                    "'{}' found)",
-                    None)
+                    "'{}' found)")
                 App.Console.PrintError(msg + '\n'.format(
                     len(ships),
                     lc.get('B1')))
@@ -245,19 +242,17 @@ def gz(lc, rolls, var_trim=True):
         index += 1
         if len(ws) != 1:
             if len(ws) == 0:
-                msg = QtGui.QApplication.translate(
+                msg = App.Qt.translate(
                     "ship_console",
                     "Wrong Weight label! (no instances labeled as"
-                    "'{}' found)",
-                    None)
+                    "'{}' found)")
                 App.Console.PrintError(msg + '\n'.format(
                     lc.get('A{}'.format(index - 1))))
             else:
-                msg = QtGui.QApplication.translate(
+                msg = App.Qt.translate(
                     "ship_console",
                     "Ambiguous Weight label! ({} instances labeled as"
-                    "'{}' found)",
-                    None)
+                    "'{}' found)")
                 App.Console.PrintError(msg + '\n'.format(
                     len(ws),
                     lc.get('A{}'.format(index - 1))))
@@ -265,11 +260,10 @@ def gz(lc, rolls, var_trim=True):
         w = ws[0]
         try:
             if w is None or not w.PropertiesList.index("IsWeight"):
-                msg = QtGui.QApplication.translate(
+                msg = App.Qt.translate(
                     "ship_console",
                     "Invalid Weight! (the object labeled as"
-                    "'{}' is not a weight)",
-                    None)
+                    "'{}' is not a weight)")
                 App.Console.PrintError(msg + '\n'.format(
                     len(ws),
                     lc.get('A{}'.format(index - 1))))
@@ -290,19 +284,17 @@ def gz(lc, rolls, var_trim=True):
         index += 1
         if len(ts) != 1:
             if len(ts) == 0:
-                msg = QtGui.QApplication.translate(
+                msg = App.Qt.translate(
                     "ship_console",
                     "Wrong Tank label! (no instances labeled as"
-                    "'{}' found)",
-                    None)
+                    "'{}' found)")
                 App.Console.PrintError(msg + '\n'.format(
                     lc.get('C{}'.format(index - 1))))
             else:
-                msg = QtGui.QApplication.translate(
+                msg = App.Qt.translate(
                     "ship_console",
                     "Ambiguous Tank label! ({} instances labeled as"
-                    "'{}' found)",
-                    None)
+                    "'{}' found)")
                 App.Console.PrintError(msg + '\n'.format(
                     len(ts),
                     lc.get('C{}'.format(index - 1))))
@@ -310,11 +302,10 @@ def gz(lc, rolls, var_trim=True):
         t = ts[0]
         try:
             if t is None or not t.PropertiesList.index("IsTank"):
-                msg = QtGui.QApplication.translate(
+                msg = App.Qt.translate(
                     "ship_console",
                     "Invalid Tank! (the object labeled as"
-                    "'{}' is not a tank)",
-                    None)
+                    "'{}' is not a tank)")
                 App.Console.PrintError(msg + '\n'.format(
                     len(ws),
                     lc.get('C{}'.format(index - 1))))
