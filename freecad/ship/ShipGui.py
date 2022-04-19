@@ -20,8 +20,6 @@
 #*                                                                         *
 #***************************************************************************
 
-import PySide
-from PySide import QtCore, QtGui
 import FreeCAD
 import FreeCADGui
 import os
@@ -40,10 +38,10 @@ class LoadExample:
         shipLoadExample.load()
 
     def GetResources(self):
-        MenuText = QtCore.QT_TRANSLATE_NOOP(
+        MenuText = QT_TRANSLATE_NOOP(
             'Ship_LoadExample',
             'Load an example ship geometry')
-        ToolTip = QtCore.QT_TRANSLATE_NOOP(
+        ToolTip = QT_TRANSLATE_NOOP(
             'Ship_LoadExample',
             'Load an example ship hull geometry.')
         return {'Pixmap': 'Ship_Load',
@@ -60,10 +58,10 @@ class CreateShip:
         shipCreateShip.load()
 
     def GetResources(self):
-        MenuText = QtCore.QT_TRANSLATE_NOOP(
+        MenuText = QT_TRANSLATE_NOOP(
             'Ship_CreateShip',
             'Create a new ship')
-        ToolTip = QtCore.QT_TRANSLATE_NOOP(
+        ToolTip = QT_TRANSLATE_NOOP(
             'Ship_CreateShip',
             'Create a new ship instance on top of the hull geometry')
         return {'Pixmap': 'Ship_Module',
@@ -80,10 +78,10 @@ class AreasCurve:
         shipAreasCurve.load()
 
     def GetResources(self):
-        MenuText = QtCore.QT_TRANSLATE_NOOP(
+        MenuText = QT_TRANSLATE_NOOP(
             'Ship_AreasCurve',
             'Areas curve')
-        ToolTip = QtCore.QT_TRANSLATE_NOOP(
+        ToolTip = QT_TRANSLATE_NOOP(
             'Ship_AreasCurve',
             'Plot the transversal areas curve')
         return {'Pixmap': 'Ship_AreaCurve',
@@ -100,10 +98,10 @@ class Hydrostatics:
         shipHydrostatics.load()
 
     def GetResources(self):
-        MenuText = QtCore.QT_TRANSLATE_NOOP(
+        MenuText = QT_TRANSLATE_NOOP(
             'Ship_Hydrostatics',
             'Hydrostatics')
-        ToolTip = QtCore.QT_TRANSLATE_NOOP(
+        ToolTip = QT_TRANSLATE_NOOP(
             'Ship_Hydrostatics',
             'Plot the ship hydrostatics')
         return {'Pixmap': 'Ship_Hydrostatics',
@@ -120,11 +118,11 @@ class CreateWeight:
         shipCreateWeight.load()
 
     def GetResources(self):
-        MenuText = QtCore.QT_TRANSLATE_NOOP(
-            'ship_weight',
+        MenuText = QT_TRANSLATE_NOOP(
+            'Ship_Weight',
             'Create a new ship weight')
-        ToolTip = QtCore.QT_TRANSLATE_NOOP(
-            'ship_weight',
+        ToolTip = QT_TRANSLATE_NOOP(
+            'Ship_Weight',
             'Create a new ship weight')
         return {'Pixmap': 'Ship_Weight',
                 'MenuText': MenuText,
@@ -140,11 +138,11 @@ class CreateTank:
         shipCreateTank.load()
 
     def GetResources(self):
-        MenuText = QtCore.QT_TRANSLATE_NOOP(
-            'ship_tank',
+        MenuText = QT_TRANSLATE_NOOP(
+            'Ship_Tank',
             'Create a new tank')
-        ToolTip = QtCore.QT_TRANSLATE_NOOP(
-            'ship_tank',
+        ToolTip = QT_TRANSLATE_NOOP(
+            'Ship_Tank',
             'Create a new tank')
         return {'Pixmap': 'Ship_Tank',
                 'MenuText': MenuText,
@@ -160,11 +158,11 @@ class TankCapacity:
         shipCapacityCurve.load()
 
     def GetResources(self):
-        MenuText = QtCore.QT_TRANSLATE_NOOP(
-            'ship_capacity',
+        MenuText = QT_TRANSLATE_NOOP(
+            'Ship_Capacity',
             'Tank capacity curve')
-        ToolTip = QtCore.QT_TRANSLATE_NOOP(
-            'ship_capacity',
+        ToolTip = QT_TRANSLATE_NOOP(
+            'Ship_Capacity',
             'Plot the tank capacity curve (level-volume curve)')
         return {'Pixmap': 'Ship_CapacityCurve',
                 'MenuText': MenuText,
@@ -180,11 +178,11 @@ class LoadCondition:
         shipCreateLoadCondition.load()
 
     def GetResources(self):
-        MenuText = QtCore.QT_TRANSLATE_NOOP(
-            'ship_loadcondition',
+        MenuText = QT_TRANSLATE_NOOP(
+            'Ship_LoadCondition',
             'Create a new loading condition')
-        ToolTip = QtCore.QT_TRANSLATE_NOOP(
-            'ship_loadcondition',
+        ToolTip = QT_TRANSLATE_NOOP(
+            'Ship_LoadCondition',
             'Create a new load condition spreadsheet')
         return {'Pixmap': 'Ship_LoadCondition',
                 'MenuText': MenuText,
@@ -200,11 +198,11 @@ class SinkAndTrim:
         shipSinkAndTrim.load()
 
     def GetResources(self):
-        MenuText = QtCore.QT_TRANSLATE_NOOP(
-            'ship_sinkandtrim',
+        MenuText = QT_TRANSLATE_NOOP(
+            'Ship_SinkAndTrim',
             'Equilibrium draft and angle')
-        ToolTip = QtCore.QT_TRANSLATE_NOOP(
-            'ship_sinkandtrim',
+        ToolTip = QT_TRANSLATE_NOOP(
+            'Ship_SinkAndTrim',
             'Create a eschematic view of the ship equilibrium state')
         return {'Pixmap': 'Ship_SinkAndTrim',
                 'MenuText': MenuText,
@@ -220,11 +218,11 @@ class GZ:
         shipGZ.load()
 
     def GetResources(self):
-        MenuText = QtCore.QT_TRANSLATE_NOOP(
-            'ship_gz',
+        MenuText = QT_TRANSLATE_NOOP(
+            'Ship_GZ',
             'GZ curve computation')
-        ToolTip = QtCore.QT_TRANSLATE_NOOP(
-            'ship_gz',
+        ToolTip = QT_TRANSLATE_NOOP(
+            'Ship_GZ',
             'Plot the GZ curve')
         return {'Pixmap': 'Ship_GZ',
                 'MenuText': MenuText,
@@ -240,11 +238,11 @@ class SetMesh:
         seakeepingSetMesh.load()
 
     def GetResources(self):
-        MenuText = QtCore.QT_TRANSLATE_NOOP(
-            'seakeeping_setmesh',
+        MenuText = QT_TRANSLATE_NOOP(
+            'Seakeeping_SetMesh',
             'Set ship surface mesh')
-        ToolTip = QtCore.QT_TRANSLATE_NOOP(
-            'seakeeping_setmesh',
+        ToolTip = QT_TRANSLATE_NOOP(
+            'Seakeeping_SetMesh',
             'Associate the surface mesh to the ship')
         return {'Pixmap': 'Seakeeping_SetMesh',
                 'MenuText': MenuText,
@@ -259,11 +257,11 @@ class RAOs:
         seakeepingRAOs.load()
 
     def GetResources(self):
-        MenuText = QtCore.QT_TRANSLATE_NOOP(
-            'seakeeping_raos',
+        MenuText = QT_TRANSLATE_NOOP(
+            'Seakeeping_RAOs',
             'Plot RAOs')
-        ToolTip = QtCore.QT_TRANSLATE_NOOP(
-            'seakeeping_raos',
+        ToolTip = QT_TRANSLATE_NOOP(
+            'Seakeeping_RAOs',
             'Compute and plot the RAOs')
         return {'Pixmap': 'Seakeeping_RAOs',
                 'MenuText': MenuText,
