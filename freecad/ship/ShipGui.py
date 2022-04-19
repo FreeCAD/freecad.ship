@@ -32,6 +32,10 @@ FreeCADGui.addLanguagePath(":/Ship/translations")
 FreeCADGui.addIconPath(":/Ship/icons")
 
 
+def QT_TRANSLATE_NOOP(context, text):
+    return text
+
+
 class LoadExample:
     def Activated(self):
         from . import shipLoadExample
