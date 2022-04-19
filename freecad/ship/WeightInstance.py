@@ -22,9 +22,7 @@
 
 import time
 from math import *
-from PySide import QtGui, QtCore
 import FreeCAD
-import FreeCADGui
 from FreeCAD import Base, Vector, Units
 import Part
 from .shipUtils import Paths, Math
@@ -44,10 +42,9 @@ def add_weight_props(obj):
     try:
         obj.getPropertyByName('IsWeight')
     except AttributeError:
-        tooltip = QtGui.QApplication.translate(
-            "ship_weight",
-            "True if it is a valid weight instance, False otherwise",
-            None)
+        tooltip = QT_TRANSLATE_NOOP(
+            "App::Property",
+            "True if it is a valid weight instance, False otherwise")
         obj.addProperty("App::PropertyBool",
                         "IsWeight",
                         "Weight",
@@ -55,10 +52,9 @@ def add_weight_props(obj):
     try:
         obj.getPropertyByName('Mass')
     except AttributeError:
-        tooltip = QtGui.QApplication.translate(
-            "ship_weight",
-            "Mass [kg]",
-            None)
+        tooltip = QT_TRANSLATE_NOOP(
+            "App::Property",
+            "Mass [kg]")
         obj.addProperty("App::PropertyFloat",
                         "Mass",
                         "Weight",
@@ -66,10 +62,9 @@ def add_weight_props(obj):
     try:
         obj.getPropertyByName('LineDens')
     except AttributeError:
-        tooltip = QtGui.QApplication.translate(
-            "ship_weight",
-            "Linear density [kg / m]",
-            None)
+        tooltip = QT_TRANSLATE_NOOP(
+            "App::Property",
+            "Linear density [kg / m]")
         obj.addProperty("App::PropertyFloat",
                         "LineDens",
                         "Weight",
@@ -77,10 +72,9 @@ def add_weight_props(obj):
     try:
         obj.getPropertyByName('AreaDens')
     except AttributeError:
-        tooltip = QtGui.QApplication.translate(
-            "ship_weight",
-            "Area density [kg / m^2]",
-            None)
+        tooltip = QT_TRANSLATE_NOOP(
+            "App::Property",
+            "Area density [kg / m^2]")
         obj.addProperty("App::PropertyFloat",
                         "AreaDens",
                         "Weight",
@@ -88,10 +82,9 @@ def add_weight_props(obj):
     try:
         obj.getPropertyByName('Dens')
     except AttributeError:
-        tooltip = QtGui.QApplication.translate(
-            "ship_weight",
-            "Density [kg / m^3]",
-            None)
+        tooltip = QT_TRANSLATE_NOOP(
+            "App::Property",
+            "Density [kg / m^3]")
         obj.addProperty("App::PropertyFloat",
                         "Dens",
                         "Weight",
@@ -99,10 +92,9 @@ def add_weight_props(obj):
     try:
         obj.getPropertyByName('Inertia')
     except AttributeError:
-        tooltip = QtGui.QApplication.translate(
-            "ship_weight",
-            "Inertia [kg * m^2]",
-            None)
+        tooltip = QT_TRANSLATE_NOOP(
+            "App::Property",
+            "Inertia [kg * m^2]")
         obj.addProperty("App::PropertyMatrix",
                         "Inertia",
                         "Weight",
