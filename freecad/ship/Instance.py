@@ -26,6 +26,7 @@ import FreeCAD
 from FreeCAD import Base, Vector
 import Part
 from .shipUtils import Paths, Math
+from .init_gui import QT_TRANSLATE_NOOP
 
 
 def add_ship_props(obj):

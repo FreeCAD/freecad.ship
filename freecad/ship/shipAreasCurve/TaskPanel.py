@@ -32,6 +32,7 @@ from ..import Instance
 from ..shipUtils import Locale
 from ..shipUtils import Selection
 from ..shipHydrostatics import Tools as Hydrostatics
+from ..init_gui import QT_TRANSLATE_NOOP
 
 
 class TaskPanel:
