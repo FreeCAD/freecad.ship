@@ -33,6 +33,7 @@ from .. import Instance
 from .. import Ship_rc
 from ..shipUtils import Locale
 from ..shipUtils import Selection
+from ..init_gui import QT_TRANSLATE_NOOP
 
 
 class TaskPanel:
