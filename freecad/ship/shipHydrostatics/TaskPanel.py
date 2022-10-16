@@ -338,8 +338,8 @@ class TaskPanel:
         @return Section points array, [] if line don't cut surface
         """
         result = []
-        vertexes = line.Vertexes
-        nVertex = len(vertexes)
+        vertices = line.Vertexes
+        nVertex = len(vertices)
 
         section = line.cut(surface)
 
