@@ -211,7 +211,7 @@ def areas(ship, n, draft=None,
             msg = App.Qt.translate(
                 "ship_console",
                 "Part.OCCError: Area computation failed (x={})").format(
-                    x.UserStrig)
+                    x.UserString)
             App.Console.PrintError(msg + '\n')
             areas.append((Units.Quantity(x, Units.Length),
                           Units.Quantity(0.0, Units.Area)))
