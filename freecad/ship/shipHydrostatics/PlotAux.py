@@ -164,41 +164,41 @@ class Plot(object):
             ax.set_position([0.1, 0.35, 0.8, 0.65])
 
         plt.axes = axes[0]
-        serie = Plot.plot(draft, disp, r'$T$')
-        serie.line.set_linestyle('-')
-        serie.line.set_linewidth(2.0)
-        serie.line.set_color((0.0, 0.0, 0.0))
-        self.draft1 = serie
+        series = Plot.plot(draft, disp, r'$T$')
+        series.line.set_linestyle('-')
+        series.line.set_linewidth(2.0)
+        series.line.set_color((0.0, 0.0, 0.0))
+        self.draft1 = series
         Plot.xlabel(r'$T \; \left[ \mathrm{m} \right]$')
         Plot.ylabel(r'$\bigtriangleup \; \left[ \mathrm{tons} \right]$')
         plt.axes.xaxis.label.set_fontsize(15)
         plt.axes.yaxis.label.set_fontsize(15)
         plt.axes = axes[1]
-        serie = Plot.plot(warea, disp, r'Wetted area')
-        serie.line.set_linestyle('-')
-        serie.line.set_linewidth(2.0)
-        serie.line.set_color((1.0, 0.0, 0.0))
-        self.warea = serie
+        series = Plot.plot(warea, disp, r'Wetted area')
+        series.line.set_linestyle('-')
+        series.line.set_linewidth(2.0)
+        series.line.set_color((1.0, 0.0, 0.0))
+        self.warea = series
         Plot.xlabel(r'$Wetted \; area \; \left[ \mathrm{m}^2 \right]$')
         Plot.ylabel(r'$\bigtriangleup \; \left[ \mathrm{tons} \right]$')
         plt.axes.xaxis.label.set_fontsize(15)
         plt.axes.yaxis.label.set_fontsize(15)
         plt.axes = axes[2]
-        serie = Plot.plot(t1cm, disp, r'Moment to trim 1cm')
-        serie.line.set_linestyle('-')
-        serie.line.set_linewidth(2.0)
-        serie.line.set_color((0.0, 0.0, 1.0))
-        self.t1cm = serie
+        series = Plot.plot(t1cm, disp, r'Moment to trim 1cm')
+        series.line.set_linestyle('-')
+        series.line.set_linewidth(2.0)
+        series.line.set_color((0.0, 0.0, 1.0))
+        self.t1cm = series
         Plot.xlabel(r'$Moment \; to \; trim \; 1 \mathrm{cm} \; \left['
                     r' \mathrm{tons} \; \times \; \mathrm{m} \right]$')
         plt.axes.xaxis.label.set_fontsize(15)
         plt.axes.yaxis.label.set_fontsize(15)
         plt.axes = axes[3]
-        serie = Plot.plot(xcb, disp, r'$XCB$')
-        serie.line.set_linestyle('-')
-        serie.line.set_linewidth(2.0)
-        serie.line.set_color((0.2, 0.8, 0.2))
-        self.xcb = serie
+        series = Plot.plot(xcb, disp, r'$XCB$')
+        series.line.set_linestyle('-')
+        series.line.set_linewidth(2.0)
+        series.line.set_color((0.2, 0.8, 0.2))
+        self.xcb = series
         Plot.xlabel(r'$XCB \; \left[ \mathrm{m} \right]$')
         plt.axes.xaxis.label.set_fontsize(15)
         plt.axes.yaxis.label.set_fontsize(15)
@@ -258,40 +258,40 @@ class Plot(object):
             ax.set_position([0.1, 0.35, 0.8, 0.65])
 
         plt.axes = axes[0]
-        serie = Plot.plot(draft, disp, r'$T$')
-        serie.line.set_linestyle('-')
-        serie.line.set_linewidth(2.0)
-        serie.line.set_color((0.0, 0.0, 0.0))
-        self.draft2 = serie
+        series = Plot.plot(draft, disp, r'$T$')
+        series.line.set_linestyle('-')
+        series.line.set_linewidth(2.0)
+        series.line.set_color((0.0, 0.0, 0.0))
+        self.draft2 = series
         Plot.xlabel(r'$T \; \left[ \mathrm{m} \right]$')
         Plot.ylabel(r'$\bigtriangleup \; \left[ \mathrm{tons} \right]$')
         plt.axes.xaxis.label.set_fontsize(15)
         plt.axes.yaxis.label.set_fontsize(15)
         plt.axes = axes[1]
-        serie = Plot.plot(farea, disp, r'Floating area')
-        serie.line.set_linestyle('-')
-        serie.line.set_linewidth(2.0)
-        serie.line.set_color((1.0, 0.0, 0.0))
-        self.farea = serie
+        series = Plot.plot(farea, disp, r'Floating area')
+        series.line.set_linestyle('-')
+        series.line.set_linewidth(2.0)
+        series.line.set_color((1.0, 0.0, 0.0))
+        self.farea = series
         Plot.xlabel(r'$Floating \; area \; \left[ \mathrm{m}^2 \right]$')
         Plot.ylabel(r'$\bigtriangleup \; \left[ \mathrm{tons} \right]$')
         plt.axes.xaxis.label.set_fontsize(15)
         plt.axes.yaxis.label.set_fontsize(15)
         plt.axes = axes[2]
-        serie = Plot.plot(kbt, disp, r'$KB_T$')
-        serie.line.set_linestyle('-')
-        serie.line.set_linewidth(2.0)
-        serie.line.set_color((0.0, 0.0, 1.0))
-        self.kbt = serie
+        series = Plot.plot(kbt, disp, r'$KB_T$')
+        series.line.set_linestyle('-')
+        series.line.set_linewidth(2.0)
+        series.line.set_color((0.0, 0.0, 1.0))
+        self.kbt = series
         Plot.xlabel(r'$KB_T \; \left[ \mathrm{m} \right]$')
         plt.axes.xaxis.label.set_fontsize(15)
         plt.axes.yaxis.label.set_fontsize(15)
         plt.axes = axes[3]
-        serie = Plot.plot(bmt, disp, r'$BM_T$')
-        serie.line.set_linestyle('-')
-        serie.line.set_linewidth(2.0)
-        serie.line.set_color((0.2, 0.8, 0.2))
-        self.bmt = serie
+        series = Plot.plot(bmt, disp, r'$BM_T$')
+        series.line.set_linestyle('-')
+        series.line.set_linewidth(2.0)
+        series.line.set_color((0.2, 0.8, 0.2))
+        self.bmt = series
         Plot.xlabel(r'$BM_T \; \left[ \mathrm{m} \right]$')
         plt.axes.xaxis.label.set_fontsize(15)
         plt.axes.yaxis.label.set_fontsize(15)
@@ -352,40 +352,40 @@ class Plot(object):
             ax.set_position([0.1, 0.35, 0.8, 0.65])
 
         plt.axes = axes[0]
-        serie = Plot.plot(draft, disp, r'$T$')
-        serie.line.set_linestyle('-')
-        serie.line.set_linewidth(2.0)
-        serie.line.set_color((0.0, 0.0, 0.0))
-        self.draft3 = serie
+        series = Plot.plot(draft, disp, r'$T$')
+        series.line.set_linestyle('-')
+        series.line.set_linewidth(2.0)
+        series.line.set_color((0.0, 0.0, 0.0))
+        self.draft3 = series
         Plot.xlabel(r'$T \; \left[ \mathrm{m} \right]$')
         Plot.ylabel(r'$\bigtriangleup \; \left[ \mathrm{tons} \right]$')
         plt.axes.xaxis.label.set_fontsize(15)
         plt.axes.yaxis.label.set_fontsize(15)
         plt.axes = axes[1]
-        serie = Plot.plot(cb, disp, r'$Cb$')
-        serie.line.set_linestyle('-')
-        serie.line.set_linewidth(2.0)
-        serie.line.set_color((1.0, 0.0, 0.0))
-        self.cb = serie
+        series = Plot.plot(cb, disp, r'$Cb$')
+        series.line.set_linestyle('-')
+        series.line.set_linewidth(2.0)
+        series.line.set_color((1.0, 0.0, 0.0))
+        self.cb = series
         Plot.xlabel(r'$Cb$ (Block coefficient)')
         Plot.ylabel(r'$\bigtriangleup \; \left[ \mathrm{tons} \right]$')
         plt.axes.xaxis.label.set_fontsize(15)
         plt.axes.yaxis.label.set_fontsize(15)
         plt.axes = axes[2]
-        serie = Plot.plot(cf, disp, r'$Cf$')
-        serie.line.set_linestyle('-')
-        serie.line.set_linewidth(2.0)
-        serie.line.set_color((0.0, 0.0, 1.0))
-        self.cf = serie
+        series = Plot.plot(cf, disp, r'$Cf$')
+        series.line.set_linestyle('-')
+        series.line.set_linewidth(2.0)
+        series.line.set_color((0.0, 0.0, 1.0))
+        self.cf = series
         Plot.xlabel(r'$Cf$ (floating area coefficient)')
         plt.axes.xaxis.label.set_fontsize(15)
         plt.axes.yaxis.label.set_fontsize(15)
         plt.axes = axes[3]
-        serie = Plot.plot(cm, disp, r'$Cm$')
-        serie.line.set_linestyle('-')
-        serie.line.set_linewidth(2.0)
-        serie.line.set_color((0.2, 0.8, 0.2))
-        self.cm = serie
+        series = Plot.plot(cm, disp, r'$Cm$')
+        series.line.set_linestyle('-')
+        series.line.set_linewidth(2.0)
+        series.line.set_color((0.2, 0.8, 0.2))
+        self.cm = series
         Plot.xlabel(r'$Cm$  (Main section coefficient)')
         plt.axes.xaxis.label.set_fontsize(15)
         plt.axes.yaxis.label.set_fontsize(15)

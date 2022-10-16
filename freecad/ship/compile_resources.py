@@ -18,7 +18,7 @@ def compile_resources():
         print(out)
         print(err)
     except Exception as e:
-        print("An error occured while trying to create the resource file: \n" + str(e))
+        print("An error occurred while trying to create the resource file: \n" + str(e))
 
 
 if __name__ == '__main__':
