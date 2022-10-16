@@ -121,7 +121,7 @@ def compute(lc, fs_ref=True, doc=App.ActiveDocument):
         group_objs.append(doc.getObject(name))
         doc.getObject(name).Label = 'SinkAndTrim_' + tank.Label
         objs['tanks'].append(group_objs[-1])
-    # Place the bouyancy center
+    # Place the buoyancy center
     disp, B, _ = Hydrostatics.displacement(ship, draft, trim=trim)
     disp *= GZ.G
     name = __make_name('SinkAndTrim_B', doc)
