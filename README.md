@@ -1,11 +1,13 @@
-## FreeCAD Ship Workbench
+# FreeCAD Ship Workbench
 
 ![Ship Workbench Logo](freecad/ship/resources/icons/Ship_Logo.svg)
 
 **Welcome to FreeCAD-Ship!**
 
+## Introduction
 FreeCAD-Ship is a free module for [FreeCAD](https://www.freecadweb.org) oriented to aid naval ship design by providing several tools commonly used in naval architecture, seakeeping and ship resistance.
 
+## Features
 It currently offers the following tools:
 
 ### Areas curve
