@@ -43,7 +43,7 @@ On top of that, the Displacement-Draft curve is depicted in all the plots. The t
 
 ![Ship_Weight Icon](freecad/ship/resources/icons/Ship_Weight.svg) ![Ship_Tank Icon](freecad/ship/resources/icons/Ship_Tank.svg) ![Ship_LoadCondition Icon](freecad/ship/resources/icons/Ship_LoadCondition.svg)
 
-In FreeCAD-Ship you can define as many weights and tanks as required. Then you can combine them alltogether in a load condition. At the time of defining weights, you can define:
+In FreeCAD-Ship you can define as many weights and tanks as required. Then you can combine them all together in a load condition. At the time of defining weights, you can define:
 
  - Punctual masses, providing their masses.
  - Line elements, providing their linear densities (i.e. the area of the transversal section multiplied by the material density).
