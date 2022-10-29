@@ -7,6 +7,23 @@
 ## Introduction
 FreeCAD-Ship is a free module for [FreeCAD](https://www.freecadweb.org) oriented to aid naval ship design by providing several tools commonly used in naval architecture, seakeeping and ship resistance.
 
+## Contents
+- [Features](#features)
+  - [Areas curve](#areas-curve)
+  - [Hydrostatics](#hydrostatics)
+  - [Load conditions definition](#load-conditions-definition)
+  - [Tank capacity curve](#tank-capacity-curve)
+  - [Static sink and trim](#static-sink-and-trim)
+  - [GZ curve](#gz-curve)
+  - [RAOs](#raos)
+- [Install](#install)
+- [Usage](#usage)
+- [Tutorials](#tutorials)
+- [Roadmap](#roadmap)
+- [Discussion/Feedback](#discussionfeedback)
+- [Bugs/Enhancements](#bugsenhancements)
+- [Authors](#authors)
+
 ## Features
 It currently offers the following tools:
 
