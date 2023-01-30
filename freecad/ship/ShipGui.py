@@ -232,6 +232,24 @@ class GZ:
                 'MenuText': MenuText,
                 'ToolTip': ToolTip}
 
+class Amadeo:
+    def IsActive(self):
+        return bool(Selection.get_ships())
+
+    def Activated(self):
+        from . import resistanceAmadeo
+        resistanceAmadeo.load()
+
+    def GetResources(self):
+        MenuText = QT_TRANSLATE_NOOP(
+            'Resistance_Amadeo',
+            'Compute the resistance')
+        ToolTip = QT_TRANSLATE_NOOP(
+            'Resistance_Amadeo',
+            'Compute the resistance')
+        return {'Pixmap': 'Resistance_Amadeo',
+                'MenuText': MenuText,
+                'ToolTip': ToolTip}
 
 class SetMesh:
     def IsActive(self):
@@ -251,6 +269,7 @@ class SetMesh:
         return {'Pixmap': 'Seakeeping_SetMesh',
                 'MenuText': MenuText,
                 'ToolTip': ToolTip}
+
 
 class RAOs:
     def IsActive(self):
@@ -282,5 +301,6 @@ FreeCADGui.addCommand('Ship_Capacity', TankCapacity())
 FreeCADGui.addCommand('Ship_LoadCondition', LoadCondition())
 FreeCADGui.addCommand('Ship_SinkAndTrim', SinkAndTrim())
 FreeCADGui.addCommand('Ship_GZ', GZ())
+FreeCADGui.addCommand('Resistance_Amadeo', Amadeo())
 FreeCADGui.addCommand('Seakeeping_SetMesh', SetMesh())
 FreeCADGui.addCommand('Seakeeping_RAOs', RAOs())

@@ -66,19 +66,24 @@ class ShipWorkbench(Gui.Workbench):
                        "Ship_LoadCondition",
                        "Ship_SinkAndTrim",
                        "Ship_GZ"]
+        resistancelist = ["Resistance_Amadeo"]
         seakeepinglist = ["Seakeeping_SetMesh",
-                          "Seakeeping_RAOs"]
+                         "Seakeeping_RAOs"]
 
         self.appendToolbar(
             QT_TRANSLATE_NOOP("Workbench", "Ship design"), shiplist)
         self.appendToolbar(
             QT_TRANSLATE_NOOP("Workbench", "Weights"), weightslist)
         self.appendToolbar(
+            QT_TRANSLATE_NOOP("Workbench", "Resistance"), resistancelist)
+        self.appendToolbar(
             QT_TRANSLATE_NOOP("Workbench", "Seakeeping"), seakeepinglist)
         self.appendMenu(
             QT_TRANSLATE_NOOP("Workbench", "Ship design"), shiplist)
         self.appendMenu(
             QT_TRANSLATE_NOOP("Workbench", "Weights"), weightslist)
+        self.appendMenu(
+            QT_TRANSLATE_NOOP("Workbench", "Resistance"), resistancelist)
         self.appendMenu(
             QT_TRANSLATE_NOOP("Workbench", "Seakeeping"), seakeepinglist)
 
