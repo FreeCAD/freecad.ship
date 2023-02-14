@@ -74,6 +74,9 @@ class TaskPanel:
 
     def setupUi(self):
         self.form.protuberance = self.widget(QtGui.QLineEdit, "protuberance")
+        self.form.max_speed = self.widget(QtGui.QLineEdit, "max_speed")
+        self.form.min_speed = self.widget(QtGui.QLineEdit, "min_speed")
+        self.form.n_of_speeds = self.widget(QtGui.QLineEdit, "n_of_speeds")
         self.form.trim = self.widget(QtGui.QLineEdit, "trim")
         self.form.num = self.widget(QtGui.QSpinBox, "num")
         self.form.output_data = self.widget(QtGui.QTextEdit, "output_data")
@@ -96,7 +99,7 @@ class TaskPanel:
         name -- Name of the widget
         """
         mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "AreasCurveTaskPanel")
+        form = mw.findChild(QtGui.QWidget, "AmadeoTaskPanel")
         return form.findChild(class_id, name)
 
     def initValues(self):
@@ -118,6 +121,9 @@ class TaskPanel:
             App.Console.PrintWarning(msg + '\n')
 
         self.form.protuberance.setText("0 m")
+        self.form.max_speed.setText("0 knot")
+        self.form.min_speed.setText("0 knot")
+        self.form.n_of_speeds.setText("2")
         return False
     
 def createTask():
