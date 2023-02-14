@@ -243,7 +243,7 @@ class Amadeo:
     def GetResources(self):
         MenuText = QT_TRANSLATE_NOOP(
             'Resistance_Amadeo',
-            'Compute the resistance')
+            'Compute')
         ToolTip = QT_TRANSLATE_NOOP(
             'Resistance_Amadeo',
             'Compute the resistance')

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>AreasCurveTaskPanel</class>
- <widget class="QWidget" name="AreasCurveTaskPanel">
+ <class>AmadeoTaskPanel</class>
+ <widget class="QWidget" name="AmadeoTaskPanel">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -17,22 +17,54 @@
    <string>Compute the transversal areas curve</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
+   <item row="1" column="0">
     <layout class="QGridLayout" name="gridLayout_2">
-     <item row="0" column="0">
-      <widget class="QLabel" name="protuberance_label">
+     <item row="3" column="1">
+      <widget class="Gui::InputField" name="min_speed">
+       <property name="text">
+        <string notr="true">0 knot</string>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true">knot</string>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>50.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="number_of_speeds__label">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of speeds to calculare the resistance&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="text">
-        <string>Protuberance</string>
+        <string>Number of speeds</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
+     <item row="2" column="0">
+      <widget class="QLabel" name="max_speed_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum speed to calculate resistance&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Maximum speed</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
       <widget class="Gui::InputField" name="protuberance">
        <property name="text">
         <string notr="true">0 m</string>
@@ -42,6 +74,64 @@
        </property>
        <property name="quantity" stdset="0">
         <double>1000.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="Gui::InputField" name="max_speed">
+       <property name="text">
+        <string notr="true">0 knot</string>
+       </property>
+       <property name="unit" stdset="0">
+        <string>knot</string>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>100.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="Gui::InputField" name="n_of_speeds">
+       <property name="text">
+        <string notr="true">2</string>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true"/>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>50.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="min_speed_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimus speed to calculate resistance&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Minimum speed</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="protuberance_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Protuberance measured from the frame 20&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Protuberance</string>
        </property>
       </widget>
      </item>
