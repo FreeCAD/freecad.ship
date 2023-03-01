@@ -1,39 +1,39 @@
-#***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2011, 2016 Jose Luis Cercos Pita <jlcercos@gmail.com>   *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2011, 2016 Jose Luis Cercos Pita <jlcercos@gmail.com>   *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
 
-import math
+import numpy as np
 
-def Lw_auto(L,V,prot):
+def Lw_auto(L ,V ,prot):
     
     assert prot >= 0
-    Lw = 1.11* V**(1/3) + 0.874*L - 2.56
+    Lw = 1.11* V ** (1/3) + 0.874 * L - 2.56
     
     if prot > 0:
         
         Lw = Lw + prot
-    
-    return Lw    
+        
+    return Lw
 
-def Sw_auto(L,V,prot):
+def Sw_auto(L ,V ,prot):
     
     assert prot >= 0
     if prot == 0:
@@ -45,7 +45,7 @@ def Sw_auto(L,V,prot):
     return Sw
         
 
-def Amadeo(L,B, T,Cb,V,u,prot=0,Sw='auto',Lw='auto',d=None,l=None):
+def Amadeo(L,B, T,Cb,V,u, prot=0,Sw='auto',Lw='auto',d=None,l=None):
 
     """ 
     Amadeo resistance prediction method.
@@ -53,28 +53,28 @@ def Amadeo(L,B, T,Cb,V,u,prot=0,Sw='auto',Lw='auto',d=None,l=None):
         
     L  -- Length between perpendiculars.
     B  -- Beam.
-    T  -- Draft.
+    T  -- draft.
     Cb -- Block coefficient.
     V -- Displaced volume.
-    u -- Speed. 
-    
-    
-    keyword arguments
-    
+    u -- speed. 
     Prot -- bow bulb length.
-    Sw -- Wet surface.
+    Sw -- Wet surface
     Lw -- Waterline length.
     D -- Ducted propeller diameter
     l -- Ducted propeller length
-         
+    
+    keyword arguments
+        
                 """
-                
-    assert u >=0
+    """ Introducimos las variables de las pruebas"""
     
-    if u == 0:
-        Rt = 0
-        return Rt
+    assert np.all (u >= 0)
+    valid_u_mask = u > 0
+    uu = u[valid_u_mask]
     
+    Rt = np.zeros(len(u), dtype= float)
+
+
     rho = 1025 # kg/m3 
     g = 9.81 # m/s2
     nu = 1.1892*10**-6  # m2/s
@@ -84,74 +84,68 @@ def Amadeo(L,B, T,Cb,V,u,prot=0,Sw='auto',Lw='auto',d=None,l=None):
     
     if Lw == 'auto':
         Lw = Lw_auto(L, V, prot)
-    
+
     if Sw == 'auto':
         Sw = Sw_auto(L, V, prot)
 
     """ Calculation of total wetted surface"""
     
-    STCC = 0.1*L*T
+    #STCC = 0.1*L*T
     
     if d is not None and l is not None:
         
-        STB = 1.13*math.pi*d**2*(l/d)/0.5
+        STB = 1.13*np.pi*d**2*(l/d)/0.5
     
     else: 
         STB = 0
-    
-    STW = STB + Sw + STCC
+
+    STW = STB + Sw # + STCC
 
     """ Calculation of resistance coefficients. """
 
-        
-    CA = (69 + 200*Cb*B/L - 0.26*L + 1300/L - 29.5*math.log10(L) + 17*(B/T) -(B/T)**2) *10 **(-5)
-    Fn = u/(math.sqrt(g*L))
-    RR = 1.24*Cb*B/L + 0.265* Fn**2 + 2.151*Fn - 0.298
+    CA = (69 + 200 * Cb * B / L - 0.26 * L + 1300 / L - 29.5 * np.log10(L) 
+          + 17 * B / T - (B / T)**2) * 10 ** -5
+    Fn = uu / (np.sqrt(g * L))
+    RR = 1.24 * Cb * B / L + 0.265 * Fn**2 + 2.151 * Fn - 0.298
         
     if prot==0:
            
-        Rn = Lw*u/nu
-        CF = 0.075/(math.log10(Rn) -2)**2
-        CT = (CF + CA)/(1-RR)
-        Rt = 0.5* rho* CT* STW* (u) **2 #N
-           
+        Rn = Lw * uu / nu
+        CF = 0.075 / (np.log10(Rn) - 2) **2
+        CT = (CF + CA) / (1 - RR)
+        Rt = 0.5 * rho * CT * STW * uu ** 2 / 9.8 #Kg
+
     else:
            
-        Rn = Lw*u/nu
-        CF = 0.075/(math.log10(Rn)-2)**2
-        Fnbb = u/(math.sqrt(g*prot))
-        a = -47.3* Fnbb**3 + 292.7* Fnbb**2 - 579.7*Fnbb + 351.7
-        b = 166.7* Fnbb**3 - 1037.6* Fnbb**2 + 2062.8*Fnbb - 1244.8
-        DES = a* L/B + b
-        RRcb = RR/(1 + DES/100)
-        CT = (CF + CA)/(1-RRcb)
-        Rt = 0.5*rho*CT*STW* (u) **2 #N
-        
-    return CA, Fn, Rn, CF, CT, Rt
+        Rn = Lw * uu / nu
+        CF = 0.075 / (np.log10(Rn) - 2) ** 2
+        Fnbb = uu / (np.sqrt( g * prot))
+        a = -47.3 * Fnbb**3 + 292.7 * Fnbb**2 - 579.7 * Fnbb + 351.7
+        b = 166.7 * Fnbb**3 - 1037.6 * Fnbb**2 + 2062.8 * Fnbb - 1244.8
+        DES = a * L / B + b
+        RRcb = RR /(1 + DES / 100)
+        CT = (CF + CA)/(1 - RRcb)
+        Rt = 0.5 * rho * CT * STW * uu ** 2 / 9.8 #kg
 
+    return Rt, uu
 
 if __name__== '__main__':
-    
-    import numpy as np
+
     import matplotlib.pyplot as plt
     
-    
-    L = 21.45
-    Lw = 23.911
-    B = 6.340
-    T = 2.4 
-    u = 0
-    Cb = 0.22
-    prot = 1.66
-    V = 103.94
-    Sw = 163.072
-    l = 3
-    d = 2
-    
-    vel = np.linspace (0.5144, 6.9444, num = 30)
-    
-    res = [Amadeo(L, B, T, Cb, V, u, prot, l, d) for u in vel]
-    plt.plot (vel, res)
-    plt.show ()
-    
+    L = 21.42
+    Lw = 22.498
+    B = 6.34
+    T = 2.52
+    Cb = 0.233
+    prot = 0.98
+    V = 103.369
+    Sw = 160.828
 
+    vel = np.linspace (0, 6.43, num = 30)
+
+    Resistencia, velocidades = Amadeo(L, B, T, Cb, V, vel, prot,Sw,Lw)
+    print(Resistencia)
+    
+    plt.plot (velocidades , Resistencia)
+    plt.show ()
