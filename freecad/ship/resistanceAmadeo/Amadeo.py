@@ -44,8 +44,8 @@ def Sw_auto(L ,V ,prot):
         
     return Sw
         
-
-def Amadeo(L,B, T,Cb,V,u, prot=0,Sw='auto',Lw='auto',d=None,l=None):
+def Amadeo(L,B, T,Cb,V,u, prot=0,Sw='auto',Lw='auto',d=None,
+           l=None, has_rudder = False):
 
     """ 
     Amadeo resistance prediction method.
@@ -57,28 +57,27 @@ def Amadeo(L,B, T,Cb,V,u, prot=0,Sw='auto',Lw='auto',d=None,l=None):
     Cb -- Block coefficient.
     V -- Displaced volume.
     u -- speed. 
+    
+    keyword arguments:
+    
     Prot -- bow bulb length.
     Sw -- Wet surface
     Lw -- Waterline length.
     D -- Ducted propeller diameter
     l -- Ducted propeller length
     
-    keyword arguments
-        
+    Returns: 
+    
                 """
-    """ Introducimos las variables de las pruebas"""
-    
-    assert np.all (u >= 0)
-    valid_u_mask = u > 0
-    uu = u[valid_u_mask]
-    
-    Rt = np.zeros(len(u), dtype= float)
-
-
     rho = 1025 # kg/m3 
     g = 9.81 # m/s2
     nu = 1.1892*10**-6  # m2/s
     
+    assert np.all (u >= 0)
+    valid_u_mask = u > 0
+    uu = u[valid_u_mask]
+    Rt = np.zeros(len(u), dtype= float)
+
     Lw = Lw or 'auto'
     Sw = Sw or 'auto'
     
@@ -90,7 +89,7 @@ def Amadeo(L,B, T,Cb,V,u, prot=0,Sw='auto',Lw='auto',d=None,l=None):
 
     """ Calculation of total wetted surface"""
     
-    #STCC = 0.1*L*T
+    STCC = 0.1*L*T if has_rudder else 0.0
     
     if d is not None and l is not None:
         
@@ -99,7 +98,7 @@ def Amadeo(L,B, T,Cb,V,u, prot=0,Sw='auto',Lw='auto',d=None,l=None):
     else: 
         STB = 0
 
-    STW = STB + Sw # + STCC
+    STW = STB + Sw + STCC
 
     """ Calculation of resistance coefficients. """
 
