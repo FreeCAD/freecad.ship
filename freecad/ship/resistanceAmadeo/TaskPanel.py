@@ -74,14 +74,12 @@ class TaskPanel:
 
     def setupUi(self):
         self.form.protuberance = self.widget(QtGui.QLineEdit, "protuberance")
+        self.form.d_length = self.widget(QtGui.QLineEdit, "d_length")
+        self.form.d_diameter = self.widget(QtGui.QLineEdit, "d_diameter")
         self.form.max_speed = self.widget(QtGui.QLineEdit, "max_speed")
         self.form.min_speed = self.widget(QtGui.QLineEdit, "min_speed")
         self.form.n_of_speeds = self.widget(QtGui.QLineEdit, "n_of_speeds")
-        self.form.Rudder_label = self.widget(QtGui.QComboBox, "Rudder_label")
-        self.form.trim = self.widget(QtGui.QLineEdit, "trim")
-        self.form.num = self.widget(QtGui.QSpinBox, "num")
-        self.form.output_data = self.widget(QtGui.QTextEdit, "output_data")
-        self.form.doc = QtGui.QTextDocument(self.form.output_data)
+        self.form.rudder_checkbox = self.widget(QtGui.QCheckBox, "rudder_checkbox")
         if self.initValues():
             return True
 
@@ -122,9 +120,7 @@ class TaskPanel:
             App.Console.PrintWarning(msg + '\n')
 
         self.form.protuberance.setText("0 m")
-        self.form.max_speed.setText("0 m/s")
-        self.form.min_speed.setText("0 m/s")
-        self.form.n_of_speeds.setText("2")
+
         return False
     
 def createTask():
