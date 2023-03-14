@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>301</width>
-    <height>356</height>
+    <width>271</width>
+    <height>371</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,74 +16,43 @@
   <property name="toolTip">
    <string>Compute the resistance by Amadeo method</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
+  <layout class="QGridLayout" name="gridLayout" rowstretch="0">
    <item row="0" column="0">
     <layout class="QGridLayout" name="gridLayout_2">
-     <item row="1" column="0" alignment="Qt::AlignHCenter">
-      <widget class="QLabel" name="d_diameter_label">
+     <item row="2" column="0" alignment="Qt::AlignHCenter">
+      <widget class="QLabel" name="Lw_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
-        <string>Ducted propeller diameter</string>
+        <string>Waterline length</string>
        </property>
       </widget>
      </item>
-     <item row="5" column="1">
-      <widget class="QSpinBox" name="n_speeds_spinbox">
-       <property name="minimum">
-        <number>2</number>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="1">
-      <widget class="Gui::InputField" name="min_speed">
+     <item row="2" column="1">
+      <widget class="Gui::InputField" name="Lw">
        <property name="text">
-        <string notr="true">0 m/s</string>
+        <string notr="true">0 m</string>
        </property>
        <property name="unit" stdset="0">
-        <string notr="true">m/s</string>
+        <string notr="true">m</string>
        </property>
        <property name="quantity" stdset="0">
-        <double>50.000000000000000</double>
+        <double>0.000000000000000</double>
        </property>
       </widget>
      </item>
-     <item row="0" column="0" alignment="Qt::AlignHCenter">
-      <widget class="QLabel" name="protuberance_label">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Protuberance measured from the frame 20&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Protuberance</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0" alignment="Qt::AlignHCenter">
-      <widget class="QLabel" name="d_lenght_label">
-       <property name="text">
-        <string>Ducted propeller length</string>
-       </property>
-      </widget>
-     </item>
-     <item row="6" column="1">
-      <widget class="QCheckBox" name="rudder_checkbox">
+     <item row="11" column="1">
+      <widget class="QCheckBox" name="rudder">
        <property name="text">
         <string/>
        </property>
       </widget>
      </item>
-     <item row="6" column="0" alignment="Qt::AlignHCenter">
-      <widget class="QLabel" name="rudder_label">
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check the box if the ship has a rudder&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Rudder</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
+     <item row="5" column="1">
       <widget class="Gui::InputField" name="d_diameter">
        <property name="text">
         <string notr="true">0 m</string>
@@ -92,11 +61,53 @@
         <string notr="true">m</string>
        </property>
        <property name="quantity" stdset="0">
-        <double>50.000000000000000</double>
+        <double>0.000000000000000</double>
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
+     <item row="8" column="1">
+      <widget class="Gui::InputField" name="min_speed">
+       <property name="text">
+        <string notr="true">0 m/s</string>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true">m/s</string>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>1.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="10" column="0" alignment="Qt::AlignHCenter">
+      <widget class="QLabel" name="n_speeds_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of speed to compute the resistance.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Number of speeds</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="Gui::InputField" name="volume">
+       <property name="text">
+        <string notr="true">0 m^3</string>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true">m^3</string>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>1.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
       <widget class="Gui::InputField" name="d_length">
        <property name="text">
         <string notr="true">0 m</string>
@@ -105,40 +116,120 @@
         <string notr="true">m</string>
        </property>
        <property name="quantity" stdset="0">
-        <double>1000.000000000000000</double>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0" alignment="Qt::AlignHCenter">
-      <widget class="QLabel" name="min_speed_label">
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimus speed to calculate resistance&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Minimum speed</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="Gui::InputField" name="max_speed">
-       <property name="text">
-        <string notr="true">0 m/s</string>
-       </property>
-       <property name="unit" stdset="0">
-        <string>m/s</string>
-       </property>
-       <property name="quantity" stdset="0">
-        <double>100.000000000000000</double>
+        <double>0.000000000000000</double>
        </property>
       </widget>
      </item>
      <item row="3" column="0" alignment="Qt::AlignHCenter">
-      <widget class="QLabel" name="max_speed_label">
+      <widget class="QLabel" name="volume_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Displaced volume</string>
+       </property>
+      </widget>
+     </item>
+     <item row="11" column="0" alignment="Qt::AlignHCenter">
+      <widget class="QLabel" name="rudder_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum speed to calculate resistance&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check the box if the ship has a rudder.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Rudder</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="Gui::InputField" name="Sw">
+       <property name="text">
+        <string notr="true">0 m^2</string>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true">m^2</string>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>1.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0" alignment="Qt::AlignHCenter">
+      <widget class="QLabel" name="d_diameter_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Ducted propeller diameter</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0" alignment="Qt::AlignHCenter">
+      <widget class="QLabel" name="Cb_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Block coefficient</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0" alignment="Qt::AlignHCenter">
+      <widget class="QLabel" name="protuberance_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Protuberance measured from the frame 20. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Protuberance</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="0" alignment="Qt::AlignHCenter">
+      <widget class="QLabel" name="max_speed_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum speed to compute the resistance.&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>Maximum speed</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0" alignment="Qt::AlignHCenter">
+      <widget class="QLabel" name="Sw_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Wet surface</string>
        </property>
       </widget>
      </item>
@@ -148,20 +239,81 @@
         <string notr="true">0 m</string>
        </property>
        <property name="unit" stdset="0">
-        <string>m</string>
+        <string notr="true">m</string>
        </property>
        <property name="quantity" stdset="0">
-        <double>100.000000000000000</double>
+        <double>0.000000000000000</double>
        </property>
       </widget>
      </item>
-     <item row="5" column="0" alignment="Qt::AlignHCenter">
-      <widget class="QLabel" name="n_speeds__label">
+     <item row="8" column="0" alignment="Qt::AlignHCenter">
+      <widget class="QLabel" name="min_speed_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of speeds to calculare the resistance&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum speed to compute the resistance.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
-        <string>Number of speeds</string>
+        <string>Minimum speed</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0" alignment="Qt::AlignHCenter">
+      <widget class="QLabel" name="d_length_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Ducted propeller length</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="1">
+      <widget class="Gui::InputField" name="max_speed">
+       <property name="text">
+        <string notr="true">0 m/s</string>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true">m/s</string>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>1.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="Gui::InputField" name="Cb">
+       <property name="text">
+        <string notr="true">0</string>
+       </property>
+       <property name="maxLength">
+        <number>5</number>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true"/>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>0.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="10" column="1">
+      <widget class="QSpinBox" name="n_speeds">
+       <property name="minimum">
+        <number>2</number>
+       </property>
+       <property name="maximum">
+        <number>9999</number>
+       </property>
+       <property name="value">
+        <number>2</number>
        </property>
       </widget>
      </item>
@@ -173,7 +325,7 @@
   <customwidget>
    <class>Gui::InputField</class>
    <extends>QLineEdit</extends>
-   <header location="global">Gui/InputField.h</header>
+   <header location="global">Gui/Inputfield.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
