@@ -20,13 +20,14 @@
 #*                                                                         *
 #***************************************************************************
 
-import math
+import numpy as np
 import FreeCAD as App
 import FreeCADGui as Gui
 from FreeCAD import Units
 from PySide import QtGui, QtCore
 from . import Preview
 from . import PlotAux
+from . import Amadeo
 from .. import Ship_rc
 from ..import Instance
 from ..shipUtils import Locale
@@ -46,6 +47,27 @@ class TaskPanel:
     def accept(self):
         if not self.ship:
             return False
+        
+        has_rudder = self.form.rudder.isChecked()
+        prot = Units.parseQuantity(Locale.fromString(self.form.protuberance.text()))
+        Sw = Units.parseQuantity(Locale.fromString(self.form.Sw.text()))
+        Lw = Units.parseQuantity(Locale.fromString(self.form.Lw.text()))
+        V = Units.parseQuantity(Locale.fromString(self.form.volume.text()))
+        Cb = Units.parseQuantity(Locale.fromString(self.form.Cb.text()))
+        d = Units.parseQuantity(Locale.fromString(self.form.d_diameter.text()))
+        l = Units.parseQuantity(Locale.fromString(self.form.d_length.text()))
+        umax = Units.parseQuantity(Locale.fromString(self.form.max_speed.text()))
+        umin = Units.parseQuantity(Locale.fromString(self.form.min_speed.text()))
+        n = self.form.n_speeds.value()
+        L = self.ship.Length
+        B = self.ship.Breadth
+        T = self.ship.Draft
+
+        Lw = () if Lw == 0 else Lw
+        Sw = () if Sw == 0 else Sw
+        d = None if d == 0 else d
+        l = None if d == 0 else d
+        
         return True
 
     def reject(self):
@@ -74,12 +96,16 @@ class TaskPanel:
 
     def setupUi(self):
         self.form.protuberance = self.widget(QtGui.QLineEdit, "protuberance")
+        self.form.Sw = self.widget(QtGui.QLineEdit, "Sw")
+        self.form.Lw = self.widget(QtGui.QLineEdit, "Lw")
+        self.form.volume = self.widget(QtGui.QLineEdit, "volume")
+        self.form.Cb = self.widget(QtGui.QLineEdit, "Cb")
         self.form.d_length = self.widget(QtGui.QLineEdit, "d_length")
         self.form.d_diameter = self.widget(QtGui.QLineEdit, "d_diameter")
         self.form.max_speed = self.widget(QtGui.QLineEdit, "max_speed")
         self.form.min_speed = self.widget(QtGui.QLineEdit, "min_speed")
-        self.form.n_of_speeds = self.widget(QtGui.QLineEdit, "n_of_speeds")
-        self.form.rudder_checkbox = self.widget(QtGui.QCheckBox, "rudder_checkbox")
+        self.form.n_speeds = self.widget(QtGui.QSpinBox, "n_speeds")
+        self.form.rudder = self.widget(QtGui.QCheckBox, "rudder")
         if self.initValues():
             return True
 
@@ -118,9 +144,40 @@ class TaskPanel:
                 "More than one ship have been selected (just the one labelled"
                 "'{}' is considered)".format(self.ship.Label))
             App.Console.PrintWarning(msg + '\n')
+            
+        
+        disp,_,cb = Hydrostatics.displacement(self.ship,
+                                               self.ship.Draft,
+                                               Units.parseQuantity("0 deg"),
+                                               Units.parseQuantity("0 deg"))
+        cb = str(cb)
+        vol = disp / Hydrostatics.DENS
 
-        self.form.protuberance.setText("0 m")
+        
+        sw = Hydrostatics.wettedArea(self.ship.Shape.copy(), self.ship.Draft, 
+                                     Units.parseQuantity("0 deg"),
+                                     Units.parseQuantity("0 deg"))
 
+
+        shape, _ = Hydrostatics.placeShipShape(self.ship.Shape.copy(),
+                                               self.ship.Draft,
+                                               Units.parseQuantity("0 deg"),
+                                               Units.parseQuantity("0 deg"))
+        bbox = shape.BoundBox
+        lw = Units.Quantity(bbox.XMax - bbox.XMin, Units.Length)
+        
+        shape = Hydrostatics.getUnderwaterSide(shape)
+        bbox = shape.BoundBox
+        
+        prot = Units.Quantity(bbox.XMax - bbox.XMin, Units.Length) 
+        prot = prot - self.ship.Length
+        prot = 0 if prot < 0 else prot
+        prot = Units.Quantity(prot, Units.Length)
+        self.form.protuberance.setText(prot.UserString)
+        self.form.Lw.setText(lw.UserString)
+        self.form.Sw.setText(sw.UserString)
+        self.form.volume.setText(vol.UserString)
+        self.form.Cb.setText(cb)
         return False
     
 def createTask():
