@@ -38,7 +38,7 @@ from ..init_gui import QT_TRANSLATE_NOOP
 
 class TaskPanel:
     def __init__(self):
-        self.name = "ship areas plotter"
+        self.name = "Compute resistance prediction Amadeo method"
         self.ui = ":/ui/TaskPanel_resistanceAmadeo.ui"
         self.form = Gui.PySideUic.loadUi(self.ui)
         self.preview = Preview.Preview()
@@ -53,21 +53,38 @@ class TaskPanel:
         Sw = Units.parseQuantity(Locale.fromString(self.form.Sw.text()))
         Lw = Units.parseQuantity(Locale.fromString(self.form.Lw.text()))
         V = Units.parseQuantity(Locale.fromString(self.form.volume.text()))
-        Cb = Units.parseQuantity(Locale.fromString(self.form.Cb.text()))
+
+        Cb = Units.parseQuantity(Locale.fromString(self.form.Cb.text())).Value
         d = Units.parseQuantity(Locale.fromString(self.form.d_diameter.text()))
         l = Units.parseQuantity(Locale.fromString(self.form.d_length.text()))
         umax = Units.parseQuantity(Locale.fromString(self.form.max_speed.text()))
         umin = Units.parseQuantity(Locale.fromString(self.form.min_speed.text()))
-        n = self.form.n_speeds.value()
-        L = self.ship.Length
-        B = self.ship.Breadth
-        T = self.ship.Draft
 
-        Lw = () if Lw == 0 else Lw
-        Sw = () if Sw == 0 else Sw
-        d = None if d == 0 else d
-        l = None if d == 0 else d
+        #data preparation for Amadeo's method
+        prot = prot.getValueAs("m").Value
+        Sw = Sw.getValueAs("m^2").Value
+        Lw = Lw.getValueAs("m").Value
+        V = V.getValueAs("m^3").Value
+        d = d.getValueAs("m").Value
+        l = l.getValueAs("m").Value
+        umax = umax.getValueAs("m/s").Value
+        umin = umin.getValueAs("m/s").Value
+        n = self.form.n_speeds.value()
+        L = self.ship.Length.getValueAs("m").Value
+        B = self.ship.Breadth.getValueAs("m").Value
+        T = self.ship.Draft.getValueAs("m").Value
+
+        if Lw == 0: Lw = ()
+        if Sw == 0: Sw = ()
+        if d == 0: d = None
+        if l == 0: l = None
+
+        vel = np.linspace(umin, umax, num = n)
+        resis, speed = Amadeo.Amadeo(L, B, T, Cb, V, vel, prot, Sw, Lw, 
+                                        d, l, has_rudder = has_rudder)
         
+        
+        PlotAux.Plot(speed, resis, self.ship)          
         return True
 
     def reject(self):
@@ -150,9 +167,7 @@ class TaskPanel:
                                                self.ship.Draft,
                                                Units.parseQuantity("0 deg"),
                                                Units.parseQuantity("0 deg"))
-        cb = str(cb)
         vol = disp / Hydrostatics.DENS
-
         
         sw = Hydrostatics.wettedArea(self.ship.Shape.copy(), self.ship.Draft, 
                                      Units.parseQuantity("0 deg"),
@@ -163,21 +178,25 @@ class TaskPanel:
                                                self.ship.Draft,
                                                Units.parseQuantity("0 deg"),
                                                Units.parseQuantity("0 deg"))
-        bbox = shape.BoundBox
-        lw = Units.Quantity(bbox.XMax - bbox.XMin, Units.Length)
-        
         shape = Hydrostatics.getUnderwaterSide(shape)
         bbox = shape.BoundBox
         
         prot = Units.Quantity(bbox.XMax - bbox.XMin, Units.Length) 
         prot = prot - self.ship.Length
-        prot = 0 if prot < 0 else prot
+        if prot < 0: prot = 0
         prot = Units.Quantity(prot, Units.Length)
+        
+        area, cf, f = Hydrostatics.floatingArea(self.ship, self.ship.Draft,
+                                                Units.parseQuantity("0 deg"),
+                                                Units.parseQuantity("0 deg"))
+        bbox = f.BoundBox
+        lw = Units.Quantity(bbox.XMax - bbox.XMin, Units.Length)
+        
         self.form.protuberance.setText(prot.UserString)
         self.form.Lw.setText(lw.UserString)
         self.form.Sw.setText(sw.UserString)
         self.form.volume.setText(vol.UserString)
-        self.form.Cb.setText(cb)
+        self.form.Cb.setText(str(cb))
         return False
     
 def createTask():
