@@ -68,6 +68,8 @@ def Amadeo(L,B, T,Cb,V,u, prot=0,Sw='auto',Lw='auto',d=None,
     
     Returns: 
     
+    Rt -- total resistance in kN
+    uu -- speeds higher than 0 m/s
                 """
     rho = 1025 # kg/m3 
     g = 9.81 # m/s2
@@ -112,7 +114,7 @@ def Amadeo(L,B, T,Cb,V,u, prot=0,Sw='auto',Lw='auto',d=None,
         Rn = Lw * uu / nu
         CF = 0.075 / (np.log10(Rn) - 2) **2
         CT = (CF + CA) / (1 - RR)
-        Rt = 0.5 * rho * CT * STW * uu ** 2 / 9.8 #Kg
+        Rt = 0.5 * rho * CT * STW * uu ** 2 * 0.001 #kN
 
     else:
            
@@ -124,7 +126,7 @@ def Amadeo(L,B, T,Cb,V,u, prot=0,Sw='auto',Lw='auto',d=None,
         DES = a * L / B + b
         RRcb = RR /(1 + DES / 100)
         CT = (CF + CA)/(1 - RRcb)
-        Rt = 0.5 * rho * CT * STW * uu ** 2 / 9.8 #kg
+        Rt = 0.5 * rho * CT * STW * uu ** 2 * 0.001 #kN
 
     return Rt, uu
 
