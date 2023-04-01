@@ -37,6 +37,9 @@
        <property name="text">
         <string notr="true">0 m</string>
        </property>
+       <property name="maxLength">
+        <number>100000</number>
+       </property>
        <property name="unit" stdset="0">
         <string notr="true">m</string>
        </property>
