@@ -16,6 +16,7 @@
         <file>icons/Seakeeping_SetMesh.svg</file>
         <file>icons/Seakeeping_RAOs.svg</file>
         <file>icons/Resistance_Amadeo.svg</file>
+        <file>icons/Resistance_Holtrop.svg</file>
         <file>translations/Ship.qm</file>
         <file>translations/Ship_af.qm</file>
         <file>translations/Ship_cs.qm</file>
@@ -64,5 +65,6 @@
         <file>ui/TaskPanel_seakeepingSetMesh.ui</file>
         <file>ui/TaskPanel_seakeepingRAOs.ui</file>
         <file>ui/TaskPanel_resistanceAmadeo.ui</file>
+        <file>ui/TaskPanel_resistanceHoltrop.ui</file>
     </qresource>
 </RCC>

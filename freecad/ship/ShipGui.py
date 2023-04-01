@@ -243,11 +243,30 @@ class Amadeo:
     def GetResources(self):
         MenuText = QT_TRANSLATE_NOOP(
             'Resistance_Amadeo',
-            'Resistance prediction')
+            'Resistance Amadeo prediction')
         ToolTip = QT_TRANSLATE_NOOP(
             'Resistance_Amadeo',
             'Compute the resistance by Amadeo method')
         return {'Pixmap': 'Resistance_Amadeo',
+                'MenuText': MenuText,
+                'ToolTip': ToolTip}
+    
+class Holtrop:
+    def IsActive(self):
+        return bool(Selection.get_ships())
+
+    def Activated(self):
+        from . import resistanceHoltrop
+        resistanceHoltrop.load()
+
+    def GetResources(self):
+        MenuText = QT_TRANSLATE_NOOP(
+            'Resistance_Holtrop',
+            'Resistance Holtrop prediction')
+        ToolTip = QT_TRANSLATE_NOOP(
+            'Resistance_Holtrop',
+            'Compute the resistance by Holtrop method')
+        return {'Pixmap': 'Resistance_Holtrop',
                 'MenuText': MenuText,
                 'ToolTip': ToolTip}
 
@@ -302,5 +321,6 @@ FreeCADGui.addCommand('Ship_LoadCondition', LoadCondition())
 FreeCADGui.addCommand('Ship_SinkAndTrim', SinkAndTrim())
 FreeCADGui.addCommand('Ship_GZ', GZ())
 FreeCADGui.addCommand('Resistance_Amadeo', Amadeo())
+FreeCADGui.addCommand('Resistance_Holtrop', Holtrop())
 FreeCADGui.addCommand('Seakeeping_SetMesh', SetMesh())
 FreeCADGui.addCommand('Seakeeping_RAOs', RAOs())
