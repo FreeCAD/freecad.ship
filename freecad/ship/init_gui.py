@@ -67,7 +67,8 @@ class ShipWorkbench(Gui.Workbench):
                        "Ship_LoadCondition",
                        "Ship_SinkAndTrim",
                        "Ship_GZ"]
-        resistancelist = ["Resistance_Amadeo"]
+        resistancelist = ["Resistance_Amadeo",
+                          "Resistance_Holtrop"]
         seakeepinglist = ["Seakeeping_SetMesh",
                          "Seakeeping_RAOs"]
 
