@@ -70,6 +70,10 @@ def Amadeo(L,B, T,Cb,V,u, prot=0,Sw='auto',Lw='auto',d=None,
     
     Rt -- total resistance in kN
     uu -- speeds higher than 0 m/s
+    CF -- Friction coefficient
+    CA -- Roughness coefficient
+    CR -- residual resistance coefficient
+    CT -- Total resistance coefficient
                 """
     rho = 1025 # kg/m3 
     g = 9.81 # m/s2
@@ -78,7 +82,12 @@ def Amadeo(L,B, T,Cb,V,u, prot=0,Sw='auto',Lw='auto',d=None,
     assert np.all (u >= 0)
     valid_u_mask = u > 0
     uu = u[valid_u_mask]
-    Rt = np.zeros(len(u), dtype= float)
+    Rt = np.zeros(len(uu), dtype= float)
+    CF = np.zeros(len(uu), dtype= float)
+    CA = np.zeros(len(uu), dtype= float)
+    CR = np.zeros(len(uu), dtype= float)
+    CT = np.zeros(len(uu), dtype= float)
+    
 
     Lw = Lw or 'auto'
     Sw = Sw or 'auto'
@@ -114,7 +123,8 @@ def Amadeo(L,B, T,Cb,V,u, prot=0,Sw='auto',Lw='auto',d=None,
         Rn = Lw * uu / nu
         CF = 0.075 / (np.log10(Rn) - 2) **2
         CT = (CF + CA) / (1 - RR)
-        Rt = 0.5 * rho * CT * STW * uu ** 2 * 0.001 #kN
+        CR = CT * RR
+        Rt = 0.5 * rho * CT * STW * uu ** 2 / 1000 #kN
 
     else:
            
@@ -126,9 +136,10 @@ def Amadeo(L,B, T,Cb,V,u, prot=0,Sw='auto',Lw='auto',d=None,
         DES = a * L / B + b
         RRcb = RR /(1 + DES / 100)
         CT = (CF + CA)/(1 - RRcb)
-        Rt = 0.5 * rho * CT * STW * uu ** 2 * 0.001 #kN
+        CR = CT * RRcb
+        Rt = 0.5 * rho * CT * STW * uu ** 2 / 1000 #kN
 
-    return Rt, uu
+    return Rt, uu, CF, CA, CR, CT
 
 if __name__== '__main__':
 
@@ -143,10 +154,14 @@ if __name__== '__main__':
     V = 103.369
     Sw = 160.828
 
-    vel = np.linspace (0, 6.43, num = 30)
+    vel = np.linspace (0, 6.1728, num = 13)
 
-    Resistencia, velocidades = Amadeo(L, B, T, Cb, V, vel, prot,Sw,Lw)
-    print(Resistencia)
+    Resistencia, velocidades, Cfric, Crug ,Cresidual ,CTotal = Amadeo(L, B,
+                                                    T, Cb, V, vel, prot,Sw,Lw)
+    print(Resistencia, velocidades, Cfric, Crug ,Cresidual ,CTotal)
     
     plt.plot (velocidades , Resistencia)
+    plt.title("Gráfica resistencia velocidad método de Amadeo")
+    plt.xlabel("V [m/s]")
+    plt.ylabel("Resistencia total [kN]")
     plt.show ()
