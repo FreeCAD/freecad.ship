@@ -80,11 +80,12 @@ class TaskPanel:
         if l == 0: l = None
 
         vel = np.linspace(umin, umax, num = n)
-        resis, speed = Amadeo.Amadeo(L, B, T, Cb, V, vel, prot, Sw, Lw, 
-                                        d, l, has_rudder = has_rudder)
+        resis, speed, CF, CA, CR, CT = Amadeo.Amadeo(L, B, T, Cb, V, 
+                            vel, prot, Sw, Lw, d, l, has_rudder = has_rudder)
         
         
-        PlotAux.Plot(speed, resis, self.ship)          
+        PlotAux.Plot(speed, resis, CF, CR, CA, CT, self.ship)   
+
         return True
 
     def reject(self):
