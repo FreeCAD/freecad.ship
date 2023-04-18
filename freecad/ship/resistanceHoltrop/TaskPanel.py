@@ -27,7 +27,7 @@ from FreeCAD import Units
 from PySide import QtGui, QtCore
 from . import Preview
 from . import PlotAux
-from . import Amadeo
+from . import Holtrop
 from .. import Ship_rc
 from ..import Instance
 from ..shipUtils import Locale
@@ -48,25 +48,46 @@ class TaskPanel:
         if not self.ship:
             return False
         
-        has_rudder = self.form.rudder.isChecked()
-        prot = Units.parseQuantity(Locale.fromString(self.form.protuberance.text()))
+        test = self.form.form.currentIndex()
+        
+        App.Console.PrintMessage(test )
+
         Sw = Units.parseQuantity(Locale.fromString(self.form.Sw.text()))
         Lw = Units.parseQuantity(Locale.fromString(self.form.Lw.text()))
         V = Units.parseQuantity(Locale.fromString(self.form.volume.text()))
 
         Cb = Units.parseQuantity(Locale.fromString(self.form.Cb.text())).Value
-        l = Units.parseQuantity(Locale.fromString(self.form.d_length.text()))
         umax = Units.parseQuantity(Locale.fromString(self.form.max_speed.text()))
         umin = Units.parseQuantity(Locale.fromString(self.form.min_speed.text()))
-
+        rbskeg = Units.parseQuantity(Locale.fromString(self.form.rbskeg.text()))
+        rbstern = Units.parseQuantity(Locale.fromString(self.form.rbstern.text()))
+        twsbr = Units.parseQuantity(Locale.fromString(self.form.twsbr.text()))
+        sbr = Units.parseQuantity(Locale.fromString(self.form.sbr.text()))
+        skeg = Units.parseQuantity(Locale.fromString(self.form.skeg.text()))
+        strut_bossing = Units.parseQuantity(Locale.fromString(self.form.strut_bossing.text()))
+        hull_bossings = Units.parseQuantity(Locale.fromString(self.form.hull_bossings.text()))
+        shafts = Units.parseQuantity(Locale.fromString(self.form.shafts.text()))
+        stab_fins = Units.parseQuantity(Locale.fromString(self.form.stab_fins.text()))
+        dome = Units.parseQuantity(Locale.fromString(self.form.dome.text()))
+        bkl = Units.parseQuantity(Locale.fromString(self.form.bkl.text()))
+        
         #data preparation for Amadeo's method
-        prot = prot.getValueAs("m").Value
         Sw = Sw.getValueAs("m^2").Value
         Lw = Lw.getValueAs("m").Value
         V = V.getValueAs("m^3").Value
-        l = l.getValueAs("m").Value
         umax = umax.getValueAs("m/s").Value
         umin = umin.getValueAs("m/s").Value
+        rbskeg = rbskeg.getValueAs("m^2").Value
+        rbstern = rbstern.getValueAs("m^2").Value
+        twsbr = twsbr.getValueAs("m^2").Value
+        sbr = sbr.getValueAs("m^2").Value
+        skeg = skeg.getValueAs("m^2").Value
+        strut_bossing = strut_bossing.getValueAs("m^2").Value
+        hull_bossings = hull_bossings.getValueAs("m^2").Value
+        shafts = shafts.getValueAs("m^2").Value
+        stab_fins = stab_fins.getValueAs("m^2").Value
+        dome = dome.getValueAs("m^2").Value
+        bkl = bkl.getValueAs("m^2").Value
         n = self.form.n_speeds.value()
         L = self.ship.Length.getValueAs("m").Value
         B = self.ship.Breadth.getValueAs("m").Value
@@ -74,8 +95,12 @@ class TaskPanel:
 
         if Lw == 0: Lw = ()
         if Sw == 0: Sw = ()
-        if l == 0: l = None
 
+        Sapplist = [rbskeg, rbstern, twsbr, sbr, skeg, strut_bossing,
+                    hull_bossings, shafts, stab_fins, dome, bkl]
+        
+        App.Console.PrintMessage(Sapplist)
+        
         vel = np.linspace(umin, umax, num = n)
         resis, speed = Amadeo.Amadeo(L, B, T, Cb, V, vel, prot, Sw, Lw,
                                      l, has_rudder = has_rudder)
@@ -109,16 +134,33 @@ class TaskPanel:
         pass
 
     def setupUi(self):
-        self.form.protuberance = self.widget(QtGui.QLineEdit, "protuberance")
+        
         self.form.Sw = self.widget(QtGui.QLineEdit, "Sw")
         self.form.Lw = self.widget(QtGui.QLineEdit, "Lw")
         self.form.volume = self.widget(QtGui.QLineEdit, "volume")
         self.form.Cb = self.widget(QtGui.QLineEdit, "Cb")
-        self.form.d_length = self.widget(QtGui.QLineEdit, "d_length")
+        self.form.Cm = self.widget(QtGui.QLineEdit, "Cm")
+        self.form.Cf = self.widget(QtGui.QLineEdit, "Cf")
+        self.form.form = self.widget(QtGui.QComboBox, "form")
+        self.form.iE = self.widget(QtGui.QLineEdit, "iE")
+        self.form.xcb = self.widget(QtGui.QLineEdit, "xcb")
+        self.form.ABT = self.widget(QtGui.QLineEdit, "ABT")
+        self.form.AT = self.widget(QtGui.QLineEdit, "AT")
+        self.form.hb = self.widget(QtGui.QLineEdit, "hb")
         self.form.max_speed = self.widget(QtGui.QLineEdit, "max_speed")
         self.form.min_speed = self.widget(QtGui.QLineEdit, "min_speed")
         self.form.n_speeds = self.widget(QtGui.QSpinBox, "n_speeds")
-        self.form.rudder = self.widget(QtGui.QCheckBox, "rudder")
+        self.form.rbskeg = self.widget(QtGui.QLineEdit, "rbskeg")
+        self.form.rbstern = self.widget(QtGui.QLineEdit, "rbstern")
+        self.form.twsbr = self.widget(QtGui.QLineEdit, "twsbr")
+        self.form.sbr = self.widget(QtGui.QLineEdit, "sbr")
+        self.form.skeg = self.widget(QtGui.QLineEdit, "skeg")
+        self.form.strut_bossing = self.widget(QtGui.QLineEdit, "strut_bossing")
+        self.form.hull_bossings = self.widget(QtGui.QLineEdit, "hull_bossings")
+        self.form.shafts = self.widget(QtGui.QLineEdit, "shafts")
+        self.form.stab_fins = self.widget(QtGui.QLineEdit, "stab_fins")
+        self.form.dome = self.widget(QtGui.QLineEdit, "dome")
+        self.form.bkl = self.widget(QtGui.QLineEdit, "bkl")
         if self.initValues():
             return True
 
@@ -159,7 +201,7 @@ class TaskPanel:
             App.Console.PrintWarning(msg + '\n')
             
         
-        disp,_,cb = Hydrostatics.displacement(self.ship,
+        disp,Vector,cb = Hydrostatics.displacement(self.ship,
                                                self.ship.Draft,
                                                Units.parseQuantity("0 deg"),
                                                Units.parseQuantity("0 deg"))
@@ -168,19 +210,6 @@ class TaskPanel:
         sw = Hydrostatics.wettedArea(self.ship.Shape.copy(), self.ship.Draft, 
                                      Units.parseQuantity("0 deg"),
                                      Units.parseQuantity("0 deg"))
-
-
-        shape, _ = Hydrostatics.placeShipShape(self.ship.Shape.copy(),
-                                               self.ship.Draft,
-                                               Units.parseQuantity("0 deg"),
-                                               Units.parseQuantity("0 deg"))
-        shape = Hydrostatics.getUnderwaterSide(shape)
-        bbox = shape.BoundBox
-        
-        prot = Units.Quantity(bbox.XMax - bbox.XMin, Units.Length) 
-        prot = prot - self.ship.Length
-        if prot < 0: prot = 0
-        prot = Units.Quantity(prot, Units.Length)
         
         area, cf, f = Hydrostatics.floatingArea(self.ship, self.ship.Draft,
                                                 Units.parseQuantity("0 deg"),
@@ -188,11 +217,42 @@ class TaskPanel:
         bbox = f.BoundBox
         lw = Units.Quantity(bbox.XMax - bbox.XMin, Units.Length)
         
-        self.form.protuberance.setText(prot.UserString)
+        cm = Hydrostatics.mainFrameCoeff(self.ship)
+            
+        xcb = Units.Quantity(Vector[0], Units.Length)
+  
+        cp = cb / cm
+        Lw = lw.getValueAs("m").Value
+        XCB = xcb.getValueAs("m").Value
+        Bie = self.ship.Breadth.getValueAs("m").Value
+        Vie = vol.getValueAs("m^3").Value
+        
+        Lr = Lw * (1 - cp + ( 0.06 * cp * XCB) / (4 * cp - 1))
+        
+        try: 
+            iE = 1 + 89 * np.exp(- (Lw / Bie) ** 0.80856 * (1 - cf) ** 0.30484
+                            * (1 - cp - 0.0225 * XCB) ** 0.6367 * (Lr / Bie) ** 
+                             0.34574 * ((100 * Vie) / (Lw ** 3)) ** 0.16302)
+            
+        except ZeroDivisionError:
+            msg = App.Qt.translate(
+            "ship_console",
+            "ZeroDivisionError: Null ship floating area found during the"
+            " floating area computation!")
+            App.Console.PrintError(msg + '\n')
+        
+            iE = 0.0
+            
+        iE = Units.Quantity(iE, Units.Angle)
+        
         self.form.Lw.setText(lw.UserString)
         self.form.Sw.setText(sw.UserString)
         self.form.volume.setText(vol.UserString)
         self.form.Cb.setText(str(cb))
+        self.form.Cm.setText(str(cm))
+        self.form.Cf.setText(str(cf))
+        self.form.iE.setText(iE.UserString)
+        self.form.xcb.setText(xcb.UserString)
         return False
     
 def createTask():
