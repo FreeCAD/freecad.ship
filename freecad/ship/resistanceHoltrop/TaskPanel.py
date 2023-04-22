@@ -48,15 +48,20 @@ class TaskPanel:
         if not self.ship:
             return False
         
-        test = self.form.form.currentIndex()
         
-        App.Console.PrintMessage(test )
-
+        
         Sw = Units.parseQuantity(Locale.fromString(self.form.Sw.text()))
         Lw = Units.parseQuantity(Locale.fromString(self.form.Lw.text()))
         V = Units.parseQuantity(Locale.fromString(self.form.volume.text()))
-
         Cb = Units.parseQuantity(Locale.fromString(self.form.Cb.text())).Value
+        Cm = Units.parseQuantity(Locale.fromString(self.form.Cm.text())).Value
+        Cw = Units.parseQuantity(Locale.fromString(self.form.Cf.text())).Value
+        cstern = self.form.form.currentIndex()
+        iE = Units.parseQuantity(Locale.fromString(self.form.iE.text()))
+        xcb = Units.parseQuantity(Locale.fromString(self.form.xcb.text()))
+        ABT = Units.parseQuantity(Locale.fromString(self.form.ABT.text()))
+        AT = Units.parseQuantity(Locale.fromString(self.form.AT.text()))
+        hb = Units.parseQuantity(Locale.fromString(self.form.hb.text()))
         umax = Units.parseQuantity(Locale.fromString(self.form.max_speed.text()))
         umin = Units.parseQuantity(Locale.fromString(self.form.min_speed.text()))
         rbskeg = Units.parseQuantity(Locale.fromString(self.form.rbskeg.text()))
@@ -75,6 +80,11 @@ class TaskPanel:
         Sw = Sw.getValueAs("m^2").Value
         Lw = Lw.getValueAs("m").Value
         V = V.getValueAs("m^3").Value
+        iE = iE.getValueAs("deg").Value
+        xcb = xcb.getValueAs("m").Value
+        ABT = ABT.getValueAs("m^2").Value
+        AT = AT.getValueAs("m^2").Value
+        hb = hb.getValueAs("m").Value
         umax = umax.getValueAs("m/s").Value
         umin = umin.getValueAs("m/s").Value
         rbskeg = rbskeg.getValueAs("m^2").Value
@@ -93,20 +103,18 @@ class TaskPanel:
         B = self.ship.Breadth.getValueAs("m").Value
         T = self.ship.Draft.getValueAs("m").Value
 
-        if Lw == 0: Lw = ()
         if Sw == 0: Sw = ()
 
         Sapplist = [rbskeg, rbstern, twsbr, sbr, skeg, strut_bossing,
                     hull_bossings, shafts, stab_fins, dome, bkl]
         
-        App.Console.PrintMessage(Sapplist)
         
         vel = np.linspace(umin, umax, num = n)
-        resis, speed = Amadeo.Amadeo(L, B, T, Cb, V, vel, prot, Sw, Lw,
-                                     l, has_rudder = has_rudder)
+        Rtotal, speed, CT, CF, CAPP, Cw, CB, CTR, CA  = Holtrop.Holtrop(L, B, 
+            T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, vel, hb, Sapplist, ABT, AT, Sw)
         
         
-        PlotAux.Plot(speed, resis, self.ship)          
+        PlotAux.Plot(speed, Rtotal, CT, CF, CAPP, Cw, CB, CTR, CA, self.ship)          
         return True
 
     def reject(self):
