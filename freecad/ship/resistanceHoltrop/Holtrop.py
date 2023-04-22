@@ -62,13 +62,14 @@ def Holtrop(L, B, T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, u, hb,
     
     Rt -- Total resistance in kN.
     uu -- Speeds higher than 0 m/s.
-    RF -- Frictional resistance.
-    RAPP -- Appendage resistance.
-    RW -- Wave resistance.
-    RB -- Additional resistance due to the presence of a bulbous bow near 
-                                                            the surface.
-    RTR -- Additional resistance due to the inmersed transom.
-    RA -- Model-ship correlation resistance.
+    CT -- Total resistance coefficient. 
+    CF -- Frictional resistance coefficient.
+    CAPP -- Appendage resistance coefficient.
+    CW -- Wave resistance coefficient.
+    CB -- Additional resistance coefficient due to the presence of a bulbous 
+                                                        bow near the surface.
+    CTR -- Additional resistance coefficient due to the inmersed transom .
+    CA -- Model-ship correlation resistance coefficient.
                 """
     rho = 1025 # kg/m3 
     g = 9.81 # m/s2
@@ -84,14 +85,18 @@ def Holtrop(L, B, T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, u, hb,
     valid_u_mask = u > 0
     uu = u[valid_u_mask]
     
-    Rt = np.zeros(len(u), dtype= float)
-    RF = np.zeros(len(u), dtype= float)
-    RAPP = np.zeros(len(u), dtype= float)
-    RW = np.zeros(len(u), dtype= float)
-    RB = np.zeros(len(u), dtype= float)
-    RTR = np.zeros(len(u), dtype= float)
-    RA = np.zeros(len(u), dtype= float)
-
+    Rt = np.zeros(len(uu), dtype= float)
+    RF = np.zeros(len(uu), dtype= float)
+    RAPP = np.zeros(len(uu), dtype= float)
+    RW = np.zeros(len(uu), dtype= float)
+    RB = np.zeros(len(uu), dtype= float)
+    RTR = np.zeros(len(uu), dtype= float)
+    RA = np.zeros(len(uu), dtype= float)
+    CT = np.zeros(len(uu), dtype= float)
+    CAPP = np.zeros(len(uu), dtype= float)
+    CB = np.zeros(len(uu), dtype= float)
+    CTR = np.zeros(len(uu), dtype= float)
+    
     Sw = Sw or 'auto'
 
     if Sw == 'auto':
@@ -134,7 +139,12 @@ def Holtrop(L, B, T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, u, hb,
         
         k2eq = 0.0    
     
+    
     RAPP = 1 / 2 * rho * uu ** 2 * k2eq * sumsapp * CF / 1000 #kN
+    
+    if k2eq != 0:
+        
+        CAPP = RAPP * 1000 / (1 / 2 * rho * sumsapp * uu ** 2)
         
     """Wave resistance"""
     
@@ -179,8 +189,10 @@ def Holtrop(L, B, T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, u, hb,
     l = len(Fn) - 1
     for i in (0,l):
         
-        if Fn[i] <= 0.4: RW = (c1 * c2 * c5* V * rho * g * np.exp(m1 * 
+        if Fn[i] <= 0.4:
+            RW = (c1 * c2 * c5* V * rho * g * np.exp(m1 * 
                     Fn ** (- 0.9) + m4 * np.cos(lamda * Fn ** (- 2)))) / 1000
+            
     
         if Fn[i] >= 0.5: RW = (c17 * c2* c5 * V * rho * g * np.exp(m3 * 
                     Fn ** (- 0.9)  + m4 * np.cos(lamda * Fn ** (- 2)))) / 1000
@@ -194,7 +206,7 @@ def Holtrop(L, B, T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, u, hb,
         
             RW = Rwa + (10 * Fn - 4) * ((Rwb - Rwa) / 1.5) #kN
         
-        
+    Cw = RW * 1000 / (1 / 2 * rho * Sw * uu ** 2)
     """Aditional resistance due to the presence of a bulbous"""
 
     if ABT != 0:
@@ -207,21 +219,22 @@ def Holtrop(L, B, T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, u, hb,
          RB = ((0.11 * np.exp(-3 * Pb ** (-2)) * Fni ** 3 * ABT ** 1.5 * g *
                                     rho) / (1 + Fni ** 2)) * 1 / 1000 #kN
 
+         CB = RB * 1000 / (1 / 2 * rho * ABT * uu ** 2)
     
     """Aditional resistance due to the inmnersed transom"""
     
     if AT != 0:
 
         Fnt = uu / (np.sqrt((2 * g * AT) / (B + B * Cw)))
-        
         l2 = len(Fnt) - 1
         for i in (0,l2):
             
             c6 = 0 if Fnt[i] >= 5  else 0.2 * (1 - 0.2 * Fnt[i])
-        
-        RTR = 1 / 2 * rho * uu **2 * AT * c6 / 1000 #kN 
 
+        RTR = 1 / 2 * rho * uu **2 * AT * c6 / 1000 #kN 
+        CTR = RTR * 1000 / (1 / 2 * rho * AT * uu ** 2)
         
+
     """Correlation resistance"""
     
     ratioT = T / Lw
@@ -231,13 +244,13 @@ def Holtrop(L, B, T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, u, hb,
                                               * Cb ** 4 * c2 * (0.04 - c4))
     
     RA = 1 / 2 * rho * uu ** 2 * Sw * Ca / 1000 #kN 
-    
+    CA = np.linspace(Ca, Ca, len(uu))
     """Total resistance."""
 
+    CT = CF + CAPP + Cw + CB + CTR + CA
     Rt = RF * k1_1 + RAPP + RW + RB + RTR + RA 
 
-    
-    return Rt, uu, RF * k1_1, RAPP, RW, RB, RTR, RA 
+    return Rt, uu, CT, CF, CAPP, Cw, CB, CTR, CA
 
 if __name__== '__main__':
 
@@ -262,9 +275,9 @@ if __name__== '__main__':
 
     vel = np.linspace (1.5432, 5.6584, num = 9)
 
-    Rtotal, velocidades, RF , RAPP, RW, RB, RTR, RA  = Holtrop(L, B, 
+    Rtotal, velocidades, CT, CF, CAPP, Cw, CB, CTR, CA  = Holtrop(L, B, 
         T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, vel, hb, Sapplist, ABT, AT, Sw)
-    print(Rtotal, velocidades, RF , RAPP, RW, RB, RTR, RA)
+    print(Rtotal, velocidades, CT, CF, CAPP, Cw, CB, CTR, CA)
     
     plt.plot (velocidades , Rtotal)
     plt.title("Gráfica resistencia velocidad método de Holtrop")
