@@ -32,10 +32,14 @@ class Plot(object):
         """ Constructor. performs the plot and shows it.
         @param Speed, Ship speed.
         @param Resis, Resistance computed.
+        @param CF, Frictional resistance coefficient.
+        @param CR, residual resistance coefficient.
+        @param CA, Roughness coefficient
+        @param CT, Total resistance coefficient.
         @param ship Active ship instance.
         """
         self.plot(speed, resis, ship)
-        self.plotCoeff(speed, CF, CR, CT, ship)
+        self.plotCoeff(speed, CF, CR, CT, CA, ship)
         self.spreadSheet(speed, resis, CF, CR, CA, CT, ship)
 
     def plot(self, speed, resis, ship):
@@ -57,6 +61,9 @@ class Plot(object):
                 FreeCAD.Console.PrintWarning(msg + '\n')
                 return True
 
+        plt = Plot.figure('R - V')
+        self.plt = plt
+        
         areas = Plot.plot(speed, resis, 'Resistance Amadeo method')
         areas.line.set_linestyle('-')
         areas.line.set_linewidth(2.0)
@@ -70,12 +77,13 @@ class Plot(object):
         # End
         return False
 
-    def plotCoeff(self, speed, CF, CR ,CT, ship):
+    def plotCoeff(self, speed, CF, CR ,CT, CA, ship):
         """ Perform the areas curve plot.
         @param speed, Ship speed.
-        @param CF, Ship speed.
-        @param CR, Resistance computed.
-        @param CT, Resistance computed.
+        @param CF, Frictional resistance coefficient.
+        @param CR, residual resistance coefficient.
+        @param CA, Roughness coefficient
+        @param CT, Total resistance coefficient.
         @param ship Active ship instance.
         @return True if error happens.
         """
@@ -127,6 +135,16 @@ class Plot(object):
         ax.xaxis.label.set_fontsize(15)
         ax.yaxis.label.set_fontsize(15)
         
+        CA = Plot.plot(speed, CA, r'$CA$')
+        CA.line.set_linestyle('-')
+        CA.line.set_linewidth(2.0)
+        CA.line.set_color((0.2, 0.8, 0.2))
+        self.CA = CA
+        Plot.xlabel(r'$Speed \; \mathrm{m/s}$')
+        Plot.ylabel(r'$CT$ (Total resistance coefficient)')
+        ax.xaxis.label.set_fontsize(15)
+        ax.yaxis.label.set_fontsize(15)
+        
         # Show grid
         Plot.grid(True)
         Plot.legend(True)
@@ -137,6 +155,10 @@ class Plot(object):
         """ Write the output data file.
         @param Speed, Ship speed.
         @param Resis, Resistance computed.
+        @param CF, Frictional resistance coefficient.
+        @param CR, residual resistance coefficient.
+        @param CA, Roughness coefficient
+        @param CT, Total resistance coefficient.
         @param ship Active ship instance.
         """
         s = FreeCAD.activeDocument().addObject('Spreadsheet::Sheet',
@@ -157,7 +179,7 @@ class Plot(object):
             s.set("B{}".format(i + 2), str(resis[i]))
             s.set("C{}".format(i + 2), str(CF[i]))
             s.set("D{}".format(i + 2), str(CR[i]))
-            s.set("E{}".format(i + 2), str(CA))
+            s.set("E{}".format(i + 2), str(CA[i]))
             s.set("F{}".format(i + 2), str(CT[i]))
             
 
