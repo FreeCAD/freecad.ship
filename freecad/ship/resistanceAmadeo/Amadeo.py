@@ -113,16 +113,17 @@ def Amadeo(L,B, T,Cb,V,u, prot=0,Sw='auto',Lw='auto',d=None,
 
     """ Calculation of resistance coefficients. """
 
-    CA = (69 + 200 * Cb * B / L - 0.26 * L + 1300 / L - 29.5 * np.log10(L) 
+    Ca = (69 + 200 * Cb * B / L - 0.26 * L + 1300 / L - 29.5 * np.log10(L) 
           + 17 * B / T - (B / T)**2) * 10 ** -5
     Fn = uu / (np.sqrt(g * L))
     RR = 1.24 * Cb * B / L + 0.265 * Fn**2 + 2.151 * Fn - 0.298
-        
+    CA = np.linspace(Ca, Ca, len(uu))
+    
     if prot==0:
            
         Rn = Lw * uu / nu
         CF = 0.075 / (np.log10(Rn) - 2) **2
-        CT = (CF + CA) / (1 - RR)
+        CT = (CF + Ca) / (1 - RR)
         CR = CT * RR
         Rt = 0.5 * rho * CT * STW * uu ** 2 / 1000 #kN
 
@@ -135,7 +136,7 @@ def Amadeo(L,B, T,Cb,V,u, prot=0,Sw='auto',Lw='auto',d=None,
         b = 166.7 * Fnbb**3 - 1037.6 * Fnbb**2 + 2062.8 * Fnbb - 1244.8
         DES = a * L / B + b
         RRcb = RR /(1 + DES / 100)
-        CT = (CF + CA)/(1 - RRcb)
+        CT = (CF + Ca)/(1 - RRcb)
         CR = CT * RRcb
         Rt = 0.5 * rho * CT * STW * uu ** 2 / 1000 #kN
 
