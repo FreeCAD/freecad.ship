@@ -153,7 +153,7 @@ if __name__== '__main__':
     Cb = 0.233
     prot = 0.98
     V = 103.369
-    Sw = 160.828
+    Sw = ()
 
     vel = np.linspace (0, 6.1728, num = 13)
 
@@ -162,7 +162,6 @@ if __name__== '__main__':
     print(Resistencia, velocidades, Cfric, Crug ,Cresidual ,CTotal)
     
     plt.plot (velocidades , Resistencia)
-    plt.title("Gráfica resistencia velocidad método de Amadeo")
     plt.xlabel("V [m/s]")
     plt.ylabel("Resistencia total [kN]")
     plt.show ()
