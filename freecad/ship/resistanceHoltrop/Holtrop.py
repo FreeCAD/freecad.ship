@@ -280,7 +280,6 @@ if __name__== '__main__':
     print(Rtotal, velocidades, CT, CF, CAPP, Cw, CB, CTR, CA)
     
     plt.plot (velocidades , Rtotal)
-    plt.title("Gráfica resistencia velocidad método de Holtrop")
     plt.xlabel("V [m/s]")
     plt.ylabel("Resistencia total [kN]")
     plt.show ()
