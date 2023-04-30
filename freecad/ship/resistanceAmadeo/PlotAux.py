@@ -99,12 +99,22 @@ class Plot(object):
                 FreeCAD.Console.PrintWarning(msg + '\n')
                 return True
 
-        ax = Plot.axes()
-
+        
         plt = Plot.figure('Coefficients')
         self.plt2 = plt
         
+        for i in range(0, 3):
+            ax = Plot.addNewAxes()
+            for loc, spine in ax.spines.items():
+                if loc in ['right', 'left']:
+                    spine.set_position(('outward', (i + 1) * 35))
+            Plot.grid(True)
 
+        axes = Plot.axesList()
+        for ax in axes:
+            ax.set_position([0.1, 0.35,  0.65,  0.8])
+        
+        plt.axes = axes[0]
         CF = Plot.plot(speed, CF, r'$CF$')
         CF.line.set_linestyle('-')
         CF.line.set_linewidth(2.0)
@@ -115,6 +125,7 @@ class Plot(object):
         ax.xaxis.label.set_fontsize(15)
         ax.yaxis.label.set_fontsize(15)
         
+        plt.axes = axes[1]
         CR = Plot.plot(speed, CR, r'$CR$')
         CR.line.set_linestyle('-')
         CR.line.set_linewidth(2.0)
@@ -125,6 +136,7 @@ class Plot(object):
         ax.xaxis.label.set_fontsize(15)
         ax.yaxis.label.set_fontsize(15)
         
+        plt.axes = axes[2]
         CT = Plot.plot(speed, CT, r'$CT$')
         CT.line.set_linestyle('-')
         CT.line.set_linewidth(2.0)
@@ -135,6 +147,7 @@ class Plot(object):
         ax.xaxis.label.set_fontsize(15)
         ax.yaxis.label.set_fontsize(15)
         
+        plt.axes = axes[3]
         CA = Plot.plot(speed, CA, r'$CA$')
         CA.line.set_linestyle('-')
         CA.line.set_linewidth(2.0)
