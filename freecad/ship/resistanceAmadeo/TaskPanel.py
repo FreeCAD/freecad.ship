@@ -53,12 +53,12 @@ class TaskPanel:
         Sw = Units.parseQuantity(Locale.fromString(self.form.Sw.text()))
         Lw = Units.parseQuantity(Locale.fromString(self.form.Lw.text()))
         V = Units.parseQuantity(Locale.fromString(self.form.volume.text()))
-
         Cb = Units.parseQuantity(Locale.fromString(self.form.Cb.text())).Value
         d = Units.parseQuantity(Locale.fromString(self.form.d_diameter.text()))
         l = Units.parseQuantity(Locale.fromString(self.form.d_length.text()))
         umax = Units.parseQuantity(Locale.fromString(self.form.max_speed.text()))
         umin = Units.parseQuantity(Locale.fromString(self.form.min_speed.text()))
+        etap = Units.parseQuantity(Locale.fromString(self.form.etap.text())).Value
 
         #data preparation for Amadeo's method
         prot = prot.getValueAs("m").Value
@@ -74,17 +74,22 @@ class TaskPanel:
         B = self.ship.Breadth.getValueAs("m").Value
         T = self.ship.Draft.getValueAs("m").Value
 
+        if etap > 1:
+            msg = App.Qt.translate(
+                "ship_console",
+                "The propulsive coefficiente cannot be higher than 1")
+            App.Console.PrintError(msg + '\n')
         if Lw == 0: Lw = ()
         if Sw == 0: Sw = ()
         if d == 0: d = None
         if l == 0: l = None
 
         vel = np.linspace(umin, umax, num = n)
-        resis, speed, CF, CA, CR, CT = Amadeo.Amadeo(L, B, T, Cb, V, 
-                            vel, prot, Sw, Lw, d, l, has_rudder = has_rudder)
+        resis, speed, CF, CA, CR, CT, EKW, BKW = Amadeo.Amadeo(L, B, T, Cb, V, 
+                            vel, etap, prot, Sw, Lw, d, l, has_rudder = has_rudder)
         
         
-        PlotAux.Plot(speed, resis, CF, CR, CA, CT, self.ship)   
+        PlotAux.Plot(speed, resis, CF, CR, CA, CT, EKW, BKW, self.ship)   
 
         return True
 
@@ -123,6 +128,7 @@ class TaskPanel:
         self.form.max_speed = self.widget(QtGui.QLineEdit, "max_speed")
         self.form.min_speed = self.widget(QtGui.QLineEdit, "min_speed")
         self.form.n_speeds = self.widget(QtGui.QSpinBox, "n_speeds")
+        self.form.etap = self.widget(QtGui.QLineEdit, "etap")
         self.form.rudder = self.widget(QtGui.QCheckBox, "rudder")
         if self.initValues():
             return True
@@ -192,12 +198,14 @@ class TaskPanel:
                                                 Units.parseQuantity("0 deg"))
         bbox = f.BoundBox
         lw = Units.Quantity(bbox.XMax - bbox.XMin, Units.Length)
+        etap = 0.6
         
         self.form.protuberance.setText(prot.UserString)
         self.form.Lw.setText(lw.UserString)
         self.form.Sw.setText(sw.UserString)
         self.form.volume.setText(vol.UserString)
         self.form.Cb.setText(str(cb))
+        self.form.etap.setText(str(etap))
         return False
     
 def createTask():
