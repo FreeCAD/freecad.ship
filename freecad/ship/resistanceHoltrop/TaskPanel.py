@@ -64,7 +64,8 @@ class TaskPanel:
         hb = Units.parseQuantity(Locale.fromString(self.form.hb.text()))
         umax = Units.parseQuantity(Locale.fromString(self.form.max_speed.text()))
         umin = Units.parseQuantity(Locale.fromString(self.form.min_speed.text()))
-        etap = Units.parseQuantity(Locale.fromString(self.form.etap.text())).Value
+        eta_p = Units.parseQuantity(Locale.fromString(self.form.etap.text())).Value
+        seamargin = Units.parseQuantity(Locale.fromString(self.form.seamargin.text())).Value
         rbskeg = Units.parseQuantity(Locale.fromString(self.form.rbskeg.text()))
         rbstern = Units.parseQuantity(Locale.fromString(self.form.rbstern.text()))
         twsbr = Units.parseQuantity(Locale.fromString(self.form.twsbr.text()))
@@ -104,12 +105,17 @@ class TaskPanel:
         B = self.ship.Breadth.getValueAs("m").Value
         T = self.ship.Draft.getValueAs("m").Value
 
-        if etap > 1:
+        if  1 >= eta_p >= 0:
+            
+            etap = eta_p
+        
+        elif eta_p > 1:
             msg = App.Qt.translate(
                 "ship_console",
                 "The propulsive coefficiente cannot be higher than 1")
             App.Console.PrintError(msg + '\n')
         if Sw == 0: Sw = ()
+        seamargin = seamargin / 100
 
         Sapplist = [rbskeg, rbstern, twsbr, sbr, skeg, strut_bossing,
                     hull_bossings, shafts, stab_fins, dome, bkl]
@@ -117,7 +123,7 @@ class TaskPanel:
         
         vel = np.linspace(umin, umax, num = n)
         Rtotal, speed, CT, CF, CAPP, Cw, CB, CTR, CA, EKW, BKW = Holtrop.Holtrop(L, B, 
-            T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, vel, hb, etap,
+            T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, vel, hb, etap, seamargin,
                                                         Sapplist, ABT, AT, Sw)
         
         
@@ -166,6 +172,7 @@ class TaskPanel:
         self.form.min_speed = self.widget(QtGui.QLineEdit, "min_speed")
         self.form.n_speeds = self.widget(QtGui.QSpinBox, "n_speeds")
         self.form.etap = self.widget(QtGui.QLineEdit, "etap")
+        self.form.seamargin = self.widget(QtGui.QLineEdit, "seamargin")
         self.form.rbskeg = self.widget(QtGui.QLineEdit, "rbskeg")
         self.form.rbstern = self.widget(QtGui.QLineEdit, "rbstern")
         self.form.twsbr = self.widget(QtGui.QLineEdit, "twsbr")
@@ -261,6 +268,7 @@ class TaskPanel:
             
         iE = Units.Quantity(iE, Units.Angle)
         etap = 0.6
+        seamargin = 15
         
         self.form.Lw.setText(lw.UserString)
         self.form.Sw.setText(sw.UserString)
@@ -271,6 +279,7 @@ class TaskPanel:
         self.form.iE.setText(iE.UserString)
         self.form.xcb.setText(xcb.UserString)
         self.form.etap.setText(str(etap))
+        self.form.seamargin.setText(str(seamargin))
         return False
     
 def createTask():
