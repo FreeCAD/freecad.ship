@@ -30,8 +30,8 @@ def Sw_auto(B, T, Lw, Cb, Cw, Cm, ABT):
     return Sw
         
 
-def Holtrop(L, B, T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, u, hb, etap,
-                       Sapplist, ABT, AT, Sw='auto'):
+def Holtrop(L, B, T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, u, hb, etap, 
+            seamargin, Sapplist, ABT, AT, Sw='auto'):
 
     """
     Holtrop resistance prediction method.
@@ -51,6 +51,7 @@ def Holtrop(L, B, T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, u, hb, etap,
     u -- speed.
     hb -- position of the center of the transverse area ABT above the keel line
     etap -- Propulsive coefficient.
+    seamargin -- sea margin to calculate EKW and BKW
     Sapplist -- List of appendage' areas.
     ABT -- Transverlse bulb area.
     AT -- Inmersed part of the transverse area of the transom.
@@ -244,7 +245,7 @@ def Holtrop(L, B, T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, u, hb, etap,
     CT = CF + CAPP + Cw + CB + CTR + CA
     Rt = RF * k1_1 + RAPP + RW + RB + RTR + RA
 
-    EKW = Rt * uu
+    EKW = Rt * uu * (1 + seamargin)
     BKW = EKW / etap
     
     return Rt, uu, CT, CF, CAPP, Cw, CB, CTR, CA, EKW, BKW
@@ -267,6 +268,7 @@ if __name__ == '__main__':
     xcb = -0.7645
     hb = 2.127
     etap = 0.6
+    seamargin = 0.15
     Sapplist = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     ABT = 2.372
     AT = 0
@@ -275,10 +277,16 @@ if __name__ == '__main__':
     vel = np.linspace(1.5432, 5.6584, num=9)
 
     Rtotal, velocidades, CT, CF, CAPP, Cw, CB, CTR, CA, EKW, BKW = Holtrop(L, B,
-        T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, vel, hb, etap, Sapplist, ABT, AT, Sw)
+        T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, vel, hb, etap, seamargin,
+        Sapplist, ABT, AT, Sw)
     print(Rtotal, velocidades, CT, CF, CAPP, Cw, CB, CTR, CA)
     
     plt.plot(velocidades, Rtotal)
     plt.xlabel("V [m/s]")
     plt.ylabel("Resistencia total [kN]")
+    plt.show()
+    
+    plt.plot(velocidades, BKW)
+    plt.xlabel("V [m/s]")
+    plt.ylabel("Break power [kW]")
     plt.show()
