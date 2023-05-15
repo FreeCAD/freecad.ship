@@ -40,8 +40,8 @@ def Sw_auto(L, V, prot):
     return Sw
         
 
-def Amadeo(L, B, T, Cb, V, u, etap, prot=0, Sw='auto', Lw='auto', d=None,
-           l=None, has_rudder=False):
+def Amadeo(L, B, T, Cb, V, u, etap, seamargin, prot=0, Sw='auto', Lw='auto',
+           d=None, l=None, has_rudder=False):
     """
     Amadeo resistance prediction method.
     
@@ -53,6 +53,7 @@ def Amadeo(L, B, T, Cb, V, u, etap, prot=0, Sw='auto', Lw='auto', d=None,
     V -- Displaced volume.
     u -- Speed.
     etap -- Propulsive coefficient.
+    seamargin -- sea margin to calculate EKW and BKW
     
     keyword arguments:
     
@@ -137,7 +138,7 @@ def Amadeo(L, B, T, Cb, V, u, etap, prot=0, Sw='auto', Lw='auto', d=None,
         CR = CT * RRcb
         Rt = 0.5 * rho * CT * STW * uu ** 2 / 1000 #kN
 
-    EKW = Rt * uu
+    EKW = Rt * uu * (1 + seamargin)
     BKW = EKW / etap
     
     return Rt, uu, CF, CA, CR, CT, EKW, BKW
@@ -154,15 +155,21 @@ if __name__== '__main__':
     prot = 0.98
     V = 103.369
     etap = 0.6
+    seamargin = 0.15
     Sw = ()
 
     vel = np.linspace(0, 6.1728, num = 13)
 
     Resistencia, velocidades, Cfric, Crug, Cresidual, CTotal, EKW, BKW = (
-    Amadeo(L, B, T, Cb, V, vel, etap, prot, Sw, Lw))
+    Amadeo(L, B, T, Cb, V, vel, etap, seamargin, prot, Sw, Lw))
     print(Resistencia, velocidades, Cfric, Crug, Cresidual, CTotal, EKW, BKW)
     
     plt.plot(velocidades, Resistencia)
     plt.xlabel("V [m/s]")
     plt.ylabel("Resistencia total [kN]")
+    plt.show()
+    
+    plt.plot(velocidades, BKW)
+    plt.xlabel("V [m/s]")
+    plt.ylabel("Break power [kW]")
     plt.show()
