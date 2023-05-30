@@ -141,7 +141,7 @@ def Amadeo(L, B, T, Cb, V, u, etap, seamargin, prot=0, Sw='auto', Lw='auto',
     EKW = Rt * uu * (1 + seamargin)
     BKW = EKW / etap
     
-    return Rt, uu, CF, CA, CR, CT, EKW, BKW
+    return Rt, uu, CF, CA, CR, CT, EKW, BKW, Lw, Sw
 
 if __name__== '__main__':
 
@@ -160,7 +160,7 @@ if __name__== '__main__':
 
     vel = np.linspace(0, 6.1728, num = 13)
 
-    Resistencia, velocidades, Cfric, Crug, Cresidual, CTotal, EKW, BKW = (
+    Resistencia, velocidades, Cfric, Crug, Cresidual, CTotal, EKW, BKW, Lw, Sw = (
     Amadeo(L, B, T, Cb, V, vel, etap, seamargin, prot, Sw, Lw))
     print(Resistencia, velocidades, Cfric, Crug, Cresidual, CTotal, EKW, BKW)
     
@@ -169,7 +169,7 @@ if __name__== '__main__':
     plt.ylabel("Resistencia total [kN]")
     plt.show()
     
-    plt.plot(velocidades, BKW)
+    plt.plot(velocidades, EKW)
     plt.xlabel("V [m/s]")
-    plt.ylabel("Break power [kW]")
+    plt.ylabel("Effective power [kW]")
     plt.show()
