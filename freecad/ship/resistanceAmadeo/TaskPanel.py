@@ -219,11 +219,11 @@ class TaskPanel:
             V = vol.getValueAs("m^3").Value
     
         except:
-            Prot = 0
-            Sw = 0
-            Lw = 0
-            V = 0
-            cb = 0
+            Prot = 0.0
+            Sw = 0.0
+            Lw = 0.0
+            V = 0.0
+            cb = 0.0
         
         self.form.protuberance.setText(str(Prot))
         self.form.Lw.setText(str(Lw))
