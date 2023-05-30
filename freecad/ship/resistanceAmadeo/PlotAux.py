@@ -112,6 +112,7 @@ class Plot(object):
         
         # Write axes titles
         ax = Plot.axes()
+        ax.set_position([0.1, 0.1,  0.65,  0.8])
         Plot.xlabel(r'$Speed \; \mathrm{m/s}$')
         Plot.ylabel(r'$Power \; \mathrm{kW}$')
         ax.spines['right'].set_color((0.0, 0.0, 0.0))
@@ -135,7 +136,7 @@ class Plot(object):
         
         # Show grid
         Plot.grid(True)
-        Plot.legend()
+        Plot.legend(True, pos =(1.05,0.6))
         # End
         return False
 
@@ -166,6 +167,7 @@ class Plot(object):
         self.plt2 = plt
         
         ax = Plot.axes()
+        ax.set_position([0.05, 0.1,  0.65,  0.8])
         Plot.xlabel(r'$Speed \; \mathrm{m/s}$')
         Plot.ylabel(r'$Resistance \; coefficients$')
         ax.spines['right'].set_color((0.0, 0.0, 0.0))
@@ -182,13 +184,7 @@ class Plot(object):
         CT.line.set_linewidth(2.0)
         CT.line.set_color((0.0, 0.0, 1.0))
         self.CT = CT
-        
-        CA = Plot.plot(speed, CA, r'$CA$, Roughness coefficient')
-        CA.line.set_linestyle('-')
-        CA.line.set_linewidth(2.0)
-        CA.line.set_color((0.2, 0.8, 0.2))
-        self.CA = CA
-        
+
         CF = Plot.plot(speed, CF, r'$CF$, Frictional resistance coefficient')
         CF.line.set_linestyle('-')
         CF.line.set_linewidth(2.0)
@@ -201,9 +197,15 @@ class Plot(object):
         CR.line.set_color((1.0, 0.0, 0.0))
         self.CR = CR
         
+        CA = Plot.plot(speed, CA, r'$CA$, Roughness coefficient')
+        CA.line.set_linestyle('-')
+        CA.line.set_linewidth(2.0)
+        CA.line.set_color((0.2, 0.8, 0.2))
+        self.CA = CA
+        
         # Show grid
         Plot.grid(True)
-        Plot.legend()
+        Plot.legend(True, pos =(1.025,0.6))
         # End
         return False
 
@@ -223,8 +225,8 @@ class Plot(object):
                                                'Resistance Amadeo method')
 
         # Print the header
-        s.set("A1", "speed [m/s]")
-        s.set("B1", "resistance [kN]")
+        s.set("A1", "Speed [m/s]")
+        s.set("B1", "Resistance [kN]")
         s.set("C1", "CF * 10^3")
         s.set("D1", "CR * 10^3")
         s.set("E1", "CA * 10^3")
