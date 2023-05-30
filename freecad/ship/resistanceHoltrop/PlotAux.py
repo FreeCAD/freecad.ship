@@ -117,6 +117,7 @@ class Plot(object):
         
         # Write axes titles
         ax = Plot.axes()
+        ax.set_position([0.1, 0.1,  0.65,  0.8])
         Plot.xlabel(r'$Speed \; \mathrm{m/s}$')
         Plot.ylabel(r'$Power \; \mathrm{kW}$')
         ax.spines['right'].set_color((0.0, 0.0, 0.0))
@@ -140,7 +141,7 @@ class Plot(object):
         
         # Show grid
         Plot.grid(True)
-        Plot.legend()
+        Plot.legend(True, pos =(1.05,0.6))
         # End
         return False
     
@@ -177,6 +178,7 @@ class Plot(object):
         plt.axes.ticklabel_format(axis = 'y', scilimits = (0,0))
         
         ax = Plot.axes()
+        ax.set_position([0.05, 0.1,  0.62,  0.8])
         Plot.xlabel(r'$Speed \; \mathrm{m/s}$')
         Plot.ylabel(r'$Resistance \; coefficients$')
         ax.spines['right'].set_color((0.0, 0.0, 0.0))
@@ -185,52 +187,51 @@ class Plot(object):
         ax.yaxis.label.set_fontsize(15)
         ax.set_title('Holtrop Resistance Coefficients vs Speed', fontweight='bold')
         
-        CA = Plot.plot(speed, CA, r'$CA$')
-        CA.line.set_linestyle('-')
-        CA.line.set_linewidth(2.0)
-        CA.line.set_color((0.2, 0.8, 0.2))
-        self.CA = CA
+        CT = Plot.plot(speed, CT, r'$CT$, Total resistance coefficient')
+        CT.line.set_linestyle('-')
+        CT.line.set_linewidth(2.0)
+        CT.line.set_color((0.0, 0.0, 1.0))
+        self.CT = CT
         
-        CF = Plot.plot(speed, CF, r'$CF$')
+        CF = Plot.plot(speed, CF, r'$CF$, Frictional resistance coefficient')
         CF.line.set_linestyle('-')
         CF.line.set_linewidth(2.0)
         CF.line.set_color((0.0, 0.0, 0.0))
         self.CF = CF
         
-        Cw = Plot.plot(speed, Cw, r'$Cw$')
+        Cw = Plot.plot(speed, Cw, r'$CW$, Wave resistance coefficient')
         Cw.line.set_linestyle('-')
         Cw.line.set_linewidth(2.0)
         Cw.line.set_color((1.0, 0.0, 0.0))
         self.Cw = Cw
+        
+        CA = Plot.plot(speed, CA, r'$CA$, Model-ship correlation coefficient')
+        CA.line.set_linestyle('-')
+        CA.line.set_linewidth(2.0)
+        CA.line.set_color((0.2, 0.8, 0.2))
+        self.CA = CA
 
-        CAPP = Plot.plot(speed, CAPP, r'$CAPP$')
+        CAPP = Plot.plot(speed, CAPP, r'$CAPP$, Appendage resistance coefficient')
         CAPP.line.set_linestyle('-')
         CAPP.line.set_linewidth(2.0)
         CAPP.line.set_color((1.0, 1.0, 0.0))
         self.CAPP = CAPP
         
-        CB = Plot.plot(speed, CB, r'$CB$')
+        CB = Plot.plot(speed, CB, r'$CB$, Bulbous resistance coefficient')
         CB.line.set_linestyle('-')
         CB.line.set_linewidth(2.0)
         CB.line.set_color((0.8, 0.2, 0.8))
         
 
-        CTR = Plot.plot(speed, CTR, r'$CTR$')
+        CTR = Plot.plot(speed, CTR, r'$CTR$, Transom resistant coefficient')
         CTR.line.set_linestyle('-')
         CTR.line.set_linewidth(2.0)
         CTR.line.set_color((0.5, 0.5, 0.5))
         self.CTR = CTR
-
-        CT = Plot.plot(speed, CT, r'$CT$')
-        CT.line.set_linestyle('-')
-        CT.line.set_linewidth(2.0)
-        CT.line.set_color((0.0, 0.0, 1.0))
-        self.CT = CT
-
         
         # Show grid
         Plot.grid(True)
-        Plot.legend(True)
+        Plot.legend(True, pos =(1.05,0.72))
         # End
         return False
 
@@ -254,17 +255,17 @@ class Plot(object):
                                                'Resistance Holtrop method')
 
         # Print the header
-        s.set("A1", "speed [m/s]")
-        s.set("B1", "resistance [kN]")
+        s.set("A1", "Speed [m/s]")
+        s.set("B1", "Resistance [kN]")
         s.set("C1", "CT * 10^3")
         s.set("D1", "CF * 10^3")
         s.set("E1", "CAPP")
-        s.set("F1", "Cw * 10^4")
+        s.set("F1", "CW * 10^4")
         s.set("G1", "CB * 10^3")
         s.set("H1", "CTR * 10^3")
         s.set("I1", "CA * 10^3")
-        s.set("J1", "BKW [kW]")
-        s.set("K1", "EKW [kW]")
+        s.set("J1", "EKW [kW]")
+        s.set("K1", "BKW [kW]")
         
 
         # Print the data
@@ -280,7 +281,6 @@ class Plot(object):
             s.set("I{}".format(i + 2), str(CA[i]  * 1000))
             s.set("J{}".format(i + 2), str(EKW[i]))
             s.set("K{}".format(i + 2), str(BKW[i]))
-            
-
+        
         # Recompute
         FreeCAD.activeDocument().recompute()
