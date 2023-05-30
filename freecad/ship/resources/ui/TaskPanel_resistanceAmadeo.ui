@@ -31,7 +31,7 @@
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Protuberance measured from the frame 20. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
-        <string>Protuberance</string>
+        <string>Protuberance [m] </string>
        </property>
       </widget>
      </item>
@@ -44,7 +44,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Ducted propeller diameter</string>
+        <string>Ducted propeller diameter [m]</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -54,10 +54,10 @@
      <item row="1" column="1">
       <widget class="Gui::InputField" name="Sw">
        <property name="text">
-        <string notr="true">0 m^2</string>
+        <string notr="true">0 </string>
        </property>
        <property name="unit" stdset="0">
-        <string notr="true">m^2</string>
+        <string notr="true"/>
        </property>
        <property name="quantity" stdset="0">
         <double>1.000000000000000</double>
@@ -73,7 +73,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Ducted propeller length</string>
+        <string>Ducted propeller length [m]</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -92,7 +92,7 @@
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum speed to compute the resistance.&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
-        <string>Maximum speed</string>
+        <string>Maximum speed [m/s]</string>
        </property>
       </widget>
      </item>
@@ -122,32 +122,6 @@
        </property>
       </widget>
      </item>
-     <item row="7" column="1">
-      <widget class="Gui::InputField" name="max_speed">
-       <property name="text">
-        <string notr="true">0 m/s</string>
-       </property>
-       <property name="unit" stdset="0">
-        <string notr="true">m/s</string>
-       </property>
-       <property name="quantity" stdset="0">
-        <double>1.000000000000000</double>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="Gui::InputField" name="protuberance">
-       <property name="text">
-        <string notr="true">0 m</string>
-       </property>
-       <property name="unit" stdset="0">
-        <string notr="true">m</string>
-       </property>
-       <property name="quantity" stdset="0">
-        <double>0.000000000000000</double>
-       </property>
-      </widget>
-     </item>
      <item row="10" column="1">
       <widget class="Gui::InputField" name="etap">
        <property name="text">
@@ -164,13 +138,13 @@
      <item row="2" column="1">
       <widget class="Gui::InputField" name="Lw">
        <property name="text">
-        <string notr="true">0 m</string>
+        <string notr="true">0</string>
        </property>
        <property name="maxLength">
         <number>100000</number>
        </property>
        <property name="unit" stdset="0">
-        <string notr="true">m</string>
+        <string notr="true"/>
        </property>
        <property name="quantity" stdset="0">
         <double>0.000000000000000</double>
@@ -185,18 +159,21 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If Lw is unknown, set Lw = 0. Lw will be calculated using empirical equations proposed by Amadeo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="text">
-        <string>Waterline length</string>
+        <string>Waterline length [m]</string>
        </property>
       </widget>
      </item>
      <item row="5" column="1">
       <widget class="Gui::InputField" name="d_diameter">
        <property name="text">
-        <string notr="true">0 m</string>
+        <string notr="true">0 </string>
        </property>
        <property name="unit" stdset="0">
-        <string notr="true">m</string>
+        <string notr="true"/>
        </property>
        <property name="quantity" stdset="0">
         <double>0.000000000000000</double>
@@ -225,10 +202,10 @@
      <item row="6" column="1">
       <widget class="Gui::InputField" name="d_length">
        <property name="text">
-        <string notr="true">0 m</string>
+        <string notr="true">0 </string>
        </property>
        <property name="unit" stdset="0">
-        <string notr="true">m</string>
+        <string notr="true"/>
        </property>
        <property name="quantity" stdset="0">
         <double>0.000000000000000</double>
@@ -243,8 +220,11 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If Sw is unknown, set Sw = 0. Sw will be calculated using empirical equations proposed by Amadeo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="text">
-        <string>Wet surface</string>
+        <string>Wet surface [m^2] </string>
        </property>
       </widget>
      </item>
@@ -290,19 +270,6 @@
        </property>
       </widget>
      </item>
-     <item row="8" column="1">
-      <widget class="Gui::InputField" name="min_speed">
-       <property name="text">
-        <string notr="true">0 m/s</string>
-       </property>
-       <property name="unit" stdset="0">
-        <string notr="true">m/s</string>
-       </property>
-       <property name="quantity" stdset="0">
-        <double>1.000000000000000</double>
-       </property>
-      </widget>
-     </item>
      <item row="8" column="0" alignment="Qt::AlignHCenter">
       <widget class="QLabel" name="min_speed_label">
        <property name="sizePolicy">
@@ -315,7 +282,7 @@
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum speed to compute the resistance.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
-        <string>Minimum speed</string>
+        <string>Minimum speed [m/s]</string>
        </property>
       </widget>
      </item>
@@ -328,17 +295,17 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Displaced volume</string>
+        <string>Displaced volume [m^3] </string>
        </property>
       </widget>
      </item>
      <item row="3" column="1">
       <widget class="Gui::InputField" name="volume">
        <property name="text">
-        <string notr="true">0 m^3</string>
+        <string notr="true">0</string>
        </property>
        <property name="unit" stdset="0">
-        <string notr="true">m^3</string>
+        <string notr="true"/>
        </property>
        <property name="quantity" stdset="0">
         <double>1.000000000000000</double>
@@ -364,7 +331,7 @@
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the sea margin as a percentage&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
-        <string>Sea margin</string>
+        <string>Sea margin %</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -381,6 +348,45 @@
        </property>
        <property name="quantity" stdset="0">
         <double>100.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="1">
+      <widget class="Gui::InputField" name="max_speed">
+       <property name="text">
+        <string notr="true">0</string>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true"/>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>1.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="1">
+      <widget class="Gui::InputField" name="min_speed">
+       <property name="text">
+        <string notr="true">0</string>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true"/>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>1.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="Gui::InputField" name="protuberance">
+       <property name="text">
+        <string notr="true">0 </string>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true"/>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>0.000000000000000</double>
        </property>
       </widget>
      </item>
