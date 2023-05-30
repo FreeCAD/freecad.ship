@@ -49,27 +49,21 @@ class TaskPanel:
             return False
         
         has_rudder = self.form.rudder.isChecked()
-        prot = Units.parseQuantity(Locale.fromString(self.form.protuberance.text()))
-        Sw = Units.parseQuantity(Locale.fromString(self.form.Sw.text()))
-        Lw = Units.parseQuantity(Locale.fromString(self.form.Lw.text()))
-        V = Units.parseQuantity(Locale.fromString(self.form.volume.text()))
+        prot = Units.parseQuantity(Locale.fromString(self.form.protuberance.text())).Value
+        Sw = Units.parseQuantity(Locale.fromString(self.form.Sw.text())).Value
+        Lw = Units.parseQuantity(Locale.fromString(self.form.Lw.text())).Value
+        V = Units.parseQuantity(Locale.fromString(self.form.volume.text())).Value
         Cb = Units.parseQuantity(Locale.fromString(self.form.Cb.text())).Value
-        d = Units.parseQuantity(Locale.fromString(self.form.d_diameter.text()))
-        l = Units.parseQuantity(Locale.fromString(self.form.d_length.text()))
-        umax = Units.parseQuantity(Locale.fromString(self.form.max_speed.text()))
-        umin = Units.parseQuantity(Locale.fromString(self.form.min_speed.text()))
+        d = Units.parseQuantity(Locale.fromString(self.form.d_diameter.text())).Value
+        l = Units.parseQuantity(Locale.fromString(self.form.d_length.text())).Value
+        umax = Units.parseQuantity(Locale.fromString(self.form.max_speed.text())).Value
+        umin = Units.parseQuantity(Locale.fromString(self.form.min_speed.text())).Value
         eta_p = Units.parseQuantity(Locale.fromString(self.form.etap.text())).Value
         seamargin = Units.parseQuantity(Locale.fromString(self.form.seamargin.text())).Value
 
         #data preparation for Amadeo's method
-        prot = prot.getValueAs("m").Value
-        Sw = Sw.getValueAs("m^2").Value
-        Lw = Lw.getValueAs("m").Value
-        V = V.getValueAs("m^3").Value
-        d = d.getValueAs("m").Value
-        l = l.getValueAs("m").Value
-        umax = umax.getValueAs("m/s").Value
-        umin = umin.getValueAs("m/s").Value
+        umax = umax #m/s
+        umin = umin #m/s
         n = self.form.n_speeds.value()
         L = self.ship.Length.getValueAs("m").Value
         B = self.ship.Breadth.getValueAs("m").Value
@@ -84,16 +78,24 @@ class TaskPanel:
                 "ship_console",
                 "The propulsive coefficiente cannot be higher than 1")
             App.Console.PrintError(msg + '\n')
-        if Lw == 0: Lw = ()
-        if Sw == 0: Sw = ()
+        if Lw == 0: 
+            Lw = ()
+            L_w = 1
+        else: L_w = 0
+        if Sw == 0: 
+            Sw = ()
+            S_w = 1
+        else: S_w = 0
         if d == 0: d = None
         if l == 0: l = None
         seamargin = seamargin / 100
 
         vel = np.linspace(umin, umax, num = n)
-        resis, speed, CF, CA, CR, CT, EKW, BKW = Amadeo.Amadeo(L, B, T, Cb, V, 
-            vel, etap, seamargin, prot, Sw, Lw, d, l, has_rudder = has_rudder)
+        resis, speed, CF, CA, CR, CT, EKW, BKW, Lw, Sw = Amadeo.Amadeo(L, B,T, 
+         Cb, V, vel, etap, seamargin, prot, Sw, Lw, d, l, has_rudder = has_rudder)
         
+        if L_w == 1: App.Console.PrintMessage("Lw = " + str("{:.3f}".format(Lw)) + " m^2" + '\n')
+        if S_w == 1: App.Console.PrintMessage("Sw = " + str("{:.3f}".format(Sw)) + " m^2" + '\n')
         
         PlotAux.Plot(speed, resis, CF, CR, CA, CT, EKW, BKW, self.ship)   
 
@@ -175,46 +177,60 @@ class TaskPanel:
                 "More than one ship have been selected (just the one labelled"
                 "'{}' is considered)".format(self.ship.Label))
             App.Console.PrintWarning(msg + '\n')
-            
-        
-        disp,_,cb = Hydrostatics.displacement(self.ship,
-                                               self.ship.Draft,
-                                               Units.parseQuantity("0 deg"),
-                                               Units.parseQuantity("0 deg"))
-        vol = disp / Hydrostatics.DENS
-        
-        sw = Hydrostatics.wettedArea(self.ship.Shape.copy(), self.ship.Draft, 
-                                     Units.parseQuantity("0 deg"),
-                                     Units.parseQuantity("0 deg"))
-
-
-        shape, _ = Hydrostatics.placeShipShape(self.ship.Shape.copy(),
-                                               self.ship.Draft,
-                                               Units.parseQuantity("0 deg"),
-                                               Units.parseQuantity("0 deg"))
-        shape = Hydrostatics.getUnderwaterSide(shape)
-        bbox = shape.BoundBox
-        
-        prot = Units.Quantity(bbox.XMax - bbox.XMin, Units.Length) 
-        prot = prot - self.ship.Length
-        if prot < 0: prot = 0
-        prot = Units.Quantity(prot, Units.Length)
-        
-        area, cf, f = Hydrostatics.floatingArea(self.ship, self.ship.Draft,
-                                                Units.parseQuantity("0 deg"),
-                                                Units.parseQuantity("0 deg"))
-        bbox = f.BoundBox
-        lw = Units.Quantity(bbox.XMax - bbox.XMin, Units.Length)
+         
         etap = 0.6
         seamargin = 15
-        
-        self.form.protuberance.setText(prot.UserString)
-        self.form.Lw.setText(lw.UserString)
-        self.form.Sw.setText(sw.UserString)
-        self.form.volume.setText(vol.UserString)
-        self.form.Cb.setText(str(cb))
         self.form.etap.setText(str(etap))
         self.form.seamargin.setText(str(seamargin))
+        
+        try:
+            disp,_,cb = Hydrostatics.displacement(self.ship,
+                                                   self.ship.Draft,
+                                                   Units.parseQuantity("0 deg"),
+                                                   Units.parseQuantity("0 deg"))
+            vol = disp / Hydrostatics.DENS
+            
+            sw = Hydrostatics.wettedArea(self.ship.Shape.copy(), self.ship.Draft, 
+                                         Units.parseQuantity("0 deg"),
+                                         Units.parseQuantity("0 deg"))
+    
+    
+            shape, _ = Hydrostatics.placeShipShape(self.ship.Shape.copy(),
+                                                   self.ship.Draft,
+                                                   Units.parseQuantity("0 deg"),
+                                                   Units.parseQuantity("0 deg"))
+            shape = Hydrostatics.getUnderwaterSide(shape)
+            bbox = shape.BoundBox
+            
+            prot = Units.Quantity(bbox.XMax - bbox.XMin, Units.Length) 
+            prot = prot - self.ship.Length
+            if prot < 0: prot = 0
+            prot = Units.Quantity(prot, Units.Length)
+            
+            area, cf, f = Hydrostatics.floatingArea(self.ship, self.ship.Draft,
+                                                    Units.parseQuantity("0 deg"),
+                                                    Units.parseQuantity("0 deg"))
+            bbox = f.BoundBox
+            lw = Units.Quantity(bbox.XMax - bbox.XMin, Units.Length)
+            
+            Prot = prot.getValueAs("m").Value
+            Sw = sw.getValueAs("m^2").Value
+            Lw = lw.getValueAs("m").Value
+            V = vol.getValueAs("m^3").Value
+    
+        except:
+            Prot = 0
+            Sw = 0
+            Lw = 0
+            V = 0
+            cb = 0
+        
+        self.form.protuberance.setText(str(Prot))
+        self.form.Lw.setText(str(Lw))
+        self.form.Sw.setText(str(Sw))
+        self.form.volume.setText(str(V))
+        self.form.Cb.setText(str(cb))
+        
         return False
     
 def createTask():
