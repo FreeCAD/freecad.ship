@@ -248,7 +248,7 @@ def Holtrop(L, B, T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, u, hb, etap,
     EKW = Rt * uu * (1 + seamargin)
     BKW = EKW / etap
     
-    return Rt, uu, CT, CF, CAPP, Cw, CB, CTR, CA, EKW, BKW
+    return Rt, uu, CT, CF, CAPP, Cw, CB, CTR, CA, EKW, BKW, Sw
 
     
 if __name__ == '__main__':
@@ -276,17 +276,17 @@ if __name__ == '__main__':
 
     vel = np.linspace(1.5432, 5.6584, num=9)
 
-    Rtotal, velocidades, CT, CF, CAPP, Cw, CB, CTR, CA, EKW, BKW = Holtrop(L, B,
+    Rtotal, velocidades, CT, CF, CAPP, Cw, CB, CTR, CA, EKW, BKW, Sw = Holtrop(L, B,
         T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, vel, hb, etap, seamargin,
         Sapplist, ABT, AT, Sw)
-    print(Rtotal, velocidades, CT, CF, CAPP, Cw, CB, CTR, CA)
+    print(Rtotal, velocidades, CT, CF, CAPP, Cw, CB, CTR, CA, EKW, BKW)
     
     plt.plot(velocidades, Rtotal)
     plt.xlabel("V [m/s]")
     plt.ylabel("Resistencia total [kN]")
     plt.show()
     
-    plt.plot(velocidades, BKW)
+    plt.plot(velocidades, EKW)
     plt.xlabel("V [m/s]")
-    plt.ylabel("Break power [kW]")
+    plt.ylabel("Efective power [kW]")
     plt.show()
