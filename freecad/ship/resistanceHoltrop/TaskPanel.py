@@ -50,56 +50,37 @@ class TaskPanel:
         
         
         
-        Sw = Units.parseQuantity(Locale.fromString(self.form.Sw.text()))
-        Lw = Units.parseQuantity(Locale.fromString(self.form.Lw.text()))
-        V = Units.parseQuantity(Locale.fromString(self.form.volume.text()))
+        Sw = Units.parseQuantity(Locale.fromString(self.form.Sw.text())).Value
+        Lw = Units.parseQuantity(Locale.fromString(self.form.Lw.text())).Value
+        V = Units.parseQuantity(Locale.fromString(self.form.volume.text())).Value
         Cb = Units.parseQuantity(Locale.fromString(self.form.Cb.text())).Value
         Cm = Units.parseQuantity(Locale.fromString(self.form.Cm.text())).Value
         Cw = Units.parseQuantity(Locale.fromString(self.form.Cf.text())).Value
         cstern = self.form.form.currentIndex()
-        iE = Units.parseQuantity(Locale.fromString(self.form.iE.text()))
-        xcb = Units.parseQuantity(Locale.fromString(self.form.xcb.text()))
-        ABT = Units.parseQuantity(Locale.fromString(self.form.ABT.text()))
-        AT = Units.parseQuantity(Locale.fromString(self.form.AT.text()))
-        hb = Units.parseQuantity(Locale.fromString(self.form.hb.text()))
-        umax = Units.parseQuantity(Locale.fromString(self.form.max_speed.text()))
-        umin = Units.parseQuantity(Locale.fromString(self.form.min_speed.text()))
+        iE = Units.parseQuantity(Locale.fromString(self.form.iE.text())).Value
+        xcb = Units.parseQuantity(Locale.fromString(self.form.xcb.text())).Value
+        ABT = Units.parseQuantity(Locale.fromString(self.form.ABT.text())).Value
+        AT = Units.parseQuantity(Locale.fromString(self.form.AT.text())).Value
+        hb = Units.parseQuantity(Locale.fromString(self.form.hb.text())).Value
+        umax = Units.parseQuantity(Locale.fromString(self.form.max_speed.text())).Value
+        umin = Units.parseQuantity(Locale.fromString(self.form.min_speed.text())).Value
         eta_p = Units.parseQuantity(Locale.fromString(self.form.etap.text())).Value
         seamargin = Units.parseQuantity(Locale.fromString(self.form.seamargin.text())).Value
-        rbskeg = Units.parseQuantity(Locale.fromString(self.form.rbskeg.text()))
-        rbstern = Units.parseQuantity(Locale.fromString(self.form.rbstern.text()))
-        twsbr = Units.parseQuantity(Locale.fromString(self.form.twsbr.text()))
-        sbr = Units.parseQuantity(Locale.fromString(self.form.sbr.text()))
-        skeg = Units.parseQuantity(Locale.fromString(self.form.skeg.text()))
-        strut_bossing = Units.parseQuantity(Locale.fromString(self.form.strut_bossing.text()))
-        hull_bossings = Units.parseQuantity(Locale.fromString(self.form.hull_bossings.text()))
-        shafts = Units.parseQuantity(Locale.fromString(self.form.shafts.text()))
-        stab_fins = Units.parseQuantity(Locale.fromString(self.form.stab_fins.text()))
-        dome = Units.parseQuantity(Locale.fromString(self.form.dome.text()))
-        bkl = Units.parseQuantity(Locale.fromString(self.form.bkl.text()))
+        rbskeg = Units.parseQuantity(Locale.fromString(self.form.rbskeg.text())).Value
+        rbstern = Units.parseQuantity(Locale.fromString(self.form.rbstern.text())).Value
+        twsbr = Units.parseQuantity(Locale.fromString(self.form.twsbr.text())).Value
+        sbr = Units.parseQuantity(Locale.fromString(self.form.sbr.text())).Value
+        skeg = Units.parseQuantity(Locale.fromString(self.form.skeg.text())).Value
+        strut_bossing = Units.parseQuantity(Locale.fromString(self.form.strut_bossing.text())).Value
+        hull_bossings = Units.parseQuantity(Locale.fromString(self.form.hull_bossings.text())).Value
+        shafts = Units.parseQuantity(Locale.fromString(self.form.shafts.text())).Value
+        stab_fins = Units.parseQuantity(Locale.fromString(self.form.stab_fins.text())).Value
+        dome = Units.parseQuantity(Locale.fromString(self.form.dome.text())).Value
+        bkl = Units.parseQuantity(Locale.fromString(self.form.bkl.text())).Value
         
         #data preparation for Amadeo's method
-        Sw = Sw.getValueAs("m^2").Value
-        Lw = Lw.getValueAs("m").Value
-        V = V.getValueAs("m^3").Value
-        iE = iE.getValueAs("deg").Value
-        xcb = xcb.getValueAs("m").Value
-        ABT = ABT.getValueAs("m^2").Value
-        AT = AT.getValueAs("m^2").Value
-        hb = hb.getValueAs("m").Value
-        umax = umax.getValueAs("m/s").Value
-        umin = umin.getValueAs("m/s").Value
-        rbskeg = rbskeg.getValueAs("m^2").Value
-        rbstern = rbstern.getValueAs("m^2").Value
-        twsbr = twsbr.getValueAs("m^2").Value
-        sbr = sbr.getValueAs("m^2").Value
-        skeg = skeg.getValueAs("m^2").Value
-        strut_bossing = strut_bossing.getValueAs("m^2").Value
-        hull_bossings = hull_bossings.getValueAs("m^2").Value
-        shafts = shafts.getValueAs("m^2").Value
-        stab_fins = stab_fins.getValueAs("m^2").Value
-        dome = dome.getValueAs("m^2").Value
-        bkl = bkl.getValueAs("m^2").Value
+        umax = umax  #m/s
+        umin = umin  #m/s
         n = self.form.n_speeds.value()
         L = self.ship.Length.getValueAs("m").Value
         B = self.ship.Breadth.getValueAs("m").Value
@@ -114,7 +95,10 @@ class TaskPanel:
                 "ship_console",
                 "The propulsive coefficiente cannot be higher than 1")
             App.Console.PrintError(msg + '\n')
-        if Sw == 0: Sw = ()
+        if Sw == 0: 
+            Sw = ()
+            S_w = 1
+        else: S_w = 0
         seamargin = seamargin / 100
 
         Sapplist = [rbskeg, rbstern, twsbr, sbr, skeg, strut_bossing,
@@ -122,10 +106,11 @@ class TaskPanel:
         
         
         vel = np.linspace(umin, umax, num = n)
-        Rtotal, speed, CT, CF, CAPP, Cw, CB, CTR, CA, EKW, BKW = Holtrop.Holtrop(L, B, 
+        Rtotal, speed, CT, CF, CAPP, Cw, CB, CTR, CA, EKW, BKW, Sw = Holtrop.Holtrop(L, B, 
             T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, vel, hb, etap, seamargin,
                                                         Sapplist, ABT, AT, Sw)
         
+        if S_w == 1: App.Console.PrintMessage("Sw = " + str("{:.3f}".format(Sw)) + " m^2" + '\n')
         
         PlotAux.Plot(speed, Rtotal, CT, CF, CAPP, Cw, CB, CTR, CA, EKW, BKW, self.ship)          
         return True
@@ -223,63 +208,75 @@ class TaskPanel:
                 "'{}' is considered)".format(self.ship.Label))
             App.Console.PrintWarning(msg + '\n')
             
-        
-        disp,Vector,cb = Hydrostatics.displacement(self.ship,
-                                               self.ship.Draft,
-                                               Units.parseQuantity("0 deg"),
-                                               Units.parseQuantity("0 deg"))
-        vol = disp / Hydrostatics.DENS
-        
-        sw = Hydrostatics.wettedArea(self.ship.Shape.copy(), self.ship.Draft, 
-                                     Units.parseQuantity("0 deg"),
-                                     Units.parseQuantity("0 deg"))
-        
-        area, cf, f = Hydrostatics.floatingArea(self.ship, self.ship.Draft,
-                                                Units.parseQuantity("0 deg"),
-                                                Units.parseQuantity("0 deg"))
-        bbox = f.BoundBox
-        lw = Units.Quantity(bbox.XMax - bbox.XMin, Units.Length)
-        
-        cm = Hydrostatics.mainFrameCoeff(self.ship)
-            
-        xcb = Units.Quantity(Vector[0], Units.Length)
-  
-        cp = cb / cm
-        Lw = lw.getValueAs("m").Value
-        XCB = xcb.getValueAs("m").Value
-        Bie = self.ship.Breadth.getValueAs("m").Value
-        Vie = vol.getValueAs("m^3").Value
-        
-        Lr = Lw * (1 - cp + ( 0.06 * cp * XCB) / (4 * cp - 1))
-        
-        try: 
-            iE = 1 + 89 * np.exp(- (Lw / Bie) ** 0.80856 * (1 - cf) ** 0.30484
-                            * (1 - cp - 0.0225 * XCB) ** 0.6367 * (Lr / Bie) ** 
-                             0.34574 * ((100 * Vie) / (Lw ** 3)) ** 0.16302)
-            
-        except ZeroDivisionError:
-            msg = App.Qt.translate(
-            "ship_console",
-            "ZeroDivisionError: Null ship floating area found during the"
-            " floating area computation!")
-            App.Console.PrintError(msg + '\n')
-        
-            iE = 0.0
-            
-        iE = Units.Quantity(iE, Units.Angle)
         etap = 0.6
         seamargin = 15
+        self.form.etap.setText(str(etap))
+        self.form.seamargin.setText(str(seamargin))
         
-        self.form.Lw.setText(lw.UserString)
-        self.form.Sw.setText(sw.UserString)
-        self.form.volume.setText(vol.UserString)
+        try: 
+            
+            disp,Vector,cb = Hydrostatics.displacement(self.ship,
+                                                   self.ship.Draft,
+                                                   Units.parseQuantity("0 deg"),
+                                                   Units.parseQuantity("0 deg"))
+            vol = disp / Hydrostatics.DENS
+        
+            sw = Hydrostatics.wettedArea(self.ship.Shape.copy(), self.ship.Draft, 
+                                         Units.parseQuantity("0 deg"),
+                                         Units.parseQuantity("0 deg"))
+
+            area, cf, f = Hydrostatics.floatingArea(self.ship, self.ship.Draft,
+                                                    Units.parseQuantity("0 deg"),
+                                                    Units.parseQuantity("0 deg"))
+
+            bbox = f.BoundBox
+            lw = Units.Quantity(bbox.XMax - bbox.XMin, Units.Length)
+            
+            cm = Hydrostatics.mainFrameCoeff(self.ship)
+                
+            xcb = Units.Quantity(Vector[0], Units.Length)
+      
+            cp = cb / cm
+            Lw = lw.getValueAs("m").Value
+            Xcb = xcb.getValueAs("m").Value
+            Bie = self.ship.Breadth.getValueAs("m").Value
+            V = vol.getValueAs("m^3").Value
+            Sw = sw.getValueAs("m^2").Value
+            
+            Lr = Lw * (1 - cp + ( 0.06 * cp * Xcb) / (4 * cp - 1))
+            
+            try: 
+                iE = 1 + 89 * np.exp(- (Lw / Bie) ** 0.80856 * (1 - cf) ** 0.30484
+                                * (1 - cp - 0.0225 * Xcb) ** 0.6367 * (Lr / Bie) ** 
+                                 0.34574 * ((100 * V) / (Lw ** 3)) ** 0.16302)
+                
+            except ZeroDivisionError:
+                msg = App.Qt.translate(
+                "ship_console",
+                "ZeroDivisionError: Null ship floating area found during the"
+                " floating area computation!")
+                App.Console.PrintError(msg + '\n')
+            
+                iE = 0.0
+        except:
+            Lw = 0.0
+            Sw = 0.0
+            V = 0.0
+            Xcb = 0.0
+            cb = 0.0
+            cm = 0.0
+            cf = 0.0
+            iE = 0.0
+        
+        
+        self.form.Lw.setText(str(Lw))
+        self.form.Sw.setText(str(Sw))
+        self.form.volume.setText(str(V))
         self.form.Cb.setText(str(cb))
         self.form.Cm.setText(str(cm))
         self.form.Cf.setText(str(cf))
-        self.form.iE.setText(iE.UserString)
-        self.form.xcb.setText(xcb.UserString)
-        self.form.etap.setText(str(etap))
-        self.form.seamargin.setText(str(seamargin))
+        self.form.iE.setText(str(iE))
+        self.form.xcb.setText(str(Xcb))
         return False
     
 def createTask():
