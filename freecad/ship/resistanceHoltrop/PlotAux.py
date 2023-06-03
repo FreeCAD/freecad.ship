@@ -259,7 +259,7 @@ class Plot(object):
         s.set("B1", "Resistance [kN]")
         s.set("C1", "CT * 10^3")
         s.set("D1", "CF * 10^3")
-        s.set("E1", "CAPP")
+        s.set("E1", "CAPP * 10^3")
         s.set("F1", "CW * 10^4")
         s.set("G1", "CB * 10^3")
         s.set("H1", "CTR * 10^3")
