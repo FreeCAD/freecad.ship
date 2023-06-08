@@ -21,8 +21,6 @@
 #***************************************************************************
 
 import FreeCAD as App
-import FreeCADGui as Gui
-from PySide import QtGui
 from . import Tools
 from ..shipUtils import Selection
 
@@ -32,10 +30,9 @@ def load():
     # Check that a ship has been selected
     sel_ships = Selection.get_ships()
     if not sel_ships:
-        msg = QtGui.QApplication.translate(
+        msg = App.Qt.translate(
             "ship_console",
-            "A ship instance must be selected before using this tool",
-            None)
+            "A ship instance must be selected before using this tool")
         App.Console.PrintError(msg + '\n')
         return True
     for ship in sel_ships:

@@ -164,8 +164,7 @@ class TaskPanel:
         if not sel_lcs:
             msg = QtGui.QApplication.translate(
                 "ship_console",
-                "A load condition instance must be selected before using this tool",
-                None)
+                "A load condition instance must be selected before using this tool")
             App.Console.PrintError(msg + '\n')
             return True
         self.lc = sel_lcs[0]
@@ -173,8 +172,7 @@ class TaskPanel:
             msg = QtGui.QApplication.translate(
                 "ship_console",
                 "More than one load condition have been selected (just the one"
-                " labelled '{}' is considered)".format(self.lc.Label),
-                None)
+                " labelled '{}' is considered)".format(self.lc.Label))
             App.Console.PrintWarning(msg + '\n')
         self.ship = Selection.get_lc_ship(self.lc)
         self.weights = Selection.get_lc_weights(self.lc)
@@ -216,10 +214,9 @@ class TaskPanel:
             props.index("GZAngle")
         except ValueError:
             try:
-                tooltip = str(QtGui.QApplication.translate(
+                tooltip = QtGui.QApplication.translate(
                     "ship_gz",
-                    "GZ curve tool angle selected [deg]",
-                    None))
+                    "GZ curve tool angle selected [deg]")
             except:
                 tooltip = "GZ curve tool angle selected [deg]"
             self.ship.addProperty("App::PropertyAngle",
@@ -231,10 +228,9 @@ class TaskPanel:
             props.index("GZNumPoints")
         except ValueError:
             try:
-                tooltip = str(QtGui.QApplication.translate(
+                tooltip = QtGui.QApplication.translate(
                     "ship_gz",
-                    "GZ curve tool number of points selected",
-                    None))
+                    "GZ curve tool number of points selected")
             except:
                 tooltip = "GZ curve tool number of points selected"
             self.ship.addProperty("App::PropertyInteger",
@@ -246,10 +242,9 @@ class TaskPanel:
             props.index("GZVariableTrim")
         except ValueError:
             try:
-                tooltip = str(QtGui.QApplication.translate(
+                tooltip = QtGui.QApplication.translate(
                     "ship_gz",
-                    "GZ curve tool variable trim angle selection",
-                    None))
+                    "GZ curve tool variable trim angle selection")
             except:
                 tooltip = "GZ curve tool variable trim angle selection"
             self.ship.addProperty("App::PropertyBool",

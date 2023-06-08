@@ -137,8 +137,7 @@ def getUnderwaterSide(shape, force=True):
             "ship_console",
             "Boolean operation failed when trying to get the underwater side."
             " The tool is retrying such operation slightly moving the free"
-            " surface position",
-            None)
+            " surface position")
         App.Console.PrintWarning(msg + '\n')
         random_bounds = 0.01 * H.Value
         i = 0
