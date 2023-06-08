@@ -158,18 +158,17 @@ if __name__== '__main__':
     seamargin = 0.15
     Sw = ()
 
-    vel = np.linspace(0, 6.1728, num = 13)
+    speeds = np.linspace(0, 6.1728, num = 13)
 
-    Resistencia, velocidades, Cfric, Crug, Cresidual, CTotal, EKW, BKW, Lw, Sw = (
-    Amadeo(L, B, T, Cb, V, vel, etap, seamargin, prot, Sw, Lw))
-    print(Resistencia, velocidades, Cfric, Crug, Cresidual, CTotal, EKW, BKW)
+    Resistance, uu, Cfric, Croughness, Cresidual, CTotal, EKW, BKW, Lw, Sw = (
+    Amadeo(L, B, T, Cb, V, speeds, etap, seamargin, prot, Sw, Lw))
     
-    plt.plot(velocidades, Resistencia)
-    plt.xlabel("V [m/s]")
-    plt.ylabel("Resistencia total [kN]")
+    plt.plot(uu, Resistance)
+    plt.xlabel("Speed [m/s]")
+    plt.ylabel("Total resistance [kN]")
     plt.show()
     
-    plt.plot(velocidades, EKW)
-    plt.xlabel("V [m/s]")
+    plt.plot(uu, EKW)
+    plt.xlabel("Speed [m/s]")
     plt.ylabel("Effective power [kW]")
     plt.show()
