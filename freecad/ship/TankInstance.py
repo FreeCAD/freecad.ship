@@ -51,8 +51,7 @@ class Tank:
         # Add an unique property to identify the Weight instances
         tooltip = QT_TRANSLATE_NOOP(
             "App::Property",
-            "True if it is a valid tank instance, False otherwise",
-            None)
+            "True if it is a valid tank instance, False otherwise")
         obj.addProperty("App::PropertyBool",
                         "IsTank",
                         "Tank",
