@@ -53,8 +53,7 @@ class ShipWorkbench(Gui.Workbench):
             except ImportError:
                 msg = App.Qt.translate(
                     "ship_console",
-                    "freecad.plot is disabled, tools cannot graph output curves, install freecad.plot with addon-manager",
-                    None)
+                    "freecad.plot is disabled, tools cannot graph output curves, install freecad.plot with addon-manager")
                 App.Console.PrintWarning(msg + '\n')
         # ToolBar
         shiplist = ["Ship_LoadExample",

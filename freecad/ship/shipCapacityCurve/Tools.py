@@ -61,8 +61,7 @@ def tankCapacityCurve(tank, n):
 
     msg = App.Qt.translate(
         "ship_console",
-        "Computing capacity curve",
-        None)
+        "Computing capacity curve")
     App.Console.PrintMessage(msg + '...\n')
     for i in range(1, n):
         App.Console.PrintMessage("\t{} / {}\n".format(i + 1, n))

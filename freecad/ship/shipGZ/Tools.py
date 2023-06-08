@@ -213,8 +213,7 @@ def gz(lc, rolls, var_trim=True):
                 msg = App.Qt.translate(
                     "ship_console",
                     "Wrong Ship label! (no instances labeled as"
-                    "'{}' found)",
-                    None)
+                    "'{}' found)")
                 App.Console.PrintError(msg + '\n'.format(
                     lc.get('B1')))
             else:

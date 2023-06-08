@@ -100,8 +100,7 @@ class TaskPanel:
         if not sel_meshes:
             msg = App.Qt.translate(
                 "ship_tank",
-                "Please, select a mesh before executing this tool",
-                None)
+                "Please, select a mesh before executing this tool")
             App.Console.PrintError(msg + '\n')
             return True
         self.mesh = sel_meshes[0]

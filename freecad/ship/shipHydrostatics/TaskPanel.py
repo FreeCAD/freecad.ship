@@ -90,8 +90,7 @@ class TaskPanel:
         # Get the hydrostatics
         msg = App.Qt.translate(
             "ship_console",
-            "Computing hydrostatics",
-            None)
+            "Computing hydrostatics")
         App.Console.PrintMessage(msg + '...\n')
         points = []
         plt = None
