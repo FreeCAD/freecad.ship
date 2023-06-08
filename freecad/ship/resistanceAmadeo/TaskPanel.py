@@ -25,7 +25,6 @@ import FreeCAD as App
 import FreeCADGui as Gui
 from FreeCAD import Units
 from PySide import QtGui, QtCore
-from . import Preview
 from . import PlotAux
 from . import Amadeo
 from .. import Ship_rc
@@ -41,14 +40,15 @@ class TaskPanel:
         self.name = "Compute resistance prediction Amadeo method"
         self.ui = ":/ui/TaskPanel_resistanceAmadeo.ui"
         self.form = Gui.PySideUic.loadUi(self.ui)
-        self.preview = Preview.Preview()
         self.ship = None
 
     def accept(self):
-        if not self.ship:
-            return False
+        
         
         has_rudder = self.form.rudder.isChecked()
+        L = Units.parseQuantity(Locale.fromString(self.form.Lpp.text())).Value
+        B = Units.parseQuantity(Locale.fromString(self.form.Beam.text())).Value
+        T = Units.parseQuantity(Locale.fromString(self.form.Draft.text())).Value
         prot = Units.parseQuantity(Locale.fromString(self.form.protuberance.text())).Value
         Sw = Units.parseQuantity(Locale.fromString(self.form.Sw.text())).Value
         Lw = Units.parseQuantity(Locale.fromString(self.form.Lw.text())).Value
@@ -60,15 +60,9 @@ class TaskPanel:
         umin = Units.parseQuantity(Locale.fromString(self.form.min_speed.text())).Value
         eta_p = Units.parseQuantity(Locale.fromString(self.form.etap.text())).Value
         seamargin = Units.parseQuantity(Locale.fromString(self.form.seamargin.text())).Value
-
-        #data preparation for Amadeo's method
-        umax = umax #m/s
-        umin = umin #m/s
         n = self.form.n_speeds.value()
-        L = self.ship.Length.getValueAs("m").Value
-        B = self.ship.Breadth.getValueAs("m").Value
-        T = self.ship.Draft.getValueAs("m").Value
 
+        
         if  1 >= eta_p >= 0:
             
             etap = eta_p
@@ -78,6 +72,13 @@ class TaskPanel:
                 "ship_console",
                 "The propulsive coefficiente cannot be higher than 1")
             App.Console.PrintError(msg + '\n')
+            
+        if Cb > 1:
+            msg = App.Qt.translate(
+                "ship_console",
+                "The block coefficiente cannot be higher than 1")
+            App.Console.PrintError(msg + '\n')
+        
         if Lw == 0: 
             Lw = ()
             L_w = 1
@@ -90,14 +91,14 @@ class TaskPanel:
         if l == 0: l = None
         seamargin = seamargin / 100
 
-        vel = np.linspace(umin, umax, num = n)
+        speeds = np.linspace(umin, umax, num = n)
         resis, speed, CF, CA, CR, CT, EKW, BKW, Lw, Sw = Amadeo.Amadeo(L, B,T, 
-         Cb, V, vel, etap, seamargin, prot, Sw, Lw, d, l, has_rudder = has_rudder)
+         Cb, V, speeds, etap, seamargin, prot, Sw, Lw, d, l, has_rudder = has_rudder)
         
         if L_w == 1: App.Console.PrintMessage("Lw = " + str("{:.3f}".format(Lw)) + " m^2" + '\n')
         if S_w == 1: App.Console.PrintMessage("Sw = " + str("{:.3f}".format(Sw)) + " m^2" + '\n')
         
-        PlotAux.Plot(speed, resis, CF, CR, CA, CT, EKW, BKW, self.ship)   
+        PlotAux.Plot(speed, resis, CF, CR, CA, CT, EKW, BKW)   
 
         return True
 
@@ -126,6 +127,9 @@ class TaskPanel:
         pass
 
     def setupUi(self):
+        self.form.Lpp = self.widget(QtGui.QLineEdit, "Lpp")
+        self.form.Beam = self.widget(QtGui.QLineEdit, "Beam")
+        self.form.Draft = self.widget(QtGui.QLineEdit, "Draft")
         self.form.protuberance = self.widget(QtGui.QLineEdit, "protuberance")
         self.form.Sw = self.widget(QtGui.QLineEdit, "Sw")
         self.form.Lw = self.widget(QtGui.QLineEdit, "Lw")
@@ -164,13 +168,10 @@ class TaskPanel:
         """ Set initial values for fields
         """
         sel_ships = Selection.get_ships()
-        if not sel_ships:
-            msg = App.Qt.translate(
-                "ship_console",
-                "A ship instance must be selected before using this tool")
-            App.Console.PrintError(msg + '\n')
-            return True
-        self.ship = sel_ships[0]
+        try:
+            self.ship = sel_ships[0]
+        except:
+            pass
         if len(sel_ships) > 1:
             msg = App.Qt.translate(
                 "ship_console",
@@ -225,6 +226,19 @@ class TaskPanel:
             V = 0.0
             cb = 0.0
         
+        
+        try: 
+            lpp = self.ship.Length.getValueAs("m").Value
+            B = self.ship.Breadth.getValueAs("m").Value
+            T = self.ship.Draft.getValueAs("m").Value
+        except:
+            lpp = 0.0
+            B = 0.0
+            T = 0.0
+            
+        self.form.Lpp.setText(str(lpp))
+        self.form.Beam.setText(str(B))
+        self.form.Draft.setText(str(T))
         self.form.protuberance.setText(str(Prot))
         self.form.Lw.setText(str(Lw))
         self.form.Sw.setText(str(Sw))
