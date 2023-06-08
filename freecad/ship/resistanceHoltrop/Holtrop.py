@@ -103,13 +103,13 @@ def Holtrop(B, T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, u, hb, etap,
     if Sw == 'auto':
         Sw = Sw_auto(B, T, Lw, Cb, Cw, Cm, ABT)
         
-    """Frictional resistance"""
+    #Frictional resistance
 
     Rn = Lw * uu / nu
     CF = 0.075 / (np.log10(Rn) - 2) ** 2
     RF = 1 / 2 * rho * uu ** 2 * CF * Sw / 1000 #kN
 
-    """Form factor"""
+    #Form factor
     
     Lr = Lw * (1 - Cp + (0.06 * Cp * xcb) / (4 * Cp - 1))
     
@@ -120,7 +120,7 @@ def Holtrop(B, T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, u, hb, etap,
     k1_1 = (0.93 + 0.487118 * c13 * (B / Lw) ** 1.06806 * (T / Lw) ** 0.46106 *
     (Lw / Lr) ** 0.121563 * (Lw ** 3 / V) ** 0.36486 * (1 - Cp) ** (-0.604247))
     
-    """Appendance resistance"""
+    #Appendance resistance
     
     k2values = [1.7, 1.5, 2.8, 3.0, 1.7, 3.0, 2.0, 3.0, 2.8, 2.7, 1.4]
     sumk2 = 0
@@ -142,7 +142,7 @@ def Holtrop(B, T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, u, hb, etap,
         
         CAPP = RAPP * 1000 / (1 / 2 * rho * sumsapp * uu ** 2)
         
-    """Wave resistance"""
+    #Wave resistance
     
     Fn = uu / (np.sqrt(g * Lw))
     
@@ -202,7 +202,7 @@ def Holtrop(B, T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, u, hb, etap,
             RW = Rwa + (10 * Fn - 4) * ((Rwb - Rwa) / 1.5) #kN
         
     Cw = RW * 1000 / (1 / 2 * rho * Sw * uu ** 2)
-    """Aditional resistance due to the presence of a bulbous"""
+    #Aditional resistance due to the presence of a bulbous
 
     if ABT != 0:
     
@@ -216,7 +216,7 @@ def Holtrop(B, T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, u, hb, etap,
 
          CB = RB * 1000 / (1 / 2 * rho * ABT * uu ** 2)
     
-    """Aditional resistance due to the inmnersed transom"""
+    #Aditional resistance due to the inmnersed transom
     
     if AT != 0:
 
@@ -229,7 +229,7 @@ def Holtrop(B, T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, u, hb, etap,
         RTR = 1 / 2 * rho * uu ** 2 * AT * c6 / 1000 #kN 
         CTR = RTR * 1000 / (1 / 2 * rho * AT * uu ** 2)
     
-    """Correlation resistance"""
+    #Correlation resistance
     
     ratioT = T / Lw
     c4 = 0.04 if ratioT >= 0.04 else ratioT
@@ -239,7 +239,7 @@ def Holtrop(B, T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, u, hb, etap,
     
     RA = 1 / 2 * rho * uu ** 2 * Sw * Ca / 1000 #kN
     CA = np.linspace(Ca, Ca, len(uu))
-    """Total resistance."""
+    #Total resistance
 
     CT = CF + CAPP + Cw + CB + CTR + CA
     Rt = RF * k1_1 + RAPP + RW + RB + RTR + RA
