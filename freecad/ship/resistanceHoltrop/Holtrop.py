@@ -30,21 +30,20 @@ def Sw_auto(B, T, Lw, Cb, Cw, Cm, ABT):
     return Sw
         
 
-def Holtrop(L, B, T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, u, hb, etap, 
+def Holtrop(B, T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, u, hb, etap, 
             seamargin, Sapplist, ABT, AT, Sw='auto'):
 
     """
     Holtrop resistance prediction method.
     Positional parameters:
         
-    L  -- Length between perpendiculars.
-    Lw -- Waterline length.
     B  -- Beam.
     T  -- draft.
+    Lw -- Waterline length.
     V -- Displaced volume.
     Cb -- Block coefficient.
-    Cm -- Block coefficient.
-    Cw -- Block coefficient.
+    Cm -- Midship-section coefficient.
+    Cw -- Waterplane coefficient.
     Cstern -- Coefficient related to the specic shape of the afterbody.
     iE -- Half angle of entrance.
     xcb -- Longitudinal position of the center of buoyancy.
@@ -106,7 +105,7 @@ def Holtrop(L, B, T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, u, hb, etap,
         
     """Frictional resistance"""
 
-    Rn = L * uu / nu
+    Rn = Lw * uu / nu
     CF = 0.075 / (np.log10(Rn) - 2) ** 2
     RF = 1 / 2 * rho * uu ** 2 * CF * Sw / 1000 #kN
 
@@ -254,8 +253,7 @@ def Holtrop(L, B, T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, u, hb, etap,
 if __name__ == '__main__':
 
     import matplotlib.pyplot as plt
-    
-    L = 44.49
+
     Lw = 44.879
     B = 10
     T = 4
@@ -274,19 +272,18 @@ if __name__ == '__main__':
     AT = 0
     Sw = 572.547
 
-    vel = np.linspace(1.5432, 5.6584, num=9)
+    speeds = np.linspace(1.5432, 5.6584, num=9)
 
-    Rtotal, velocidades, CT, CF, CAPP, Cw, CB, CTR, CA, EKW, BKW, Sw = Holtrop(L, B,
-        T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, vel, hb, etap, seamargin,
+    Rtotal, uu, CT, CF, CAPP, Cw, CB, CTR, CA, EKW, BKW, Sw = Holtrop(B,
+        T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, speeds, hb, etap, seamargin,
         Sapplist, ABT, AT, Sw)
-    print(Rtotal, velocidades, CT, CF, CAPP, Cw, CB, CTR, CA, EKW, BKW)
     
-    plt.plot(velocidades, Rtotal)
-    plt.xlabel("V [m/s]")
-    plt.ylabel("Resistencia total [kN]")
+    plt.plot(uu, Rtotal)
+    plt.xlabel("Speeds [m/s]")
+    plt.ylabel("Total resistance [kN]")
     plt.show()
     
-    plt.plot(velocidades, EKW)
-    plt.xlabel("V [m/s]")
+    plt.plot(uu, EKW)
+    plt.xlabel("Speeds [m/s]")
     plt.ylabel("Efective power [kW]")
     plt.show()
