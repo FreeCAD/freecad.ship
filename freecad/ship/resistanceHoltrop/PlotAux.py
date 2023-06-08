@@ -29,7 +29,7 @@ import Spreadsheet
 
 
 class Plot(object):
-    def __init__(self, speed, Rtotal, CT, CF, CAPP, Cw, CB, CTR, CA, EKW, BKW, ship):
+    def __init__(self, speed, Rtotal, CT, CF, CAPP, Cw, CB, CTR, CA, EKW, BKW):
         """ Constructor. performs the plot and shows it.
         @param Speed, Ship speed.
         @param Rtotal, Resistance computed.
@@ -44,18 +44,16 @@ class Plot(object):
         @param CA, Model-ship correlation resistance coefficient.
         @param EKW, Efficient power.
         @param BKW, Break power.
-        @param ship Active ship instance.
         """
-        self.plot(speed, Rtotal, ship)
-        self.plotPower(speed, EKW, BKW, ship)
-        self.plotCoeff(speed, CT, CF, CAPP, Cw, CB, CTR, CA, ship)
-        self.spreadSheet(speed, Rtotal, CT, CF, CAPP, Cw, CB, CTR, CA, EKW, BKW, ship)
+        self.plot(speed, Rtotal)
+        self.plotPower(speed, EKW, BKW)
+        self.plotCoeff(speed, CT, CF, CAPP, Cw, CB, CTR, CA)
+        self.spreadSheet(speed, Rtotal, CT, CF, CAPP, Cw, CB, CTR, CA, EKW, BKW)
 
-    def plot(self, speed, Rtotal, ship):
+    def plot(self, speed, Rtotal):
         """ Perform HOltrop resistance plot.
         @param Speed, Ship speed.
         @param Rtotal, Resistance computed.
-        @param ship Active ship instance.
         @return True if error happens.
         """
         try:
@@ -70,7 +68,7 @@ class Plot(object):
                 FreeCAD.Console.PrintWarning(msg + '\n')
                 return True
             
-        plt = Plot.figure('Resistance - V')
+        plt = Plot.figure('Resistance')
         self.plt = plt
         
         ax = Plot.axes()
@@ -92,7 +90,7 @@ class Plot(object):
         # End
         return False
 
-    def plotPower(self, speed, EKW, BKW, ship):
+    def plotPower(self, speed, EKW, BKW):
         """ Perform Holtrop power plot.
         @param Speed, Ship speed.
         @param EKW, Efficient power.
@@ -112,7 +110,7 @@ class Plot(object):
                 FreeCAD.Console.PrintWarning(msg + '\n')
                 return True
     
-        plt = Plot.figure('Power - V')
+        plt = Plot.figure('Power')
         self.plt3 = plt
         
         # Write axes titles
@@ -146,7 +144,7 @@ class Plot(object):
         return False
     
     
-    def plotCoeff(self, speed, CT, CF, CAPP, Cw, CB, CTR, CA, ship):
+    def plotCoeff(self, speed, CT, CF, CAPP, Cw, CB, CTR, CA):
         """ Perform Holtrop coefficients plot.
         @param speed, Ship speed.
         @param CT, Total resistance coefficient
@@ -158,7 +156,6 @@ class Plot(object):
         @param CTR, Additional resistance coefficient due to the inmersed.
                                                                     transom.
         @param CA, Model-ship correlation resistance coefficient.
-        @param ship Active ship instance.
         """
         try:
             from FreeCAD.Plot import Plot
@@ -235,7 +232,7 @@ class Plot(object):
         # End
         return False
 
-    def spreadSheet(self, speed, Rtotal, CT, CF, CAPP, Cw, CB, CTR, CA, EKW, BKW, ship):
+    def spreadSheet(self, speed, Rtotal, CT, CF, CAPP, Cw, CB, CTR, CA, EKW, BKW):
         """ Write the output data file.
         @param speed, Ship speed.
         @param CT, Total resistance coefficient
@@ -249,7 +246,6 @@ class Plot(object):
         @param CA, Model-ship correlation resistance coefficient.
         @param EKW, Efficient power.
         @param BKW, Break power.
-        @param ship Active ship instance.
         """
         s = FreeCAD.activeDocument().addObject('Spreadsheet::Sheet',
                                                'Resistance Holtrop method')
