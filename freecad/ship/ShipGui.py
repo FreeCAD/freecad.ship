@@ -234,8 +234,8 @@ class GZ:
 
 class Amadeo:
     def IsActive(self):
-        return bool(Selection.get_ships())
-
+        return True
+    
     def Activated(self):
         from . import resistanceAmadeo
         resistanceAmadeo.load()
@@ -253,7 +253,7 @@ class Amadeo:
     
 class Holtrop:
     def IsActive(self):
-        return bool(Selection.get_ships())
+        return True
 
     def Activated(self):
         from . import resistanceHoltrop
