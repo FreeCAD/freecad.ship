@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>271</width>
-    <height>371</height>
+    <width>259</width>
+    <height>446</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,23 +19,7 @@
   <layout class="QGridLayout" name="gridLayout" rowstretch="0">
    <item row="0" column="0">
     <layout class="QGridLayout" name="gridLayout_2">
-     <item row="0" column="0" alignment="Qt::AlignHCenter">
-      <widget class="QLabel" name="protuberance_label">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Protuberance measured from the frame 20. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Protuberance [m] </string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="0" alignment="Qt::AlignHCenter">
+     <item row="8" column="0" alignment="Qt::AlignHCenter">
       <widget class="QLabel" name="d_diameter_label">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
@@ -51,10 +35,23 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="Gui::InputField" name="Sw">
+     <item row="13" column="0">
+      <widget class="QLabel" name="etap_label">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Propulsive coefficient.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="text">
-        <string notr="true">0 </string>
+        <string>ηp</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="10" column="1">
+      <widget class="Gui::InputField" name="max_speed">
+       <property name="text">
+        <string notr="true">0</string>
        </property>
        <property name="unit" stdset="0">
         <string notr="true"/>
@@ -64,123 +61,7 @@
        </property>
       </widget>
      </item>
-     <item row="6" column="0" alignment="Qt::AlignHCenter">
-      <widget class="QLabel" name="d_length_label">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Ducted propeller length [m]</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="7" column="0" alignment="Qt::AlignHCenter">
-      <widget class="QLabel" name="max_speed_label">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum speed to compute the resistance.&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Maximum speed [m/s]</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0" alignment="Qt::AlignHCenter">
-      <widget class="QLabel" name="Cb_label">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Block coefficient</string>
-       </property>
-      </widget>
-     </item>
-     <item row="9" column="1">
-      <widget class="QSpinBox" name="n_speeds">
-       <property name="minimum">
-        <number>2</number>
-       </property>
-       <property name="maximum">
-        <number>9999</number>
-       </property>
-       <property name="value">
-        <number>2</number>
-       </property>
-      </widget>
-     </item>
-     <item row="10" column="1">
-      <widget class="Gui::InputField" name="etap">
-       <property name="text">
-        <string notr="true">0</string>
-       </property>
-       <property name="unit" stdset="0">
-        <string notr="true"/>
-       </property>
-       <property name="quantity" stdset="0">
-        <double>50.000000000000000</double>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="Gui::InputField" name="Lw">
-       <property name="text">
-        <string notr="true">0</string>
-       </property>
-       <property name="maxLength">
-        <number>100000</number>
-       </property>
-       <property name="unit" stdset="0">
-        <string notr="true"/>
-       </property>
-       <property name="quantity" stdset="0">
-        <double>0.000000000000000</double>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0" alignment="Qt::AlignHCenter">
-      <widget class="QLabel" name="Lw_label">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If Lw is unknown, set Lw = 0. Lw will be calculated using empirical equations proposed by Amadeo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Waterline length [m]</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="1">
-      <widget class="Gui::InputField" name="d_diameter">
-       <property name="text">
-        <string notr="true">0 </string>
-       </property>
-       <property name="unit" stdset="0">
-        <string notr="true"/>
-       </property>
-       <property name="quantity" stdset="0">
-        <double>0.000000000000000</double>
-       </property>
-      </widget>
-     </item>
-     <item row="9" column="0">
+     <item row="12" column="0">
       <widget class="QLabel" name="n_speeds_label">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
@@ -199,20 +80,46 @@
        </property>
       </widget>
      </item>
-     <item row="6" column="1">
-      <widget class="Gui::InputField" name="d_length">
+     <item row="13" column="1">
+      <widget class="Gui::InputField" name="etap">
        <property name="text">
-        <string notr="true">0 </string>
+        <string notr="true">0</string>
        </property>
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>
        <property name="quantity" stdset="0">
-        <double>0.000000000000000</double>
+        <double>50.000000000000000</double>
        </property>
       </widget>
      </item>
-     <item row="1" column="0" alignment="Qt::AlignHCenter">
+     <item row="7" column="0" alignment="Qt::AlignHCenter">
+      <widget class="QLabel" name="Cb_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Block coefficient</string>
+       </property>
+      </widget>
+     </item>
+     <item row="12" column="1">
+      <widget class="QSpinBox" name="n_speeds">
+       <property name="minimum">
+        <number>2</number>
+       </property>
+       <property name="maximum">
+        <number>9999</number>
+       </property>
+       <property name="value">
+        <number>2</number>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0" alignment="Qt::AlignHCenter">
       <widget class="QLabel" name="Sw_label">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
@@ -228,7 +135,7 @@
        </property>
       </widget>
      </item>
-     <item row="4" column="1">
+     <item row="7" column="1">
       <widget class="Gui::InputField" name="Cb">
        <property name="text">
         <string notr="true">0</string>
@@ -244,14 +151,149 @@
        </property>
       </widget>
      </item>
-     <item row="12" column="1">
+     <item row="14" column="1">
+      <widget class="Gui::InputField" name="seamargin">
+       <property name="text">
+        <string notr="true">0</string>
+       </property>
+       <property name="unit" stdset="0">
+        <string/>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>100.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="Lpp_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Length between perpendiculars.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Length BPP [m]</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="15" column="1">
       <widget class="QCheckBox" name="rudder">
        <property name="text">
         <string/>
        </property>
       </widget>
      </item>
-     <item row="12" column="0">
+     <item row="8" column="1">
+      <widget class="Gui::InputField" name="d_diameter">
+       <property name="text">
+        <string notr="true">0 </string>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true"/>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>0.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="10" column="0" alignment="Qt::AlignHCenter">
+      <widget class="QLabel" name="max_speed_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum speed to compute the resistance.&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Maximum speed [m/s]</string>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="1">
+      <widget class="Gui::InputField" name="d_length">
+       <property name="text">
+        <string notr="true">0 </string>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true"/>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>0.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="11" column="0" alignment="Qt::AlignHCenter">
+      <widget class="QLabel" name="min_speed_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum speed to compute the resistance.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Minimum speed [m/s]</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0" alignment="Qt::AlignHCenter">
+      <widget class="QLabel" name="protuberance_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Protuberance measured from the frame 20. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Protuberance [m] </string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0" alignment="Qt::AlignHCenter">
+      <widget class="QLabel" name="volume_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Displaced volume [m^3] </string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="Beam_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Beam [m]</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="15" column="0">
       <widget class="QLabel" name="rudder_label">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
@@ -270,24 +312,8 @@
        </property>
       </widget>
      </item>
-     <item row="8" column="0" alignment="Qt::AlignHCenter">
-      <widget class="QLabel" name="min_speed_label">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum speed to compute the resistance.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Minimum speed [m/s]</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0" alignment="Qt::AlignHCenter">
-      <widget class="QLabel" name="volume_label">
+     <item row="9" column="0" alignment="Qt::AlignHCenter">
+      <widget class="QLabel" name="d_length_label">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -295,37 +321,14 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Displaced volume [m^3] </string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="Gui::InputField" name="volume">
-       <property name="text">
-        <string notr="true">0</string>
-       </property>
-       <property name="unit" stdset="0">
-        <string notr="true"/>
-       </property>
-       <property name="quantity" stdset="0">
-        <double>1.000000000000000</double>
-       </property>
-      </widget>
-     </item>
-     <item row="10" column="0">
-      <widget class="QLabel" name="etap_label">
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Propulsive coefficient.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>ηp</string>
+        <string>Ducted propeller length [m]</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
-     <item row="11" column="0">
+     <item row="14" column="0">
       <widget class="QLabel" name="seamargin_label">
        <property name="toolTip">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the sea margin as a percentage&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -338,21 +341,40 @@
        </property>
       </widget>
      </item>
-     <item row="11" column="1">
-      <widget class="Gui::InputField" name="seamargin">
+     <item row="5" column="0" alignment="Qt::AlignHCenter">
+      <widget class="QLabel" name="Lw_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If Lw is unknown, set Lw = 0. Lw will be calculated using empirical equations proposed by Amadeo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="text">
-        <string notr="true">0</string>
-       </property>
-       <property name="unit" stdset="0">
-        <string/>
-       </property>
-       <property name="quantity" stdset="0">
-        <double>100.000000000000000</double>
+        <string>Waterline length [m]</string>
        </property>
       </widget>
      </item>
-     <item row="7" column="1">
-      <widget class="Gui::InputField" name="max_speed">
+     <item row="5" column="1">
+      <widget class="Gui::InputField" name="Lw">
+       <property name="text">
+        <string notr="true">0</string>
+       </property>
+       <property name="maxLength">
+        <number>100000</number>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true"/>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>0.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="Gui::InputField" name="volume">
        <property name="text">
         <string notr="true">0</string>
        </property>
@@ -364,7 +386,33 @@
        </property>
       </widget>
      </item>
-     <item row="8" column="1">
+     <item row="3" column="1">
+      <widget class="Gui::InputField" name="protuberance">
+       <property name="text">
+        <string notr="true">0 </string>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true"/>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>0.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="Gui::InputField" name="Sw">
+       <property name="text">
+        <string notr="true">0 </string>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true"/>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>1.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="11" column="1">
       <widget class="Gui::InputField" name="min_speed">
        <property name="text">
         <string notr="true">0</string>
@@ -377,16 +425,61 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="Gui::InputField" name="protuberance">
+     <item row="2" column="0">
+      <widget class="QLabel" name="Draft_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
-        <string notr="true">0 </string>
+        <string>Draft [m]</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="Gui::InputField" name="Draft">
+       <property name="text">
+        <string notr="true">0</string>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true"/>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>1.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="Gui::InputField" name="Beam">
+       <property name="text">
+        <string notr="true">0</string>
+       </property>
+       <property name="maxLength">
+        <number>100000</number>
        </property>
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>
        <property name="quantity" stdset="0">
         <double>0.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="Gui::InputField" name="Lpp">
+       <property name="text">
+        <string notr="true">0</string>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true"/>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>1.000000000000000</double>
        </property>
       </widget>
      </item>
