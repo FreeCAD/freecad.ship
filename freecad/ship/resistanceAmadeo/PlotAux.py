@@ -28,7 +28,7 @@ from FreeCAD import Base
 import Spreadsheet
 
 class Plot(object):
-    def __init__(self, speed, resis, CF, CR, CA, CT, EKW, BKW, ship):
+    def __init__(self, speed, resis, CF, CR, CA, CT, EKW, BKW):
         """ Constructor. performs the plot and shows it.
         @param Speed, Ship speed.
         @param Resis, Resistance computed.
@@ -38,18 +38,16 @@ class Plot(object):
         @param CT, Total resistance coefficient.
         @param EKW, Efficient power.
         @param BKW, Break power.
-        @param ship Active ship instance.
         """
-        self.plot(speed, resis, ship)
-        self.plotPower(speed, EKW, BKW, ship)
-        self.plotCoeff(speed, CF, CR, CT, CA, ship)
-        self.spreadSheet(speed, resis, CF, CR, CA, CT, EKW, BKW, ship)
+        self.plot(speed, resis)
+        self.plotPower(speed, EKW, BKW)
+        self.plotCoeff(speed, CF, CR, CT, CA)
+        self.spreadSheet(speed, resis, CF, CR, CA, CT, EKW, BKW)
 
-    def plot(self, speed, resis, ship):
+    def plot(self, speed, resis):
         """ Perform Amadeo resistance pplot.
         @param Speed, Ship speed.
         @param Resis, Resistance computed.
-        @param ship Active ship instance.
         @return True if error happens.
         """
         try:
@@ -64,7 +62,7 @@ class Plot(object):
                 FreeCAD.Console.PrintWarning(msg + '\n')
                 return True
 
-        plt = Plot.figure('Resistance - V')
+        plt = Plot.figure('Resistance')
         self.plt = plt
         
         # Write axes titles
@@ -87,12 +85,11 @@ class Plot(object):
         # End
         return False
     
-    def plotPower(self, speed, EKW, BKW, ship):
+    def plotPower(self, speed, EKW, BKW):
         """ Perform Amadeo power plot.
         @param Speed, Ship speed.
         @param EKW, Efficient power.
         @param BKW, Break power.
-        @param ship Active ship instance.
         @return True if error happens.
         """
         try:
@@ -107,7 +104,7 @@ class Plot(object):
                 FreeCAD.Console.PrintWarning(msg + '\n')
                 return True
 
-        plt = Plot.figure('Power - V')
+        plt = Plot.figure('Power')
         self.plt3 = plt
         
         # Write axes titles
@@ -140,14 +137,13 @@ class Plot(object):
         # End
         return False
 
-    def plotCoeff(self, speed, CF, CR ,CT, CA, ship):
+    def plotCoeff(self, speed, CF, CR ,CT, CA):
         """ Perform Amadeo coefficients plot.
         @param speed, Ship speed.
         @param CF, Frictional resistance coefficient.
         @param CR, Residual resistance coefficient.
         @param CA, Roughness coefficient
         @param CT, Total resistance coefficient.
-        @param ship Active ship instance.
         @return True if error happens.
         """
         try:
@@ -209,7 +205,7 @@ class Plot(object):
         # End
         return False
 
-    def spreadSheet(self, speed, resis, CF, CR, CA, CT, EKW, BKW, ship):
+    def spreadSheet(self, speed, resis, CF, CR, CA, CT, EKW, BKW):
         """ Write the output data file.
         @param Speed, Ship speed.
         @param Resis, Resistance computed.
@@ -219,7 +215,6 @@ class Plot(object):
         @param CT, Total resistance coefficient.
         @param EKW, Efficient power.
         @param BKW, Break power.
-        @param ship Active ship instance.
         """
         s = FreeCAD.activeDocument().addObject('Spreadsheet::Sheet',
                                                'Resistance Amadeo method')
