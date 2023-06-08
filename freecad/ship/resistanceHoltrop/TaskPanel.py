@@ -25,7 +25,6 @@ import FreeCAD as App
 import FreeCADGui as Gui
 from FreeCAD import Units
 from PySide import QtGui, QtCore
-from . import Preview
 from . import PlotAux
 from . import Holtrop
 from .. import Ship_rc
@@ -41,15 +40,12 @@ class TaskPanel:
         self.name = "Compute resistance prediction Holtrop method"
         self.ui = ":/ui/TaskPanel_resistanceHoltrop.ui"
         self.form = Gui.PySideUic.loadUi(self.ui)
-        self.preview = Preview.Preview()
         self.ship = None
 
     def accept(self):
-        if not self.ship:
-            return False
         
-        
-        
+        B = Units.parseQuantity(Locale.fromString(self.form.Beam.text())).Value
+        T = Units.parseQuantity(Locale.fromString(self.form.Draft.text())).Value
         Sw = Units.parseQuantity(Locale.fromString(self.form.Sw.text())).Value
         Lw = Units.parseQuantity(Locale.fromString(self.form.Lw.text())).Value
         V = Units.parseQuantity(Locale.fromString(self.form.volume.text())).Value
@@ -77,14 +73,8 @@ class TaskPanel:
         stab_fins = Units.parseQuantity(Locale.fromString(self.form.stab_fins.text())).Value
         dome = Units.parseQuantity(Locale.fromString(self.form.dome.text())).Value
         bkl = Units.parseQuantity(Locale.fromString(self.form.bkl.text())).Value
-        
-        #data preparation for Amadeo's method
-        umax = umax  #m/s
-        umin = umin  #m/s
         n = self.form.n_speeds.value()
-        L = self.ship.Length.getValueAs("m").Value
-        B = self.ship.Breadth.getValueAs("m").Value
-        T = self.ship.Draft.getValueAs("m").Value
+
 
         if  1 >= eta_p >= 0:
             
@@ -95,6 +85,19 @@ class TaskPanel:
                 "ship_console",
                 "The propulsive coefficiente cannot be higher than 1")
             App.Console.PrintError(msg + '\n')
+            
+        if Cb > 1: 
+            msg = App.Qt.translate(
+                "ship_console",
+                "The block coefficiente cannot be higher than 1")
+            App.Console.PrintError(msg + '\n')
+        
+        if Cw > 1: 
+            msg = App.Qt.translate(
+                "ship_console",
+                "The waterplane coefficiente cannot be higher than 1")
+            App.Console.PrintError(msg + '\n')
+            
         if Sw == 0: 
             Sw = ()
             S_w = 1
@@ -105,14 +108,14 @@ class TaskPanel:
                     hull_bossings, shafts, stab_fins, dome, bkl]
         
         
-        vel = np.linspace(umin, umax, num = n)
-        Rtotal, speed, CT, CF, CAPP, Cw, CB, CTR, CA, EKW, BKW, Sw = Holtrop.Holtrop(L, B, 
-            T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, vel, hb, etap, seamargin,
+        speeds = np.linspace(umin, umax, num = n)
+        Rtotal, speed, CT, CF, CAPP, Cw, CB, CTR, CA, EKW, BKW, Sw = Holtrop.Holtrop( B, 
+            T, Lw, V, Cb, Cm, Cw, cstern, iE, xcb, speeds, hb, etap, seamargin,
                                                         Sapplist, ABT, AT, Sw)
         
         if S_w == 1: App.Console.PrintMessage("Sw = " + str("{:.3f}".format(Sw)) + " m^2" + '\n')
         
-        PlotAux.Plot(speed, Rtotal, CT, CF, CAPP, Cw, CB, CTR, CA, EKW, BKW, self.ship)          
+        PlotAux.Plot(speed, Rtotal, CT, CF, CAPP, Cw, CB, CTR, CA, EKW, BKW)          
         return True
 
     def reject(self):
@@ -141,6 +144,8 @@ class TaskPanel:
 
     def setupUi(self):
         
+        self.form.Beam = self.widget(QtGui.QLineEdit, "Beam")
+        self.form.Draft = self.widget(QtGui.QLineEdit, "Draft")
         self.form.Sw = self.widget(QtGui.QLineEdit, "Sw")
         self.form.Lw = self.widget(QtGui.QLineEdit, "Lw")
         self.form.volume = self.widget(QtGui.QLineEdit, "volume")
@@ -194,13 +199,10 @@ class TaskPanel:
         """ Set initial values for fields
         """
         sel_ships = Selection.get_ships()
-        if not sel_ships:
-            msg = App.Qt.translate(
-                "ship_console",
-                "A ship instance must be selected before using this tool")
-            App.Console.PrintError(msg + '\n')
-            return True
-        self.ship = sel_ships[0]
+        try: 
+            self.ship = sel_ships[0]
+        except:
+            pass
         if len(sel_ships) > 1:
             msg = App.Qt.translate(
                 "ship_console",
@@ -268,7 +270,15 @@ class TaskPanel:
             cf = 0.0
             iE = 0.0
         
+        try: 
+            B = self.ship.Breadth.getValueAs("m").Value
+            T = self.ship.Draft.getValueAs("m").Value
+        except:
+            B = 0.0
+            T = 0.0
         
+        self.form.Beam.setText(str(B))
+        self.form.Draft.setText(str(T))
         self.form.Lw.setText(str(Lw))
         self.form.Sw.setText(str(Sw))
         self.form.volume.setText(str(V))
