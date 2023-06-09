@@ -43,8 +43,6 @@ class TaskPanel:
         self.ship = None
 
     def accept(self):
-        
-        
         has_rudder = self.form.rudder.isChecked()
         L = Units.parseQuantity(Locale.fromString(self.form.Lpp.text())).Value
         B = Units.parseQuantity(Locale.fromString(self.form.Beam.text())).Value
