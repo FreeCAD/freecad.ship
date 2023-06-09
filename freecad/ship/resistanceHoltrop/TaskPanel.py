@@ -43,7 +43,6 @@ class TaskPanel:
         self.ship = None
 
     def accept(self):
-        
         B = Units.parseQuantity(Locale.fromString(self.form.Beam.text())).Value
         T = Units.parseQuantity(Locale.fromString(self.form.Draft.text())).Value
         Sw = Units.parseQuantity(Locale.fromString(self.form.Sw.text())).Value
