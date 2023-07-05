@@ -138,4 +138,6 @@ Please open tickets in the [issue queue](https://github.com/FreeCAD/freecad.ship
 
 ## Authors
 
-Jose Luis Cercós Pita <jlcercos@gmail.com>
+ - Jose Luis Cercós Pita <jlcercos@gmail.com>
+ - Juan Manuel Muñoz-Godin (Ship resistance Holtrop and Amadeo tools)
+ - Antonio Souto-Iglesias (Advisor of Juan Manuel Muñoz-Godin)
