@@ -5,7 +5,7 @@
   <version>2022.4.11</version>
   <date>2022-04-11</date>
   <maintainer email="jlcercos@gmail.com">Jose Luis Cercós Pita</maintainer>
-  <license file="LICENSE">LGPLv2.1</license>
+  <license file="LICENSE">LGPL-2.1-or-later</license>
   <url type="repository" branch="master">https://github.com/FreeCAD/freecad.ship</url>
   <url type="bugtracker">https://github.com/FreeCAD/freecad.ship/issues</url>
   <url type="documentation">https://wiki.freecad.org/Ship_Workbench</url>
