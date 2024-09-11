@@ -34,13 +34,13 @@ class ShipWorkbench(Gui.Workbench):
     def __init__(self):
         _dir = os.path.dirname(__file__)
         self.__class__.Icon = os.path.join(_dir, "resources", "icons", "Ship_Workbench.svg")
-        self.__class__.MenuText = "Ship"
-        self.__class__.ToolTip = "Ship module provides some of the commonly used tool to design ship forms"
+        self.__class__.MenuText = App.Qt.translate("Workbench", "Ship")
+        self.__class__.ToolTip =  App.Qt.translate("Workbench", "Ship module provides some of the commonly used tools to design ship forms")
 
     from . import ShipGui
 
     def Initialize(self):
-        from PySide import QtCore, QtGui
+        QT_TRANSLATE_NOOP=App.Qt.QT_TRANSLATE_NOOP
 
         Gui.addLanguagePath(os.path.join(os.path.dirname(__file__),
                                          "resources", "translations"))
