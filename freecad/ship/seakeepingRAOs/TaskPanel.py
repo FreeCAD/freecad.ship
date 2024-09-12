@@ -149,7 +149,7 @@ class TaskPanel:
         name -- Name of the widget
         """
         mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
+        form = mw.findChild(QtGui.QWidget, "seakeepingRAOsTaskPanel")
         return form.findChild(class_id, name)
 
     def initValues(self):
