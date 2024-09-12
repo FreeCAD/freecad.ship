@@ -20,13 +20,13 @@
 #*                                                                         *
 #***************************************************************************
 
+import os
 import FreeCAD as App
 import FreeCADGui as Gui
 from FreeCAD import Units
 from PySide import QtGui, QtCore
 from . import Tools
 from .. import WeightInstance as Instance
-from .. import Ship_rc
 from ..shipUtils import Locale, Selection
 from ..shipUtils.Math import compute_inertia
 
@@ -35,7 +35,9 @@ class TaskPanel:
     def __init__(self):
         """Constructor"""
         self.name = "ship weight creation"
-        self.ui = ":/ui/TaskPanel_shipCreateWeight.ui"
+        self.ui = os.path.join(os.path.dirname(__file__),
+                               "../resources/ui/",
+                               "TaskPanel_shipCreateWeight.ui")
         self.form = Gui.PySideUic.loadUi(self.ui)
 
     def accept(self):
@@ -206,7 +208,11 @@ class TaskPanel:
             return True
 
         # Fill the ships combo box
-        icon = QtGui.QIcon(QtGui.QPixmap(":/icons/Ship_Instance.svg"))
+        
+        icon = QtGui.QIcon(QtGui.QPixmap(
+            os.path.join(os.path.dirname(__file__),
+                         "../resources/icons/",
+                         "Ship_Instance.svg")))
         self.form.ship.clear()
         for ship in self.ships:
             self.form.ship.addItem(icon, ship.Label)

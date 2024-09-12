@@ -21,11 +21,11 @@
 #*                                                                         *
 #***************************************************************************
 
+import os
 import FreeCAD as App
 import FreeCADGui as Gui
 from FreeCAD import Units
 from PySide import QtGui, QtCore
-from .. import Ship_rc
 from ..shipUtils import Selection
 
 
@@ -33,7 +33,9 @@ class TaskPanel:
     def __init__(self):
         """Constructor"""
         self.name = "ship mesh association"
-        self.ui = ":/ui/TaskPanel_seakeepingSetMesh.ui"
+        self.ui = os.path.join(os.path.dirname(__file__),
+                               "../resources/ui/",
+                               "TaskPanel_seakeepingSetMesh.ui")
         self.form = Gui.PySideUic.loadUi(self.ui)
 
     def accept(self):
@@ -121,7 +123,14 @@ class TaskPanel:
             return True
 
         # Fill the ships combo box
-        icon = QtGui.QIcon(QtGui.QPixmap(":/icons/Ship_Instance.svg"))
+        self.form.mainLogo.setPixmap(QtGui.QPixmap(
+            os.path.join(os.path.dirname(__file__),
+                         "../resources/icons/",
+                         "Ship_Logo.svg")))
+        icon = QtGui.QIcon(QtGui.QPixmap(
+            os.path.join(os.path.dirname(__file__),
+                         "../resources/icons/",
+                         "Ship_Instance.svg")))
         self.form.ship.clear()
         for ship in self.ships:
             self.form.ship.addItem(icon, ship.Label)

@@ -20,6 +20,7 @@
 #*                                                                         *
 #***************************************************************************
 
+import os
 import numpy as np
 import FreeCAD as App
 import FreeCADGui as Gui
@@ -27,7 +28,6 @@ from FreeCAD import Units
 from PySide import QtGui, QtCore
 from . import PlotAux
 from . import Amadeo
-from .. import Ship_rc
 from ..import Instance
 from ..shipUtils import Locale
 from ..shipUtils import Selection
@@ -38,7 +38,9 @@ from ..init_gui import QT_TRANSLATE_NOOP
 class TaskPanel:
     def __init__(self):
         self.name = "Compute resistance prediction Amadeo method"
-        self.ui = ":/ui/TaskPanel_resistanceAmadeo.ui"
+        self.ui = os.path.join(os.path.dirname(__file__),
+                               "../resources/ui/",
+                               "TaskPanel_resistanceAmadeo.ui")
         self.form = Gui.PySideUic.loadUi(self.ui)
         self.ship = None
 

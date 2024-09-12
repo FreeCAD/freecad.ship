@@ -23,7 +23,6 @@
 
 import FreeCAD as App
 from FreeCAD import Units
-from .. import Ship_rc
 
 
 def compute_capacity(tank, level):

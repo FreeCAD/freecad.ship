@@ -20,6 +20,7 @@
 #*                                                                         *
 #***************************************************************************
 
+import os
 import time
 from math import *
 import FreeCAD
@@ -380,4 +381,6 @@ class ViewProviderShip:
 
     def getIcon(self):
         """Returns the icon for this kind of objects."""
-        return ":/icons/Ship_Instance.svg"
+        return os.path.join(os.path.dirname(__file__),
+                            "resources/icons/",
+                            "Ship_Instance.svg")

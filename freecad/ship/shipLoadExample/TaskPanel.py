@@ -20,17 +20,19 @@
 #*                                                                         *
 #***************************************************************************
 
+import os
 import FreeCAD as App
 import FreeCADGui as Gui
 from PySide import QtGui, QtCore
-from .. import Ship_rc
 from ..shipUtils import Paths
 
 
 class TaskPanel:
     def __init__(self):
         self.name = "Example ships loader"
-        self.ui = ":/ui/TaskPanel_shipLoadExample.ui"
+        self.ui = os.path.join(os.path.dirname(__file__),
+                               "../resources/ui/",
+                               "TaskPanel_shipLoadExample.ui")
         self.form = Gui.PySideUic.loadUi(self.ui)
 
     def accept(self):
@@ -75,7 +77,10 @@ class TaskPanel:
         """Setup the task panel user interface."""
         self.form.ship = self.widget(QtGui.QComboBox, "Ship")
         self.form.mainLogo = self.widget(QtGui.QLabel, "MainLogo")
-        self.form.mainLogo.setPixmap(QtGui.QPixmap(":/icons/Ship_Logo.svg"))
+        self.form.mainLogo.setPixmap(QtGui.QPixmap(
+            os.path.join(os.path.dirname(__file__),
+                         "../resources/icons/",
+                         "Ship_Logo.svg")))
         self.retranslateUi()
 
     def getMainWindow(self):

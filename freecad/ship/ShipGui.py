@@ -25,24 +25,13 @@ import FreeCADGui
 import os
 
 
-# Let's try to recompile the resources, so we are working around problems with
-# the PySide version
-from .compile_resources import compile_resources
-try:
-    compile_resources()
-except Exception as e:
-    msg = FreeCAD.Qt.translate(
-        "ship_console",
-        "Cannot compile the resources file: \n" + str(e))
-    FreeCAD.Console.PrintWarning(msg + '\n')
-
-
-from . import Ship_rc
 from .shipUtils import Selection
 
 
-FreeCADGui.addLanguagePath(":/Ship/translations")
-FreeCADGui.addIconPath(":/Ship/icons")
+FreeCADGui.addLanguagePath(os.path.join(os.path.dirname(__file__),
+                                        "resources/translations"))
+FreeCADGui.addIconPath(os.path.join(os.path.dirname(__file__),
+                                        "resources/icons"))
 
 
 QT_TRANSLATE_NOOP=FreeCAD.Qt.QT_TRANSLATE_NOOP

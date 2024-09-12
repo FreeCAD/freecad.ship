@@ -20,6 +20,7 @@
 #*                                                                         *
 #***************************************************************************
 
+import os
 import FreeCAD as App
 import FreeCADGui as Gui
 from FreeCAD import Units
@@ -27,7 +28,6 @@ from PySide import QtGui, QtCore
 from . import Preview
 from . import Tools
 from .. import Instance  # from .ship
-from .. import Ship_rc
 from ..shipUtils import Locale
 from ..shipUtils import Selection
 
@@ -35,7 +35,9 @@ class TaskPanel:
     def __init__(self):
         """Constructor"""
         self.name = "ship creation"
-        self.ui = ":/ui/TaskPanel_shipCreateShip.ui"
+        self.ui = os.path.join(os.path.dirname(__file__),
+                               "../resources/ui/",
+                               "TaskPanel_shipCreateShip.ui")
         self.form = Gui.PySideUic.loadUi(self.ui)
         self.preview = Preview.Preview()
 

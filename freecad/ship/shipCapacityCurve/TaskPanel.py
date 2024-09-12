@@ -20,6 +20,7 @@
 #*                                                                         *
 #***************************************************************************
 
+import os
 import math
 import FreeCAD as App
 import FreeCADGui as Gui
@@ -27,14 +28,15 @@ from FreeCAD import Units
 from PySide import QtGui, QtCore
 from . import Tools
 from . import PlotAux
-from .. import Ship_rc
 from ..shipUtils import Selection
 
 
 class TaskPanel:
     def __init__(self):
         self.name = "ship tank loading capacity curve"
-        self.ui = ":/ui/TaskPanel_shipCapacityCurve.ui"
+        self.ui = os.path.join(os.path.dirname(__file__),
+                               "../resources/ui/",
+                               "TaskPanel_shipCapacityCurve.ui")
         self.form = Gui.PySideUic.loadUi(self.ui)
         self.tank = None
 

@@ -20,6 +20,7 @@
 #*                                                                         *
 #***************************************************************************
 
+import os
 import time
 from math import *
 import random
@@ -321,4 +322,6 @@ class ViewProviderTank:
 
     def getIcon(self):
         """Returns the icon for this kind of objects."""
-        return ":/icons/Ship_Tank.svg"
+        return os.path.join(os.path.dirname(__file__),
+                            "resources/icons/",
+                            "Ship_Tank.svg")

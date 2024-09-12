@@ -20,6 +20,7 @@
 #*                                                                         *
 #***************************************************************************
 
+import os
 import math
 import FreeCAD as App
 import FreeCADGui as Gui
@@ -30,7 +31,6 @@ from PySide import QtGui, QtCore
 from . import PlotAux
 from . import Tools
 from .. import Instance
-from .. import Ship_rc
 from ..shipUtils import Locale
 from ..shipUtils import Selection
 from ..init_gui import QT_TRANSLATE_NOOP
@@ -39,7 +39,9 @@ from ..init_gui import QT_TRANSLATE_NOOP
 class TaskPanel:
     def __init__(self):
         self.name = "ship hydrostatic curves plotter"
-        self.ui = ":/ui/TaskPanel_shipHydrostatics.ui"
+        self.ui = os.path.join(os.path.dirname(__file__),
+                               "../resources/ui/",
+                               "TaskPanel_shipHydrostatics.ui")
         self.form = Gui.PySideUic.loadUi(self.ui)
         self.ship = None
         self.running = False

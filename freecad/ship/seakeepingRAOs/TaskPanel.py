@@ -21,13 +21,13 @@
 #*                                                                         *
 #***************************************************************************
 
+import os
 import cmath
 import numpy as np
 import FreeCAD as App
 import FreeCADGui as Gui
 from FreeCAD import Units
 from PySide import QtGui, QtCore
-from .. import Ship_rc
 from ..shipUtils import Selection
 from ..shipGZ import Tools as GZ
 from ..shipHydrostatics import Tools as Hydrostatics
@@ -38,7 +38,9 @@ class TaskPanel:
     def __init__(self):
         """Constructor"""
         self.name = "seakeeping RAOs computation"
-        self.ui = ":/ui/TaskPanel_seakeepingRAOs.ui"
+        self.ui = os.path.join(os.path.dirname(__file__),
+                               "../resources/ui/",
+                               "TaskPanel_seakeepingRAOs.ui")
         self.form = Gui.PySideUic.loadUi(self.ui)
         self.running = False
 
