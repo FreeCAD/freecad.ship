@@ -1103,22 +1103,22 @@
     <message>
         <location filename="../../resistanceAmadeo/TaskPanel.py" line="74"/>
         <location filename="../../resistanceHoltrop/TaskPanel.py" line="88"/>
-        <source>The propulsive coefficiente cannot be higher than 1</source>
+        <source>The propulsive coefficient cannot be higher than 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../resistanceAmadeo/TaskPanel.py" line="80"/>
-        <location filename="../../resistanceHoltrop/TaskPanel.py" line="94"/>
-        <source>The block coefficiente cannot be higher than 1</source>
+        <location filename="../../resistanceAmadeo/TaskPanel.py" line="78"/>
+        <location filename="../../resistanceHoltrop/TaskPanel.py" line="92"/>
+        <source>The block coefficient cannot be higher than 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../resistanceHoltrop/TaskPanel.py" line="100"/>
-        <source>The waterplane coefficiente cannot be higher than 1</source>
+        <location filename="../../resistanceHoltrop/TaskPanel.py" line="98"/>
+        <source>The waterplane coefficient cannot be higher than 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../resistanceHoltrop/TaskPanel.py" line="261"/>
+        <location filename="../../resistanceHoltrop/TaskPanel.py" line="259"/>
         <source>ZeroDivisionError: Null ship floating area found during the floating area computation!</source>
         <translation type="unfinished"></translation>
     </message>
