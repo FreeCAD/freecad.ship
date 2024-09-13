@@ -243,10 +243,10 @@ class Amadeo:
 
     def GetResources(self):
         MenuText = QT_TRANSLATE_NOOP(
-            'Resistance_Amadeo',
+            'Ship_ResistanceAmadeo',
             'Resistance Amadeo prediction')
         ToolTip = QT_TRANSLATE_NOOP(
-            'Resistance_Amadeo',
+            'Ship_ResistanceAmadeo',
             'Compute the resistance by Amadeo method')
         return {'Pixmap': 'Resistance_Amadeo',
                 'MenuText': MenuText,
@@ -262,10 +262,10 @@ class Holtrop:
 
     def GetResources(self):
         MenuText = QT_TRANSLATE_NOOP(
-            'Resistance_Holtrop',
+            'Ship_ResistanceHoltrop',
             'Resistance Holtrop prediction')
         ToolTip = QT_TRANSLATE_NOOP(
-            'Resistance_Holtrop',
+            'Ship_ResistanceHoltrop',
             'Compute the resistance by Holtrop method')
         return {'Pixmap': 'Resistance_Holtrop',
                 'MenuText': MenuText,
@@ -281,10 +281,10 @@ class SetMesh:
 
     def GetResources(self):
         MenuText = QT_TRANSLATE_NOOP(
-            'Seakeeping_SetMesh',
+            'Ship_SeakeepingSetMesh',
             'Set ship surface mesh')
         ToolTip = QT_TRANSLATE_NOOP(
-            'Seakeeping_SetMesh',
+            'Ship_SeakeepingSetMesh',
             'Associate the surface mesh to the ship')
         return {'Pixmap': 'Seakeeping_SetMesh',
                 'MenuText': MenuText,
@@ -301,10 +301,10 @@ class RAOs:
 
     def GetResources(self):
         MenuText = QT_TRANSLATE_NOOP(
-            'Seakeeping_RAOs',
+            'Ship_SeakeepingRAOs',
             'Plot RAOs')
         ToolTip = QT_TRANSLATE_NOOP(
-            'Seakeeping_RAOs',
+            'Ship_SeakeepingRAOs',
             'Compute and plot the RAOs')
         return {'Pixmap': 'Seakeeping_RAOs',
                 'MenuText': MenuText,
@@ -321,7 +321,7 @@ FreeCADGui.addCommand('Ship_Capacity', TankCapacity())
 FreeCADGui.addCommand('Ship_LoadCondition', LoadCondition())
 FreeCADGui.addCommand('Ship_SinkAndTrim', SinkAndTrim())
 FreeCADGui.addCommand('Ship_GZ', GZ())
-FreeCADGui.addCommand('Resistance_Amadeo', Amadeo())
-FreeCADGui.addCommand('Resistance_Holtrop', Holtrop())
-FreeCADGui.addCommand('Seakeeping_SetMesh', SetMesh())
-FreeCADGui.addCommand('Seakeeping_RAOs', RAOs())
+FreeCADGui.addCommand('Ship_ResistanceAmadeo', Amadeo())
+FreeCADGui.addCommand('Ship_ResistanceHoltrop', Holtrop())
+FreeCADGui.addCommand('Ship_SeakeepingSetMesh', SetMesh())
+FreeCADGui.addCommand('Ship_SeakeepingRAOs', RAOs())
