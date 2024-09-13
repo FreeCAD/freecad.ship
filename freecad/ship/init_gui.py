@@ -25,25 +25,26 @@ import FreeCAD as App
 import os
 
 
-def QT_TRANSLATE_NOOP(context, text):
-    return text
-
-
 class ShipWorkbench(Gui.Workbench):
     """Ships design workbench."""
+
     def __init__(self):
         _dir = os.path.dirname(__file__)
-        self.__class__.Icon = os.path.join(_dir, "resources", "icons", "Ship_Workbench.svg")
+        Gui.addLanguagePath(os.path.join(_dir, "resources", "translations"))
+        Gui.updateLocale()
+        self.__class__.Icon = os.path.join(
+            _dir, "resources", "icons", "Ship_Workbench.svg"
+        )
         self.__class__.MenuText = App.Qt.translate("Workbench", "Ship")
-        self.__class__.ToolTip =  App.Qt.translate("Workbench", "Ship module provides some of the commonly used tools to design ship forms")
+        self.__class__.ToolTip = App.Qt.translate(
+            "Workbench",
+            "Ship module provides some of the commonly used tools to design ship forms",
+        )
 
     from . import ShipGui
 
     def Initialize(self):
-        QT_TRANSLATE_NOOP=App.Qt.QT_TRANSLATE_NOOP
-
-        Gui.addLanguagePath(os.path.join(os.path.dirname(__file__),
-                                         "resources", "translations"))
+        QT_TRANSLATE_NOOP = App.Qt.QT_TRANSLATE_NOOP
 
         try:
             import FreeCAD.Plot
@@ -51,10 +52,13 @@ class ShipWorkbench(Gui.Workbench):
             try:
                 import freecad.plot
             except ImportError:
-                msg = App.Qt.translate(
-                    "ship_console",
-                    "freecad.plot is disabled, tools cannot graph output curves, install freecad.plot with addon-manager")
-                App.Console.PrintWarning(msg + '\n')
+                App.Console.PrintWarning(
+                    App.Qt.translate(
+                        "ship_console",
+                        "freecad.plot is disabled, tools cannot graph output curves, "
+                        "install freecad.plot with addon-manager\n",
+                    )
+                )
         # ToolBar
         shiplist = ["Ship_LoadExample",
                     "Ship_CreateShip",
