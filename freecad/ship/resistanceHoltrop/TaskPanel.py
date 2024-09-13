@@ -83,23 +83,21 @@ class TaskPanel:
         
         elif eta_p > 1:
             msg = App.Qt.translate(
-                "ship_console",
-                "The propulsive coefficiente cannot be higher than 1")
-            App.Console.PrintError(msg + '\n')
-            
-        if Cb > 1: 
+                "ship_console", "The propulsive coefficient cannot be higher than 1"
+            )
+            App.Console.PrintError(msg + "\n")
+
+        if Cb > 1:
+            msg = App.Qt.translate("ship_console", "The block coefficient cannot be higher than 1")
+            App.Console.PrintError(msg + "\n")
+
+        if Cw > 1:
             msg = App.Qt.translate(
-                "ship_console",
-                "The block coefficiente cannot be higher than 1")
-            App.Console.PrintError(msg + '\n')
-        
-        if Cw > 1: 
-            msg = App.Qt.translate(
-                "ship_console",
-                "The waterplane coefficiente cannot be higher than 1")
-            App.Console.PrintError(msg + '\n')
-            
-        if Sw == 0: 
+                "ship_console", "The waterplane coefficient cannot be higher than 1"
+            )
+            App.Console.PrintError(msg + "\n")
+
+        if Sw == 0:
             Sw = ()
             S_w = 1
         else: S_w = 0
