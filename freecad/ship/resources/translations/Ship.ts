@@ -1120,8 +1120,9 @@
 <context>
     <name>ship_console</name>
     <message>
-        <location filename="init_gui.py" line="58"/>
-        <source>freecad.plot is disabled, tools cannot graph output curves, install freecad.plot with addon-manager</source>
+        <location filename="../../init_gui.py" line="56"/>
+        <source>freecad.plot is disabled, tools cannot graph output curves, install freecad.plot with addon-manager
+</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1294,6 +1295,11 @@
     <message>
         <location filename="TankInstance.py" line="132"/>
         <source>Tank volume operation failed. The tool is retrying that slightly moving the free surface position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="init_gui.py" line="58"/>
+        <source>freecad.plot is disabled, tools cannot graph output curves, install freecad.plot with addon-manager</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
