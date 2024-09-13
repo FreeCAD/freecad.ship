@@ -810,58 +810,6 @@
     </message>
 </context>
 <context>
-    <name>Resistance_Amadeo</name>
-    <message>
-        <location filename="../../ShipGui.py" line="243"/>
-        <source>Resistance Amadeo prediction</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../ShipGui.py" line="246"/>
-        <source>Compute the resistance by Amadeo method</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Resistance_Holtrop</name>
-    <message>
-        <location filename="../../ShipGui.py" line="262"/>
-        <source>Resistance Holtrop prediction</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../ShipGui.py" line="265"/>
-        <source>Compute the resistance by Holtrop method</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Seakeeping_RAOs</name>
-    <message>
-        <location filename="ShipGui.py" line="267"/>
-        <source>Plot RAOs</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ShipGui.py" line="270"/>
-        <source>Compute and plot the RAOs</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Seakeeping_SetMesh</name>
-    <message>
-        <location filename="ShipGui.py" line="248"/>
-        <source>Set ship surface mesh</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ShipGui.py" line="251"/>
-        <source>Associate the surface mesh to the ship</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>Ship_AreasCurve</name>
     <message>
         <location filename="ShipGui.py" line="88"/>
@@ -949,6 +897,58 @@
     <message>
         <location filename="ShipGui.py" line="51"/>
         <source>Load an example ship hull geometry.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Ship_ResistanceAmadeo</name>
+    <message>
+        <location filename="../../ShipGui.py" line="243"/>
+        <source>Resistance Amadeo prediction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../ShipGui.py" line="246"/>
+        <source>Compute the resistance by Amadeo method</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Ship_ResistanceHoltrop</name>
+    <message>
+        <location filename="../../ShipGui.py" line="262"/>
+        <source>Resistance Holtrop prediction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../ShipGui.py" line="265"/>
+        <source>Compute the resistance by Holtrop method</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Ship_SeakeepingRAOs</name>
+    <message>
+        <location filename="ShipGui.py" line="267"/>
+        <source>Plot RAOs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ShipGui.py" line="270"/>
+        <source>Compute and plot the RAOs</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Ship_SeakeepingSetMesh</name>
+    <message>
+        <location filename="ShipGui.py" line="248"/>
+        <source>Set ship surface mesh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ShipGui.py" line="251"/>
+        <source>Associate the surface mesh to the ship</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
