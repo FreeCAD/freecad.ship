@@ -57,9 +57,7 @@ supported_locales=(
 is_locale_supported() {
 	local locale="$1"
 	for supported_locale in "${supported_locales[@]}"; do
-		if [[ "$supported_locale" == "$locale" ]]; then
-			return 0
-		fi
+		[ "$supported_locale" == "$locale" ] && return 0
 	done
 	return 1
 }
@@ -84,13 +82,10 @@ update_locale() {
        ../ui/*.ui"
 	# eval echo "$FILES" # testing expansion
 
-	# NOTE: Execute the right commands depending on:
+	# NOTE: Execute the right command depending on:
 	# - if it's a locale file or the main, agnostic one
-	if [ ! -f "${WB}${u}${locale}.ts" ]; then
-		echo -e "\033[1;34m\n\t<<< Creating '${WB}${u}${locale}.ts' file >>>\n\033[m"
-	else
-		echo -e "\033[1;34m\n\t<<< Updating '${WB}${u}${locale}.ts' file >>>\n\033[m"
-	fi
+	[ ! -f "${WB}${u}${locale}.ts" ] && action="Creating" || action="Updating"
+	echo -e "\033[1;34m\n\t<<< ${action} '${WB}${u}${locale}.ts' file >>>\n\033[m"
 	if [ "$u" == "" ]; then
 		eval $LUPDATE "$FILES" -ts "${WB}.ts" # locale-agnostic file
 	else
@@ -119,9 +114,10 @@ LRELEASE=/usr/lib/qt6/bin/lrelease # from Qt6
 # LRELEASE=lrelease                 # from Qt5
 WB="Ship"
 
-if [ $# -eq 0 ]; then
-	help
-elif [ $# -eq 1 ]; then
+# Enforce underscore on locales
+sed -i '3s/-/_/' ${WB}*.ts
+
+if [ $# -eq 1 ]; then
 	if [ "$1" == "-R" ]; then
 		find . -type f -name '*_*.ts' | while IFS= read -r file; do
 			# Release all locales
