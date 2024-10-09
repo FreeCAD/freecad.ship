@@ -164,14 +164,14 @@ class TaskPanel:
         """
         sel_lcs = Selection.get_lcs()
         if not sel_lcs:
-            msg = QtGui.QApplication.translate(
+            msg = App.Qt.translate(
                 "ship_console",
                 "A load condition instance must be selected before using this tool")
             App.Console.PrintError(msg + '\n')
             return True
         self.lc = sel_lcs[0]
         if len(sel_lcs) > 1:
-            msg = QtGui.QApplication.translate(
+            msg = App.Qt.translate(
                 "ship_console",
                 "More than one load condition have been selected (just the one"
                 " labelled '{}' is considered)".format(self.lc.Label))
@@ -216,7 +216,7 @@ class TaskPanel:
             props.index("GZAngle")
         except ValueError:
             try:
-                tooltip = QtGui.QApplication.translate(
+                tooltip = App.Qt.translate(
                     "ship_gz",
                     "GZ curve tool angle selected [deg]")
             except:
@@ -230,7 +230,7 @@ class TaskPanel:
             props.index("GZNumPoints")
         except ValueError:
             try:
-                tooltip = QtGui.QApplication.translate(
+                tooltip = App.Qt.translate(
                     "ship_gz",
                     "GZ curve tool number of points selected")
             except:
@@ -244,7 +244,7 @@ class TaskPanel:
             props.index("GZVariableTrim")
         except ValueError:
             try:
-                tooltip = QtGui.QApplication.translate(
+                tooltip = App.Qt.translate(
                     "ship_gz",
                     "GZ curve tool variable trim angle selection")
             except:
