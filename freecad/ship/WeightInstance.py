@@ -28,7 +28,8 @@ from FreeCAD import Base, Vector, Units
 import Part
 from .shipUtils import Paths, Math
 from .shipUtils.Math import compute_inertia
-from .init_gui import QT_TRANSLATE_NOOP
+
+QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 
 
 def add_weight_props(obj):
