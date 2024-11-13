@@ -29,7 +29,7 @@ from FreeCAD import Base, Vector, Matrix, Placement, Rotation, Units
 import Part
 from .shipUtils import Paths, Math
 
-QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
+QT_TRANSLATE_NOOP = App.Qt.QT_TRANSLATE_NOOP
 
 
 def __linspace(val0, val1, n):
