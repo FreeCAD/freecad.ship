@@ -34,7 +34,7 @@ from .. import Instance
 from ..shipUtils import Locale
 from ..shipUtils import Selection
 
-QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
+QT_TRANSLATE_NOOP = App.Qt.QT_TRANSLATE_NOOP
 
 
 class TaskPanel:
