@@ -147,112 +147,112 @@
 <context>
     <name>App::Property</name>
     <message>
-        <location filename="../../shipAreasCurve/TaskPanel.py" line="249"/>
+        <location filename="../../shipAreasCurve/TaskPanel.py" line="250"/>
         <source>Areas curve tool draft selected [m]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../shipAreasCurve/TaskPanel.py" line="263"/>
+        <location filename="../../shipAreasCurve/TaskPanel.py" line="264"/>
         <source>Areas curve tool trim selected [deg]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../shipAreasCurve/TaskPanel.py" line="277"/>
+        <location filename="../../shipAreasCurve/TaskPanel.py" line="278"/>
         <source>Areas curve tool number of points</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../shipHydrostatics/TaskPanel.py" line="293"/>
+        <location filename="../../shipHydrostatics/TaskPanel.py" line="294"/>
         <source>Hydrostatics tool selected trim angle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../shipHydrostatics/TaskPanel.py" line="305"/>
+        <location filename="../../shipHydrostatics/TaskPanel.py" line="306"/>
         <source>Hydrostatics tool selected minimum draft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../shipHydrostatics/TaskPanel.py" line="317"/>
+        <location filename="../../shipHydrostatics/TaskPanel.py" line="318"/>
         <source>Hydrostatics tool selected maximum draft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../shipHydrostatics/TaskPanel.py" line="329"/>
+        <location filename="../../shipHydrostatics/TaskPanel.py" line="330"/>
         <source>Hydrostatics tool number of points selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TankInstance.py" line="56"/>
+        <location filename="../../TankInstance.py" line="57"/>
         <source>True if it is a valid tank instance, False otherwise</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../WeightInstance.py" line="50"/>
+        <location filename="../../WeightInstance.py" line="51"/>
         <source>True if it is a valid weight instance, False otherwise</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../WeightInstance.py" line="60"/>
+        <location filename="../../WeightInstance.py" line="61"/>
         <source>Mass [kg]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../WeightInstance.py" line="70"/>
+        <location filename="../../WeightInstance.py" line="71"/>
         <source>Linear density [kg / m]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../WeightInstance.py" line="80"/>
+        <location filename="../../WeightInstance.py" line="81"/>
         <source>Area density [kg / m^2]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../WeightInstance.py" line="90"/>
+        <location filename="../../WeightInstance.py" line="91"/>
         <source>Density [kg / m^3]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../WeightInstance.py" line="100"/>
+        <location filename="../../WeightInstance.py" line="101"/>
         <source>Inertia [kg * m^2]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Instance.py" line="49"/>
+        <location filename="../../Instance.py" line="50"/>
         <source>True if it is a valid ship instance, False otherwise</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Instance.py" line="59"/>
+        <location filename="../../Instance.py" line="60"/>
         <source>Ship length [m]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Instance.py" line="69"/>
+        <location filename="../../Instance.py" line="70"/>
         <source>Ship breadth [m]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Instance.py" line="79"/>
+        <location filename="../../Instance.py" line="80"/>
         <source>Ship draft [m]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Instance.py" line="91"/>
+        <location filename="../../Instance.py" line="92"/>
         <source>Set of weight instances</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Instance.py" line="101"/>
+        <location filename="../../Instance.py" line="102"/>
         <source>Set of tank instances</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Instance.py" line="111"/>
+        <location filename="../../Instance.py" line="112"/>
         <source>Set of load conditions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Instance.py" line="121"/>
+        <location filename="../../Instance.py" line="122"/>
         <source>The mesh associated with the ship</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1101,24 +1101,24 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../resistanceAmadeo/TaskPanel.py" line="74"/>
-        <location filename="../../resistanceHoltrop/TaskPanel.py" line="88"/>
+        <location filename="../../resistanceAmadeo/TaskPanel.py" line="75"/>
+        <location filename="../../resistanceHoltrop/TaskPanel.py" line="89"/>
         <source>The propulsive coefficient cannot be higher than 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../resistanceAmadeo/TaskPanel.py" line="78"/>
-        <location filename="../../resistanceHoltrop/TaskPanel.py" line="92"/>
+        <location filename="../../resistanceAmadeo/TaskPanel.py" line="79"/>
+        <location filename="../../resistanceHoltrop/TaskPanel.py" line="93"/>
         <source>The block coefficient cannot be higher than 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../resistanceHoltrop/TaskPanel.py" line="98"/>
+        <location filename="../../resistanceHoltrop/TaskPanel.py" line="99"/>
         <source>The waterplane coefficient cannot be higher than 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../resistanceHoltrop/TaskPanel.py" line="259"/>
+        <location filename="../../resistanceHoltrop/TaskPanel.py" line="260"/>
         <source>ZeroDivisionError: Null ship floating area found during the floating area computation!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1135,8 +1135,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../shipHydrostatics/TaskPanel.py" line="194"/>
-        <location filename="../../shipAreasCurve/TaskPanel.py" line="141"/>
+        <location filename="../../shipHydrostatics/TaskPanel.py" line="195"/>
+        <location filename="../../shipAreasCurve/TaskPanel.py" line="142"/>
         <location filename="../../shipCreateLoadCondition/__init__.py" line="36"/>
         <source>A ship instance must be selected before using this tool</source>
         <translation type="unfinished"></translation>
@@ -1217,17 +1217,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../shipHydrostatics/TaskPanel.py" line="88"/>
+        <location filename="../../shipHydrostatics/TaskPanel.py" line="89"/>
         <source>Failure detecting external faces from the ship object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../shipHydrostatics/TaskPanel.py" line="96"/>
+        <location filename="../../shipHydrostatics/TaskPanel.py" line="97"/>
         <source>Computing hydrostatics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../shipHydrostatics/TaskPanel.py" line="365"/>
+        <location filename="../../shipHydrostatics/TaskPanel.py" line="366"/>
         <source>Computing external faces</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1272,7 +1272,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TankInstance.py" line="133"/>
+        <location filename="../../TankInstance.py" line="134"/>
         <source>Tank volume operation failed. The tool is retrying that slightly moving the free surface position</source>
         <translation type="unfinished"></translation>
     </message>
