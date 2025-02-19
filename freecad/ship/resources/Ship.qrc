@@ -17,6 +17,8 @@
         <file>icons/Seakeeping_RAOs.svg</file>
         <file>icons/Resistance_Amadeo.svg</file>
         <file>icons/Resistance_Holtrop.svg</file>
+        <file>icons/Resistance_Savitsky.svg</file>
+        <file>icons/Resistance_BlountFox.svg</file>
         <file>translations/Ship.qm</file>
         <file>translations/Ship_af.qm</file>
         <file>translations/Ship_cs.qm</file>
@@ -66,5 +68,7 @@
         <file>ui/TaskPanel_seakeepingRAOs.ui</file>
         <file>ui/TaskPanel_resistanceAmadeo.ui</file>
         <file>ui/TaskPanel_resistanceHoltrop.ui</file>
+        <file>ui/TaskPanel_resistanceSavitsky.ui</file>
+        <file>ui/TaskPanel_resistanceBlountFox.ui</file>
     </qresource>
 </RCC>

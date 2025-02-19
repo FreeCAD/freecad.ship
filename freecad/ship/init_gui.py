@@ -70,10 +70,19 @@ class ShipWorkbench(Gui.Workbench):
                        "Ship_LoadCondition",
                        "Ship_SinkAndTrim",
                        "Ship_GZ"]
+<<<<<<< HEAD
         resistancelist = ["Ship_ResistanceAmadeo",
                           "Ship_ResistanceHoltrop"]
         seakeepinglist = ["Ship_SeakeepingSetMesh",
                          "Ship_SeakeepingRAOs"]
+=======
+        resistancelist = ["Resistance_Amadeo",
+                          "Resistance_BlountFox",
+                          "Resistance_Holtrop",
+                          "Resistance_Savitsky"]
+        seakeepinglist = ["Seakeeping_SetMesh",
+                         "Seakeeping_RAOs"]
+>>>>>>> e016dfa (Update files to include the new two resistance prediction methods, Savitsky and Blount and Fox.)
 
         self.appendToolbar(
             QT_TRANSLATE_NOOP("Workbench", "Ship design"), shiplist)

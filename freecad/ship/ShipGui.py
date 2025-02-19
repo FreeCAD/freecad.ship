@@ -251,7 +251,26 @@ class Amadeo:
         return {'Pixmap': 'Resistance_Amadeo',
                 'MenuText': MenuText,
                 'ToolTip': ToolTip}
-    
+
+class BlountFox:
+    def IsActive(self):
+        return True
+
+    def Activated(self):
+        from . import resistanceBlountFox
+        resistanceBlountFox.load()
+
+    def GetResources(self):
+        MenuText = QT_TRANSLATE_NOOP(
+            'Resistance_BlountFox',
+            'Resistance Blount and Fox prediction')
+        ToolTip = QT_TRANSLATE_NOOP(
+            'Resistance_BlountFox',
+            'Compute the resistance by Blount and Fox method')
+        return {'Pixmap': 'Resistance_BlountFox',
+                'MenuText': MenuText,
+                'ToolTip': ToolTip}
+
 class Holtrop:
     def IsActive(self):
         return True
@@ -268,6 +287,25 @@ class Holtrop:
             'Ship_ResistanceHoltrop',
             'Compute the resistance by Holtrop method')
         return {'Pixmap': 'Resistance_Holtrop',
+                'MenuText': MenuText,
+                'ToolTip': ToolTip}
+
+class Savitsky:
+    def IsActive(self):
+        return True
+
+    def Activated(self):
+        from . import resistanceSavitsky
+        resistanceSavitsky.load()
+
+    def GetResources(self):
+        MenuText = QT_TRANSLATE_NOOP(
+            'Resistance_Savitsky',
+            'Resistance Savitsky prediction')
+        ToolTip = QT_TRANSLATE_NOOP(
+            'Resistance_Savitsky',
+            'Compute the resistance by Savitsky method')
+        return {'Pixmap': 'Resistance_Savitsky',
                 'MenuText': MenuText,
                 'ToolTip': ToolTip}
 
@@ -321,7 +359,16 @@ FreeCADGui.addCommand('Ship_Capacity', TankCapacity())
 FreeCADGui.addCommand('Ship_LoadCondition', LoadCondition())
 FreeCADGui.addCommand('Ship_SinkAndTrim', SinkAndTrim())
 FreeCADGui.addCommand('Ship_GZ', GZ())
+<<<<<<< HEAD
 FreeCADGui.addCommand('Ship_ResistanceAmadeo', Amadeo())
 FreeCADGui.addCommand('Ship_ResistanceHoltrop', Holtrop())
 FreeCADGui.addCommand('Ship_SeakeepingSetMesh', SetMesh())
 FreeCADGui.addCommand('Ship_SeakeepingRAOs', RAOs())
+=======
+FreeCADGui.addCommand('Resistance_Amadeo', Amadeo())
+FreeCADGui.addCommand('Resistance_BlountFox', BlountFox())
+FreeCADGui.addCommand('Resistance_Holtrop', Holtrop())
+FreeCADGui.addCommand('Resistance_Savitsky', Savitsky())
+FreeCADGui.addCommand('Seakeeping_SetMesh', SetMesh())
+FreeCADGui.addCommand('Seakeeping_RAOs', RAOs())
+>>>>>>> e016dfa (Update files to include the new two resistance prediction methods, Savitsky and Blount and Fox.)
