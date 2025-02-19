@@ -124,7 +124,7 @@ class Plot(object):
         ax.yaxis.label.set_fontsize(15)
         ax.set_title('Holtrop Power vs Speed', fontweight='bold')
         
-        EKW = Plot.plot(speed, EKW, r'$EKW, \; Efficient \; power$')
+        EKW = Plot.plot(speed, EKW, r'$EKW, \; Effective \; power$')
         EKW.line.set_linestyle('-')
         EKW.line.set_linewidth(2.0)
         EKW.line.set_color((0.0, 0.0, 1.0))
@@ -273,8 +273,8 @@ class Plot(object):
             s.set("E{}".format(i + 2), str(CAPP[i] * 1000))
             s.set("F{}".format(i + 2), str(Cw[i] * 10000))
             s.set("G{}".format(i + 2), str(CB[i] * 1000))
-            s.set("H{}".format(i + 2), str(CTR[i]  * 1000))
-            s.set("I{}".format(i + 2), str(CA[i]  * 1000))
+            s.set("H{}".format(i + 2), str(CTR[i] * 1000))
+            s.set("I{}".format(i + 2), str(CA[i] * 1000))
             s.set("J{}".format(i + 2), str(EKW[i]))
             s.set("K{}".format(i + 2), str(BKW[i]))
         
