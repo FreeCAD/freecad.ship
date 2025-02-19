@@ -118,7 +118,7 @@ class Plot(object):
         ax.yaxis.label.set_fontsize(15)
         ax.set_title('Amadeo Power vs Speed', fontweight='bold')
         
-        EKW = Plot.plot(speed, EKW, r'$EKW, \; Efficient \; power$')
+        EKW = Plot.plot(speed, EKW, r'$EKW, \; Effective \; power$')
         EKW.line.set_linestyle('-')
         EKW.line.set_linewidth(2.0)
         EKW.line.set_color((0.0, 0.0, 1.0))
