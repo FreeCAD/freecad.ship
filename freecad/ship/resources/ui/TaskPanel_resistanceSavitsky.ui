@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SavitskyTaskPanel</class>
+ <widget class="QWidget" name="SavitskyTaskPanel">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>260</width>
+    <height>334</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Resistance by Savitsky method</string>
+  </property>
+  <property name="toolTip">
+   <string>Compute the resistance by Savitsky method</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout" rowstretch="0">
+   <item row="0" column="0">
+    <layout class="QGridLayout" name="gridLayout_2">
+     <item row="11" column="1">
+      <widget class="Gui::InputField" name="trim_step">
+       <property name="text">
+        <string notr="true">0</string>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true"/>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>0.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="Gui::InputField" name="DeadriseAngle">
+       <property name="text">
+        <string notr="true">0</string>
+       </property>
+       <property name="maxLength">
+        <number>4</number>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true"/>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>0.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0" alignment="Qt::AlignHCenter">
+      <widget class="QLabel" name="min_speed_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum speed in knots.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Minimum speed [kn]</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="Gui::InputField" name="LCG">
+       <property name="text">
+        <string notr="true">0</string>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true"/>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>1.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="0" colspan="2">
+      <widget class="QLabel" name="Advanced_settings_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Modifying these options may make the code not converge into a solution.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Advanced Settings</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="1">
+      <widget class="Gui::InputField" name="etap">
+       <property name="text">
+        <string notr="true">0</string>
+       </property>
+       <property name="maxLength">
+        <number>4</number>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true"/>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>50.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="Gui::InputField" name="Beam">
+       <property name="text">
+        <string notr="true">0</string>
+       </property>
+       <property name="maxLength">
+        <number>100000</number>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true"/>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>0.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="0">
+      <widget class="QLabel" name="seamargin_label">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the sea margin as a percentage&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Sea margin [%]</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="11" column="0">
+      <widget class="QLabel" name="trim_step_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <italic>false</italic>
+         <underline>false</underline>
+         <strikeout>false</strikeout>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Trim step precision. The default value is 0.01, changing this value may cause inaccuracy in the calculation or convergence problems.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Precision [º]</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="max_speed_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum speed in knots.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Maximum speed [kn]</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="Beam_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Beam of the ship in meters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Beam [m]</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0" alignment="Qt::AlignHCenter">
+      <widget class="QLabel" name="DeadriseAngle_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Deadrise angle in degrees.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>β [º]</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="0">
+      <widget class="QLabel" name="etap_label">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Propulsive coefficient.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>ηp</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0">
+      <widget class="QLabel" name="n_speeds_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of speeds.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Number of speeds</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="Displacement_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ship displacement in tonnes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Δ [ton]</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0" alignment="Qt::AlignHCenter">
+      <widget class="QLabel" name="LCG_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Longitudinal center of gravity measured from transom.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>LCG [m]</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="Gui::InputField" name="min_speed">
+       <property name="text">
+        <string notr="true">0</string>
+       </property>
+       <property name="maxLength">
+        <number>5</number>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true"/>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>0.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="1">
+      <widget class="Gui::InputField" name="seamargin">
+       <property name="text">
+        <string notr="true">0</string>
+       </property>
+       <property name="maxLength">
+        <number>4</number>
+       </property>
+       <property name="unit" stdset="0">
+        <string/>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>100.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="10" column="0" colspan="2">
+      <widget class="QCheckBox" name="edit_advanced_settings">
+       <property name="font">
+        <font>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable or disable editing the advanced settings like Trim Step. This setting does not need to be changed for the command to work.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Edit Advanced Settings</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="Gui::InputField" name="Displacement">
+       <property name="text">
+        <string notr="true">0</string>
+       </property>
+       <property name="maxLength">
+        <number>100000</number>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true"/>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>1.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="Gui::InputField" name="max_speed">
+       <property name="text">
+        <string notr="true">0</string>
+       </property>
+       <property name="maxLength">
+        <number>5</number>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true"/>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>0.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="QSpinBox" name="n_speeds">
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>9999</number>
+       </property>
+       <property name="value">
+        <number>100</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::InputField</class>
+   <extends>QLineEdit</extends>
+   <header location="global">Gui/Inputfield.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
