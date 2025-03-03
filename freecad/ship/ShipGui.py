@@ -262,10 +262,10 @@ class BlountFox:
 
     def GetResources(self):
         MenuText = QT_TRANSLATE_NOOP(
-            'Resistance_BlountFox',
+            'Ship_ResistanceBlountFox',
             'Resistance Blount and Fox prediction')
         ToolTip = QT_TRANSLATE_NOOP(
-            'Resistance_BlountFox',
+            'Ship_ResistanceBlountFox',
             'Compute the resistance by Blount and Fox method')
         return {'Pixmap': 'Resistance_BlountFox',
                 'MenuText': MenuText,
@@ -300,10 +300,10 @@ class Savitsky:
 
     def GetResources(self):
         MenuText = QT_TRANSLATE_NOOP(
-            'Resistance_Savitsky',
+            'Ship_ResistanceSavitsky',
             'Resistance Savitsky prediction')
         ToolTip = QT_TRANSLATE_NOOP(
-            'Resistance_Savitsky',
+            'Ship_ResistanceSavitsky',
             'Compute the resistance by Savitsky method')
         return {'Pixmap': 'Resistance_Savitsky',
                 'MenuText': MenuText,

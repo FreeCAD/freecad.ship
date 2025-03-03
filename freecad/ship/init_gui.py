@@ -75,7 +75,7 @@ class ShipWorkbench(Gui.Workbench):
                           "Ship_ResistanceHoltrop",
                           "Ship_ResistanceSavitsky"]
         seakeepinglist = ["Ship_SeakeepingSetMesh",
-                         "Ship_SeakeepingRAOs"]
+                          "Ship_SeakeepingRAOs"]
 
         self.appendToolbar(
             QT_TRANSLATE_NOOP("Workbench", "Ship design"), shiplist)
