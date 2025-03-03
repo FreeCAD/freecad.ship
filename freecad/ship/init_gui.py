@@ -25,26 +25,25 @@ import FreeCAD as App
 import os
 
 
+def QT_TRANSLATE_NOOP(context, text):
+    return text
+
+
 class ShipWorkbench(Gui.Workbench):
     """Ships design workbench."""
-
     def __init__(self):
         _dir = os.path.dirname(__file__)
-        Gui.addLanguagePath(os.path.join(_dir, "resources", "translations"))
-        Gui.updateLocale()
-        self.__class__.Icon = os.path.join(
-            _dir, "resources", "icons", "Ship_Workbench.svg"
-        )
-        self.__class__.MenuText = App.Qt.translate("Workbench", "Ship")
-        self.__class__.ToolTip = App.Qt.translate(
-            "Workbench",
-            "Ship module provides some of the commonly used tools to design ship forms",
-        )
+        self.__class__.Icon = os.path.join(_dir, "resources", "icons", "Ship_Workbench.svg")
+        self.__class__.MenuText = "Ship"
+        self.__class__.ToolTip = "Ship module provides some of the commonly used tool to design ship forms"
 
     from . import ShipGui
 
     def Initialize(self):
-        QT_TRANSLATE_NOOP = App.Qt.QT_TRANSLATE_NOOP
+        from PySide import QtCore, QtGui
+
+        Gui.addLanguagePath(os.path.join(os.path.dirname(__file__),
+                                         "resources", "translations"))
 
         try:
             import FreeCAD.Plot
@@ -52,13 +51,10 @@ class ShipWorkbench(Gui.Workbench):
             try:
                 import freecad.plot
             except ImportError:
-                App.Console.PrintWarning(
-                    App.Qt.translate(
-                        "ship_console",
-                        "freecad.plot is disabled, tools cannot graph output curves, "
-                        "install freecad.plot with addon-manager\n",
-                    )
-                )
+                msg = App.Qt.translate(
+                    "ship_console",
+                    "freecad.plot is disabled, tools cannot graph output curves, install freecad.plot with addon-manager")
+                App.Console.PrintWarning(msg + '\n')
         # ToolBar
         shiplist = ["Ship_LoadExample",
                     "Ship_CreateShip",
@@ -70,12 +66,12 @@ class ShipWorkbench(Gui.Workbench):
                        "Ship_LoadCondition",
                        "Ship_SinkAndTrim",
                        "Ship_GZ"]
-        resistancelist = ["Ship_ResistanceAmadeo",
-                          "Ship_ResistanceBlountFox",
-                          "Ship_ResistanceHoltrop",
-                          "Ship_ResistanceSavitsky"]
-        seakeepinglist = ["Ship_SeakeepingSetMesh",
-                         "Ship_SeakeepingRAOs"]
+        resistancelist = ["Resistance_Amadeo",
+                          "Resistance_BlountFox",
+                          "Resistance_Holtrop",
+                          "Resistance_Savitsky"]
+        seakeepinglist = ["Seakeeping_SetMesh",
+                         "Seakeeping_RAOs"]
 
         self.appendToolbar(
             QT_TRANSLATE_NOOP("Workbench", "Ship design"), shiplist)
