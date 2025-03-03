@@ -20,6 +20,7 @@
 #*                                                                         *
 #***************************************************************************
 
+import os
 import numpy as np
 import FreeCAD as App
 import FreeCADGui as Gui
@@ -27,18 +28,20 @@ from FreeCAD import Units
 from PySide import QtGui, QtCore
 from . import PlotAux
 from . import Savitsky
-from .. import Ship_rc
 from ..import Instance
 from ..shipUtils import Locale
 from ..shipUtils import Selection
 from ..shipHydrostatics import Tools as Hydrostatics
-from ..init_gui import QT_TRANSLATE_NOOP
+
+QT_TRANSLATE_NOOP = App.Qt.QT_TRANSLATE_NOOP
 
 
 class TaskPanel:
     def __init__(self):
         self.name = "Compute resistance prediction Savitsky method"
-        self.ui = ":/ui/TaskPanel_resistanceSavitsky.ui"
+        self.ui = os.path.join(os.path.dirname(__file__),
+                               "../resources/ui/",
+                               "TaskPanel_resistanceSavitsky.ui")
         self.form = Gui.PySideUic.loadUi(self.ui)
         self.ship = None
 
@@ -60,14 +63,14 @@ class TaskPanel:
         
         elif eta_p > 1:
             msg = App.Qt.translate(
-                "ship_console",
-                "The propulsive coefficient cannot be higher than 1")
+                "ship_console", "The propulsive coefficient cannot be higher than 1"
+            )
             App.Console.PrintError(msg + '\n')
             
         if Vmin <= 0:
             msg = App.Qt.translate(
-                "ship_console",
-                "The minium ship velocity cannot be lower than 0 m/s")
+                "ship_console", "The minium ship velocity cannot be lower than 0 m/s"
+            )
             App.Console.PrintError(msg + '\n')
 
         seamargin = seamargin / 100
