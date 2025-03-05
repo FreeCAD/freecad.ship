@@ -29,6 +29,7 @@ import numpy as np
 import capytaine as cpt
 from capytaine.meshes.meshes import Mesh as cptMesh
 from scipy.linalg import block_diag
+import xarray as xr
 from ..shipGZ import Tools as GZ
 from ..shipHydrostatics import Tools as Hydrostatics
 from ..shipSinkAndTrim import Tools as Equilibrium
@@ -111,7 +112,7 @@ def equilibrium_data(lc, ship, weights, tanks):
     k45 = k54 = k33 * ycb.getValueAs('m').Value * xcb.getValueAs('m').Value
     i_unit = (Units.Quantity(1, Units.Length)**4).Unit
     Ixx = Units.Quantity(wp.MatrixOfInertia.A11, i_unit)
-    Iyy = Units.Quantity(wp.MatrixOfInertia.A11, i_unit)
+    Iyy = Units.Quantity(wp.MatrixOfInertia.A22, i_unit)
     kr = (rhog * Ixx).getValueAs('N*m').Value
     kp = (rhog * Iyy).getValueAs('N*m').Value
     kw = (disp * GZ.G * (zcb - zcg)).getValueAs('N*m').Value
@@ -134,6 +135,7 @@ def generate_boat(lc, ship, weights, tanks, mesh):
     boat.add_all_rigid_body_dofs()
     boat.keep_immersed_part()
     boat.mass = boat.add_dofs_labels_to_matrix(M)
+    boat.inertia_matrix = xr.DataArray(M[3:,3:])
     boat.hydrostatic_stiffness = boat.add_dofs_labels_to_matrix(kHS)
 
     return boat
