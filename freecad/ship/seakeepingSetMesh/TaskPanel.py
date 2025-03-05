@@ -123,10 +123,6 @@ class TaskPanel:
             return True
 
         # Fill the ships combo box
-        self.form.mainLogo.setPixmap(QtGui.QPixmap(
-            os.path.join(os.path.dirname(__file__),
-                         "../resources/icons/",
-                         "Ship_Logo.svg")))
         icon = QtGui.QIcon(QtGui.QPixmap(
             os.path.join(os.path.dirname(__file__),
                          "../resources/icons/",

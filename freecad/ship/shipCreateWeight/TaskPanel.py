@@ -208,7 +208,6 @@ class TaskPanel:
             return True
 
         # Fill the ships combo box
-        
         icon = QtGui.QIcon(QtGui.QPixmap(
             os.path.join(os.path.dirname(__file__),
                          "../resources/icons/",
