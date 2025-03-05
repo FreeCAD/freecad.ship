@@ -111,7 +111,6 @@ class TaskPanel:
         pass
 
     def setupUi(self):
-
         self.form.Beam = self.widget(QtGui.QLineEdit, "Beam")
         self.form.Displacement = self.widget(QtGui.QLineEdit, "Displacement")
         self.form.LCG = self.widget(QtGui.QLineEdit, "LCG")
