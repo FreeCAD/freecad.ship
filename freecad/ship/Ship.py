@@ -23,7 +23,7 @@
 
 __title__="FreeCAD Ship module"
 __author__ = "Jose Luis Cercos-Pita"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://freecad.org"
 
 __doc__="The Ships module provide a set of tools to make some specific Naval" \
         " Architecture computations"

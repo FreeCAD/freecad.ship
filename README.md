@@ -5,7 +5,7 @@
 **Welcome to FreeCAD-Ship!**
 
 ## Introduction
-FreeCAD-Ship is a free module for [FreeCAD](https://www.freecadweb.org) oriented to aid naval ship design by providing several tools commonly used in naval architecture, seakeeping and ship resistance.
+FreeCAD-Ship is a free module for [FreeCAD] oriented to aid naval ship design by providing several tools commonly used in naval architecture, seakeeping and ship resistance.
 
 ## Contents
 - [Features](#features)
@@ -100,20 +100,20 @@ The main transversal stability indicator, it is unsurprisingly required by the v
 
 ![RAOs](https://user-images.githubusercontent.com/1668392/140480149-88bbd2e4-a255-4f9d-893a-c325356d4263.png)
 
-With FreeCAD you can easily compute the Response Amplitude Operators (RAOs), considering the widely validated frequency domain code [Nemoh](https://lheea.ec-nantes.fr/logiciels-et-brevets/nemoh-presentation-192863.kjsp), and more specifially its Python wrapper [Capytaine](https://github.com/mancellin/capytaine).
+With FreeCAD you can easily compute the Response Amplitude Operators (RAOs), considering the widely validated frequency domain code [Nemoh], and more specifially its Python wrapper [Capytaine].
 
 ## Install
 
-This workbench is available for download via the FreeCAD [Addon Manager](https://wiki.freecadweb.org/Addon_manager)
+This workbench is available for download via the FreeCAD [Addon Manager][Addon-Manager]
 
 ## Usage
 
-Documentation for this workbench is available on the [Ship Workbench wiki page](https://wiki.freecadweb.org/Ship_Workbench)
+Documentation for this workbench is available on the [Ship Workbench wiki page][Wiki]
 
 ## Tutorials
 
-* Official Ship Workbench Tutorial [Part 1](https://wiki.freecadweb.org/FreeCAD-Ship_s60_tutorial)
-* Official Ship Workbench Tutorial [Part 2](https://wiki.freecadweb.org/FreeCAD-Ship_s60_tutorial_(II))
+* Official Ship Workbench Tutorial [Part 1][Tutorial-1]
+* Official Ship Workbench Tutorial [Part 2][Tutorial-2]
 
 ## Roadmap
 
@@ -130,14 +130,27 @@ There are many tools and features which will be implemented in this module:
 
 ## Discussion/Feedback
 
-Discuss bugs, feedback, thoughts etc.. on the official [FreeCAD forum thread](https://forum.freecadweb.org/viewtopic.php?f=8&t=60885)
+Discuss bugs, feedback, thoughts etc.. on the official [FreeCAD forum thread][Forum]
 
 ## Bugs/Enhancements
 
-Please open tickets in the [issue queue](https://github.com/FreeCAD/freecad.ship/issues)
+Please open tickets in the [issue queue][Issues]
 
 ## Authors
 
  - Jose Luis Cercós Pita <jlcercos@gmail.com>
  - Juan Manuel Muñoz-Godin (Ship resistance Holtrop and Amadeo tools)
  - Antonio Souto-Iglesias (Advisor of Juan Manuel Muñoz-Godin)
+
+
+<!----------------------------------------------------------------------------->
+
+[Addon-Manager]: https://github.com/FreeCAD/AddonManager
+[Tutorial-1]: https://wiki.freecad.org/FreeCAD-Ship_s60_tutorial
+[Tutorial-2]: https://wiki.freecad.org/FreeCAD-Ship_s60_tutorial_(II)
+[Capytaine]: https://github.com/mancellin/capytaine
+[FreeCAD]: https://freecad.org
+[Issues]: https://github.com/FreeCAD/freecad.ship/issues
+[Nemoh]: https://lheea.ec-nantes.fr/logiciels-et-brevets/nemoh-presentation-192863.kjsp
+[Forum]: https://forum.freecad.org/viewtopic.php?f=8&t=60885
+[Wiki]: https://wiki.freecad.org/Ship_Workbench
